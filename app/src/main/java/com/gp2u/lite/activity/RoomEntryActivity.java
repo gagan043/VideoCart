@@ -10,13 +10,15 @@ import android.widget.EditText;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.gp2u.lite.R;
+import com.gp2u.lite.model.Config;
+import com.pixplicity.easyprefs.library.Prefs;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RoomEntryActivity extends AppCompatActivity {
 
-    private static String TAG = "RoomEntryActivity";
+    private static String TAG = RoomEntryActivity.class.getName();
     @BindView(R.id.room_editText) EditText roomEdit;
 
     @Override
@@ -27,6 +29,8 @@ public class RoomEntryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_room_entry);
 
         ButterKnife.bind(this);
+
+        roomEdit.setText(Prefs.getString(Config.ROOM_NAME ,""));
     }
 
     public void onQRScan(View view)
@@ -39,7 +43,8 @@ public class RoomEntryActivity extends AppCompatActivity {
     public void onEnter(View view)
     {
         Intent intent = new Intent(this ,VideoChatActivity.class);
-        intent.putExtra("roomname" ,((roomEdit.getText().length() == 0) ? "default" : roomEdit.getText().toString()));
+        intent.putExtra(Config.ROOM_NAME ,((roomEdit.getText().length() == 0) ? "default" : roomEdit.getText().toString()));
+        Prefs.putString(Config.ROOM_NAME ,roomEdit.getText().toString());
         startActivity(intent);
     }
 
@@ -59,7 +64,7 @@ public class RoomEntryActivity extends AppCompatActivity {
         {
             Intent intent = new Intent(this ,VideoChatActivity.class);
             String replaceStr = url.replace("https://gp2u.com.au/video?room=" ,"");
-            intent.putExtra("roomname" ,replaceStr);
+            intent.putExtra(Config.ROOM_NAME,replaceStr);
             startActivity(intent);
         }
         else{

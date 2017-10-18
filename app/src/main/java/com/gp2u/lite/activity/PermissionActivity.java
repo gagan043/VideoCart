@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.gp2u.lite.R;
+import com.gp2u.lite.model.Config;
 import com.pixplicity.easyprefs.library.Prefs;
 
 public class PermissionActivity extends AppCompatActivity {
@@ -22,7 +23,7 @@ public class PermissionActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_permission);
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Prefs.getBoolean("bPermissionAsked" ,false)) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Prefs.getBoolean(Config.bPermissionAsked,false)) {
 
             gotoRoomEntry();
 
@@ -33,7 +34,7 @@ public class PermissionActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        Prefs.putBoolean("bPermissionAsked" ,true);
+        Prefs.putBoolean(Config.bPermissionAsked ,true);
         gotoRoomEntry();
 
     }
@@ -47,7 +48,7 @@ public class PermissionActivity extends AppCompatActivity {
     public void onSkip(View view)
     {
 
-        Prefs.putBoolean("bPermissionAsked" ,true);
+        Prefs.putBoolean(Config.bPermissionAsked ,true);
         gotoRoomEntry();
 
     }

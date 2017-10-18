@@ -13,7 +13,6 @@ import com.gp2u.lite.R;
 
 public class QRCodeActivity extends AppCompatActivity implements QRCodeReaderView.OnQRCodeReadListener{
 
-    private static String TAG = "QRCodeActivity";
     private boolean isScanned;
 
     private QRCodeReaderView qrCodeReaderView;

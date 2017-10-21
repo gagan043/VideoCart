@@ -3,6 +3,17 @@
 
     <string name="permission_instruction">For videoconferencing to work this App needs access to your camera and microphone\n\n  Please press Allow and then OK for each device in the permisson pop up.</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="REMOTE_PEER_DISCONNECTED">Remote peer has disconnected</string>
+    <string name="PEER_REFRESH_ERROR">No peer connection to refresh</string>
+    <string name="REFRESHING_CONNECTION">Refreshing Connection...</string>
+    <string name="INTERNET_CONNECTION_ERROR">Sorry, you do not appear to be connected to the Internet. Please check your settings</string>
+    <string name="MICROPHONE_MUTE_MESSAGE">Microphone Muted</string>
+    <string name="MICROPHONE_UNMUTE_MESSAGE">Microphone Unmuted</string>
+    <string name="ROOM_LOCK_MESSAGE">Room Locked</string>
+    <string name="ROOM_UNLOCK_MESSAGE">Room Unlocked</string>
+    <string name="ROOM_LOCK_REMOTE">Room locked by remote peer</string>
+    <string name="ROOM_UNLOCK_REMOTE">Room unlocked by remote peer</string>
+
 </resources>

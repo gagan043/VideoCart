@@ -21,5 +21,6 @@ public class PrefsApplication extends Application {
                 .setPrefsName(getPackageName())
                 .setUseDefaultSharedPreference(true)
                 .build();
+
     }
 }

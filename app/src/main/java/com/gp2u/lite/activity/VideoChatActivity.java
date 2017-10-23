@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.gp2u.lite.R;
+import com.gp2u.lite.control.AudioRouter;
 import com.gp2u.lite.model.Config;
 import com.pixplicity.easyprefs.library.Prefs;
 
@@ -27,26 +29,32 @@ import net.colindodd.toggleimagebutton.ToggleImageButton;
 import org.webrtc.SurfaceViewRenderer;
 
 import java.util.Locale;
+import java.util.concurrent.ConcurrentHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
 import sg.com.temasys.skylink.sdk.listener.LifeCycleListener;
 import sg.com.temasys.skylink.sdk.listener.MediaListener;
+import sg.com.temasys.skylink.sdk.listener.OsListener;
 import sg.com.temasys.skylink.sdk.listener.RemotePeerListener;
 import sg.com.temasys.skylink.sdk.rtc.SkylinkConfig;
 import sg.com.temasys.skylink.sdk.rtc.SkylinkConnection;
 import sg.com.temasys.skylink.sdk.rtc.UserInfo;
 
-public class VideoChatActivity extends AppCompatActivity implements LifeCycleListener, MediaListener, RemotePeerListener{
+public class VideoChatActivity extends AppCompatActivity implements LifeCycleListener, MediaListener, RemotePeerListener ,OsListener{
 
     private static String TAG = VideoChatActivity.class.getName();
 
     SkylinkConnection skylinkConnection;
     String roomName;
     String userName;
+    boolean bFromRemote;
 
-    //public  String[] peerList;
+    private static String[] peerList = new String[4];
+    private RelativeLayout[] videoViewLayouts;
+    private static ConcurrentHashMap<String, Boolean> isGettingWebrtcStats = new ConcurrentHashMap();
+
     public static final float[][] RECT_WHEN_PEER1 = {{0, 0, 1, 1} ,{0, 1, 0, 0} ,{0, 1, 0, 0},{0, 1, 0, 0}};
     public static final float[][] RECT_WHEN_PEER2 = {{0, 0, 1, 0.5f} ,{0 , 0.5f ,1 ,0.5f} ,{0 , 1 ,0 ,0},{0 , 1 ,0 ,0}};
     public static final float[][] RECT_WHEN_PEER3 = {{0 , 0 ,1 ,0.5f} ,{0 , 0.5f ,0.5f ,0.5f} ,{0.5f , 0.5f ,0.5f ,0.5f},{0 , 1 ,0 ,0}};
@@ -96,10 +104,10 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         ButterKnife.bind(this);
 
         roomName = getIntent().getExtras().getString(Config.ROOM_NAME);
-        //showUserDialog();
+        showUserDialog();
         configToggleButtons();
         initMediaPlayer();
-        refreshPeerViews();
+        //refreshPeerViews();
     }
 
     public void showUserDialog()
@@ -139,6 +147,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         mutePlayer = MediaPlayer.create(this ,R.raw.click_off);
         unmutePlayer = MediaPlayer.create(this ,R.raw.click_on);
 
+        videoViewLayouts = new RelativeLayout[]{peer1Layout, peer2Layout, peer3Layout ,peer4Layout};
         Toasty.Config.getInstance()
                 .setErrorColor(Color.parseColor("#dd0000")) // optional
                 .setInfoColor(Color.parseColor("#999999")) // optional
@@ -147,8 +156,6 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     private SkylinkConfig getSkylinkConfig() {
         SkylinkConfig config = new SkylinkConfig();
-        config.setAudioVideoSendConfig(SkylinkConfig.AudioVideoConfig.AUDIO_AND_VIDEO);
-        config.setAudioVideoReceiveConfig(SkylinkConfig.AudioVideoConfig.AUDIO_AND_VIDEO);
         config.setAudioVideoSendConfig(SkylinkConfig.AudioVideoConfig.AUDIO_AND_VIDEO);
         config.setAudioVideoReceiveConfig(SkylinkConfig.AudioVideoConfig.AUDIO_AND_VIDEO);
         config.setHasPeerMessaging(true);
@@ -165,12 +172,26 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         refreshPeerViews();
     }
 
-    /**
-     * Get peerId of a Peer using SkylinkConnection API.
-     *
-     * @param index 0 for self Peer, 1 onwards for remote Peer(s).
-     * @return Desired peerId or null if not available.
-     */
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        emptyLayout();
+        AudioRouter.stopAudioRouting(this.getApplicationContext());
+
+    }
+
+    @Override
+    public void onBackPressed(){
+
+        if (skylinkConnection != null && skylinkConnection.isConnected())
+        {
+            skylinkConnection.unlockRoom();
+            skylinkConnection.disconnectFromRoom();
+        }
+        finish();
+    }
+
     private String getPeerId(int index) {
         if (skylinkConnection == null) {
             return null;
@@ -184,12 +205,6 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         }
     }
 
-    /**
-     * Get Video View of a given Peer using SkylinkConnection API.
-     *
-     * @param peerId null for self Peer.
-     * @return Desired Video View or null if not present.
-     */
     private SurfaceViewRenderer getVideoView(String peerId) {
         if (skylinkConnection == null) {
             return null;
@@ -204,7 +219,16 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         skylinkConnection.setLifeCycleListener(this);
         skylinkConnection.setMediaListener(this);
         skylinkConnection.setRemotePeerListener(this);
-        skylinkConnection.connectToRoom(Config.APP_KEY_SECRET ,roomName ,userName);
+        //skylinkConnection.setOsListener(this);
+        boolean connectFailed;
+        connectFailed = !skylinkConnection.connectToRoom(Config.APP_KEY_SECRET ,roomName ,userName);
+        if (connectFailed) {
+            String error = "Unable to connect to Room! Rotate device to try again later.";
+            showToast(error);
+            return;
+        }
+        AudioRouter.startAudioRouting(this);
+
     }
 
     private void configToggleButtons()
@@ -213,11 +237,18 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
+                if (bFromRemote) return;
                 if (b){
 
+                    lockPlayer.start();
+                    skylinkConnection.lockRoom();
+                    showToast(getString(R.string.ROOM_LOCK_MESSAGE));
                 }
                 else {
 
+                    unlockPlayer.start();
+                    skylinkConnection.unlockRoom();
+                    showToast(getString(R.string.ROOM_UNLOCK_MESSAGE));
                 }
 
             }
@@ -274,6 +305,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     public void onRefresh(View view)
     {
+        skylinkConnection.refreshConnection(null, false);
     }
 
     public void onMessage(View view)
@@ -321,8 +353,22 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     }
 
     @Override
-    public void onLockRoomStatusChange(String s, boolean b) {
+    public void onLockRoomStatusChange(String remotePeerId, boolean lockStatus) {
 
+        bFromRemote = true;
+        lockButton.setChecked(lockStatus);
+        bFromRemote = false;
+
+        if (lockStatus)
+        {
+            lockPlayer.start();
+            showToast(getString(R.string.ROOM_LOCK_REMOTE));
+        }
+        else{
+
+            unlockPlayer.start();
+            showToast(getString(R.string.ROOM_UNLOCK_REMOTE));
+        }
     }
 
     @Override
@@ -331,8 +377,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         if (surfaceViewRenderer == null) {
             return;
         }
-        localLayout.addView(getVideoView(null));
-
+        addFullSubView(localLayout ,getVideoView(null));
     }
 
     @Override
@@ -351,13 +396,16 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     }
 
     @Override
-    public void onRemotePeerMediaReceive(String s, SurfaceViewRenderer surfaceViewRenderer) {
+    public void onRemotePeerMediaReceive(String remotePeerId, SurfaceViewRenderer surfaceViewRenderer) {
 
+        addRemoteView(remotePeerId);
+        refreshPeerViews();
     }
 
     @Override
-    public void onRemotePeerJoin(String s, Object o, boolean b) {
+    public void onRemotePeerJoin(String remotePeerId, Object userData, boolean hasDataChannel) {
 
+        addRemotePeer(remotePeerId);
     }
 
     @Override
@@ -376,7 +424,28 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     }
 
     @Override
-    public void onRemotePeerLeave(String s, String s1, UserInfo userInfo) {
+    public void onRemotePeerLeave(String remotePeerId, String message, UserInfo userInfo) {
+
+        showToast(getString(R.string.REMOTE_PEER_DISCONNECTED));
+        exitPlayer.start();
+        skylinkConnection.unlockRoom();
+
+        removeRemotePeer(remotePeerId);
+        refreshPeerViews();
+    }
+
+    @Override
+    public void onPermissionRequired(String[] strings, int i, int i1) {
+
+    }
+
+    @Override
+    public void onPermissionGranted(String[] strings, int i, int i1) {
+
+    }
+
+    @Override
+    public void onPermissionDenied(String[] strings, int i, int i1) {
 
     }
 
@@ -404,8 +473,12 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         float[][] RECTS;
         RelativeLayout[] peerLayouts = {peer1Layout ,peer2Layout ,peer3Layout ,peer4Layout};
 
-        String[] peerList = {"0","0","0"};
-        switch (peerList.length)
+        int peerCount = 0;
+        for (int i = 0; i < peerList.length ; i ++){
+
+            if (peerList[i] != null) peerCount++;
+        }
+        switch (peerCount)
         {
             case 1:
                 RECTS = RECT_WHEN_PEER1;
@@ -442,5 +515,133 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
             params.height = (isPortrait) ? (int)(screenHeight * RECTS[i][3]) : (int)(screenWidth * RECTS[i][2]);
             layout.setLayoutParams(params);
         }
+    }
+
+    private int addRemotePeer(String peerId) {
+        if (peerId == null) {
+            return -1;
+        }
+        for (int peerIndex = 0; peerIndex < peerList.length; ++peerIndex) {
+            if (peerList[peerIndex] == null) {
+                peerList[peerIndex] = peerId;
+                // Add to other Peer maps
+                isGettingWebrtcStats.put(peerId, false);
+                return peerIndex;
+            }
+        }
+        return -1;
+    }
+
+    private void removeRemotePeer(String peerId) {
+        int index = getPeerIndex(peerId);
+        if (index < 0 || index > videoViewLayouts.length) {
+            return;
+        }
+        removePeerView(peerId);
+        peerList[index] = null;
+        isGettingWebrtcStats.remove(peerId);
+        shiftUpRemotePeers();
+    }
+
+    private void addRemoteView(String remotePeerId) {
+        SurfaceViewRenderer videoView = getVideoView(remotePeerId);
+        if (videoView == null) {
+            return;
+        }
+
+        // Remove any existing Peer View.
+        // This may sometimes be the case, for e.g. in screen sharing.
+        removePeerView(remotePeerId);
+
+        int index = getPeerIndex(remotePeerId);
+        if (index < 0 || index > videoViewLayouts.length) {
+            return;
+        }
+
+        addFullSubView(videoViewLayouts[index] ,videoView);
+
+    }
+
+    private int removePeerView(String peerId) {
+        int indexToRemove = getPeerIndex(peerId);
+        // Safety check
+        if (indexToRemove < 0 || indexToRemove > peerList.length) {
+            return -1;
+        }
+        // Remove view
+        videoViewLayouts[indexToRemove].removeAllViews();
+        return indexToRemove;
+    }
+
+    private void shiftUpRemotePeers() {
+        int indexEmpty = -1;
+        // Remove view from layout.
+        for (int i = 0; i < videoViewLayouts.length; ++i) {
+            if (peerList[i] == null) {
+                indexEmpty = i;
+                continue;
+            }
+            // Switch Peer to empty spot if there is any.
+            if (indexEmpty > -1) {
+                // Shift peerList.
+                String peerId = peerList[i];
+                peerList[i] = null;
+                peerList[indexEmpty] = peerId;
+                // Shift UI.
+                RelativeLayout peerFrameLayout = videoViewLayouts[i];
+                // Put this view in the layout before it.
+                SurfaceViewRenderer view = (SurfaceViewRenderer) peerFrameLayout.getChildAt(0);
+                if (view != null) {
+                    peerFrameLayout.removeAllViews();
+                    addFullSubView(videoViewLayouts[indexEmpty] ,view);
+
+                }
+                ++indexEmpty;
+            }
+        }
+    }
+
+    private int getPeerIndex(String peerId) {
+        if (peerId == null) {
+            return -1;
+        }
+        for (int index = 0; index < peerList.length; ++index) {
+            if (peerId.equals(peerList[index])) {
+                return index;
+            }
+        }
+        return -1;
+    }
+
+    public  void removeViewFromParent(SurfaceViewRenderer videoView) {
+        if (videoView != null) {
+            Object viewParent = videoView.getParent();
+            if (viewParent != null) {
+                // If parent is a ViewGroup, remove from parent.
+                if (ViewGroup.class.isInstance(viewParent)) {
+                    ((ViewGroup) viewParent).removeView(videoView);
+                }
+            }
+        }
+    }
+
+    private void emptyLayout() {
+
+        for (int i = 0 ; i < peerList.length ; i ++){
+
+            if (peerList[i] != null)
+                removeViewFromParent(getVideoView(peerList[i]));
+
+        }
+    }
+
+    private void addFullSubView(RelativeLayout layout , View view)
+    {
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+        layout.addView(view ,params);
     }
 }

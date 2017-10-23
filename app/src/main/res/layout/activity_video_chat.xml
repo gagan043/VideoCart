@@ -23,28 +23,28 @@
             android:id="@+id/peer1_layout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@android:color/holo_red_dark">
+            android:background="@android:color/black">
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/peer2_layout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@android:color/holo_green_dark">
+            android:background="@android:color/black">
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/peer3_layout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@android:color/holo_blue_dark">
+            android:background="@android:color/black">
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/peer4_layout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@android:color/holo_orange_dark">
+            android:background="@android:color/black">
         </RelativeLayout>
 
     </RelativeLayout>

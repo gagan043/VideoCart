@@ -42,4 +42,5 @@ dependencies {
 
     compile 'net.colindodd:toggleimagebutton:1.2'
     compile 'com.github.GrenderG:Toasty:1.2.5'
+    compile 'com.github.stfalcon:chatkit:0.2.2'
 }

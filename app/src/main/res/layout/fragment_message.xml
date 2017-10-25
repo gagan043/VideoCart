@@ -11,7 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/input"
-        app:outcomingDefaultBubbleColor="@color/colorBlue"/>
+        app:outcomingDefaultBubbleColor="@color/colorBlue"
+        app:incomingBubbleDrawable="@drawable/bg_custom_incoming_message"
+        app:outcomingBubbleDrawable="@drawable/bg_custom_outcoming_message"
+        />
 
     <Button
         android:id="@+id/cancel_button"

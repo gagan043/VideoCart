@@ -21,6 +21,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.gp2u.lite.R;
 import com.gp2u.lite.control.AudioRouter;
+import com.gp2u.lite.fragment.MessageFragment;
 import com.gp2u.lite.model.Config;
 import com.pixplicity.easyprefs.library.Prefs;
 
@@ -29,7 +30,6 @@ import net.colindodd.toggleimagebutton.ToggleImageButton;
 import org.webrtc.SurfaceViewRenderer;
 
 import java.util.Locale;
-import java.util.concurrent.ConcurrentHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,7 +53,6 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     private static String[] peerList = new String[4];
     private RelativeLayout[] videoViewLayouts;
-    private static ConcurrentHashMap<String, Boolean> isGettingWebrtcStats = new ConcurrentHashMap();
 
     public static final float[][] RECT_WHEN_PEER1 = {{0, 0, 1, 1} ,{0, 1, 0, 0} ,{0, 1, 0, 0},{0, 1, 0, 0}};
     public static final float[][] RECT_WHEN_PEER2 = {{0, 0, 1, 0.5f} ,{0 , 0.5f ,1 ,0.5f} ,{0 , 1 ,0 ,0},{0 , 1 ,0 ,0}};
@@ -94,6 +93,8 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     @BindView(R.id.peer4_layout)
     RelativeLayout peer4Layout;
 
+    MessageFragment messageFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,11 +104,13 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
         ButterKnife.bind(this);
 
+        messageFragment = (MessageFragment)getSupportFragmentManager().findFragmentById(R.id.message_fragment);
+        messageFragment.toggleShow(false);
+
         roomName = getIntent().getExtras().getString(Config.ROOM_NAME);
         showUserDialog();
         configToggleButtons();
         initMediaPlayer();
-        //refreshPeerViews();
     }
 
     public void showUserDialog()
@@ -310,7 +313,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     public void onMessage(View view)
     {
-
+        messageFragment.toggleShow(true);
     }
 
     public void setBadge(int count)
@@ -525,7 +528,6 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
             if (peerList[peerIndex] == null) {
                 peerList[peerIndex] = peerId;
                 // Add to other Peer maps
-                isGettingWebrtcStats.put(peerId, false);
                 return peerIndex;
             }
         }
@@ -539,7 +541,6 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         }
         removePeerView(peerId);
         peerList[index] = null;
-        isGettingWebrtcStats.remove(peerId);
         shiftUpRemotePeers();
     }
 

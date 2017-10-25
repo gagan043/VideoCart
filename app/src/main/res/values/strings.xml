@@ -16,4 +16,6 @@
     <string name="ROOM_LOCK_REMOTE">Room locked by remote peer</string>
     <string name="ROOM_UNLOCK_REMOTE">Room unlocked by remote peer</string>
 
+    <string name="hint_enter_a_message">Type a message…</string>
+
 </resources>

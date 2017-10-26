@@ -9,12 +9,10 @@ public class User implements IUser {
 
     private String id;
     private String name;
-    private String avatar;
 
-    public User(String id, String name, String avatar, boolean online) {
+    public User(String id, String name) {
         this.id = id;
         this.name = name;
-        this.avatar = avatar;
     }
 
     @Override

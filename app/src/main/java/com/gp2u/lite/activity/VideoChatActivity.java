@@ -49,7 +49,9 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     SkylinkConnection skylinkConnection;
     String roomName;
     String userName;
+    public int unreadMessages;
     boolean bFromRemote;
+    boolean showAlert;
 
     private static String[] peerList = new String[4];
     private RelativeLayout[] videoViewLayouts;
@@ -107,6 +109,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         messageFragment = (MessageFragment)getSupportFragmentManager().findFragmentById(R.id.message_fragment);
         messageFragment.toggleShow(false);
 
+        unreadMessages = 0;
         roomName = getIntent().getExtras().getString(Config.ROOM_NAME);
         showUserDialog();
         configToggleButtons();
@@ -134,6 +137,9 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
                         //Log.d(TAG ,"clicked OK!");
                         connectToRoom();
+                        messageFragment.userName = userName;
+                        messageFragment.skylinkConnection = skylinkConnection;
+
 
                     }
                 })
@@ -222,7 +228,8 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         skylinkConnection.setLifeCycleListener(this);
         skylinkConnection.setMediaListener(this);
         skylinkConnection.setRemotePeerListener(this);
-        //skylinkConnection.setOsListener(this);
+        skylinkConnection.setMessagesListener(messageFragment);
+
         boolean connectFailed;
         connectFailed = !skylinkConnection.connectToRoom(Config.APP_KEY_SECRET ,roomName ,userName);
         if (connectFailed) {
@@ -313,20 +320,22 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     public void onMessage(View view)
     {
+        unreadMessages = 0;
+        setBadge();
         messageFragment.toggleShow(true);
     }
 
-    public void setBadge(int count)
+    public void setBadge()
     {
-        if (count == 0)
+        if (unreadMessages == 0)
             badgeTextView.setVisibility(View.GONE);
         else
         {
             badgeTextView.setVisibility(View.VISIBLE);
-            if (count < 10)
-                badgeTextView.setText(String.format(Locale.US, " %d " ,count));
+            if (unreadMessages < 10)
+                badgeTextView.setText(String.format(Locale.US, " %d " ,unreadMessages));
             else
-                badgeTextView.setText(String.format(Locale.US, "%d" ,count));
+                badgeTextView.setText(String.format(Locale.US, "%d" ,unreadMessages));
         }
     }
 
@@ -644,5 +653,39 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
         params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
         layout.addView(view ,params);
+    }
+
+    public void showAlert(String message)
+    {
+        setBadge();
+        if (!showAlert){
+
+            showAlert = true;
+            new MaterialDialog.Builder(this)
+                    .content(message)
+                    .negativeText("Open Messages")
+                    .positiveText("Dismiss")
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                            dialog.dismiss();
+                            showAlert = false;
+
+                        }
+                    })
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                            dialog.dismiss();
+                            showAlert = false;
+                            unreadMessages = 0;
+                            setBadge();
+                            messageFragment.toggleShow(true);
+                        }
+                    })
+                    .show();
+        }
     }
 }

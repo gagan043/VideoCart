@@ -35,7 +35,6 @@ public class RoomEntryActivity extends AppCompatActivity {
 
     public void onQRScan(View view)
     {
-
         Intent intent = new Intent(this ,QRCodeActivity.class);
         startActivityForResult(intent ,1);
     }

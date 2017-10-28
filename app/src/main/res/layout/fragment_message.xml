@@ -39,6 +39,8 @@
         android:layout_alignParentBottom="true"
         app:inputHint="@string/hint_enter_a_message"
         app:attachmentButtonIcon="@drawable/attachment"
-        app:showAttachmentButton="true"/>
+        app:showAttachmentButton="true"
+        app:inputButtonDefaultBgPressedColor="@color/colorBlue"
+        app:inputButtonDefaultBgColor="@color/colorBlue"/>
 
 </RelativeLayout>

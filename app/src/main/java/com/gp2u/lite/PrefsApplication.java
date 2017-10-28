@@ -3,6 +3,7 @@ package com.gp2u.lite;
 import android.app.Application;
 import android.content.ContextWrapper;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.pixplicity.easyprefs.library.Prefs;
 
 /**
@@ -21,6 +22,7 @@ public class PrefsApplication extends Application {
                 .setPrefsName(getPackageName())
                 .setUseDefaultSharedPreference(true)
                 .build();
+        Fresco.initialize(this);
 
     }
 }

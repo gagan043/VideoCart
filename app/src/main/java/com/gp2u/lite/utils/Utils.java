@@ -1,12 +1,9 @@
 package com.gp2u.lite.utils;
 
 import android.os.Environment;
-
 import org.json.JSONObject;
-
 import java.io.File;
 import java.util.UUID;
-
 import sg.com.temasys.skylink.sdk.rtc.SkylinkConnection;
 
 /**
@@ -17,7 +14,8 @@ public class Utils {
 
     public static String getDownloadedFilePath(String filename) {
         File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        return path.getAbsolutePath() + File.separator + filename;
+        String newname = filename.substring(0 ,filename.lastIndexOf(".")) + Long.toString(System.currentTimeMillis() / 1000) + "." + getFileExt(filename);
+        return path.getAbsolutePath() + File.separator + newname;
     }
 
     public static String getRandomId() {
@@ -52,4 +50,17 @@ public class Utils {
         return userDataString;
     }
 
+    public static boolean isImage(String filename){
+
+        String [] imageExtensions = new String[] {"jpeg" ,"jpg" ,"png"};
+        for (String extension : imageExtensions){
+
+            if (filename.toLowerCase().endsWith(extension)){
+
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

@@ -3,6 +3,7 @@ package com.gp2u.lite.fragment;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.esafirm.imagepicker.features.ImagePicker;
-import com.esafirm.imagepicker.features.camera.OnImageReadyListener;
 import com.esafirm.imagepicker.model.Image;
 import com.gp2u.lite.R;
 import com.gp2u.lite.activity.VideoChatActivity;
@@ -33,11 +33,11 @@ import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
 import com.stfalcon.chatkit.utils.DateFormatter;
+import com.stfalcon.frescoimageviewer.ImageViewer;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.ListIterator;
 
 import butterknife.BindView;
@@ -48,7 +48,6 @@ import sg.com.temasys.skylink.sdk.listener.MessagesListener;
 import sg.com.temasys.skylink.sdk.rtc.SkylinkConnection;
 import sg.com.temasys.skylink.sdk.rtc.SkylinkException;
 
-import static android.app.Activity.RESULT_OK;
 import static com.gp2u.lite.model.Message.RECEIVER_FILE_PROGRESS;
 import static com.gp2u.lite.model.Message.RECEIVER_FILE_REJECTED;
 import static com.gp2u.lite.model.Message.RECEIVER_FILE_REQUEST;
@@ -56,6 +55,7 @@ import static com.gp2u.lite.utils.Utils.getDownloadedFilePath;
 import static com.gp2u.lite.utils.Utils.getFileExt;
 import static com.gp2u.lite.utils.Utils.getPeerIdNick;
 import static com.gp2u.lite.utils.Utils.getRandomId;
+import static com.gp2u.lite.utils.Utils.isImage;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -185,7 +185,7 @@ public class MessageFragment extends Fragment implements MessagesListener ,FileT
                         .imageTitle("Tap to select"); // image selection title
                 imagePicker.single();
                 imagePicker.limit(1) // max images can be selected (99 by default)
-                        .showCamera(true) // show camera or not (true by default)
+                        .showCamera(false) // show camera or not (true by default)
                         .imageDirectory("Camera")   // captured image directory name ("Camera" folder by default)
                         .imageFullDirectory(Environment.getExternalStorageDirectory().getPath()) // can be full path
                         .start(1000); // start image picker activity with request code
@@ -355,7 +355,7 @@ public class MessageFragment extends Fragment implements MessagesListener ,FileT
             public void onMessageViewClick(View view, Message message) {
 
                 try {
-                    skylinkConnection.sendFileTransferPermissionResponse(message.peerId , getDownloadedFilePath(message.filename),true);
+                    skylinkConnection.sendFileTransferPermissionResponse(message.peerId , message.downloadfilename,true);
                     message.status = RECEIVER_FILE_PROGRESS;
                     messagesAdapter.update(message);
 
@@ -370,7 +370,7 @@ public class MessageFragment extends Fragment implements MessagesListener ,FileT
             public void onMessageViewClick(View view, Message message) {
 
                 try {
-                    skylinkConnection.sendFileTransferPermissionResponse(message.peerId , getDownloadedFilePath(message.filename),false);
+                    skylinkConnection.sendFileTransferPermissionResponse(message.peerId , message.downloadfilename,false);
                     message.status = RECEIVER_FILE_REJECTED;
                     messagesAdapter.update(message);
 
@@ -387,16 +387,27 @@ public class MessageFragment extends Fragment implements MessagesListener ,FileT
             @Override
             public void onMessageViewClick(View view, Message message) {
 
-                MimeTypeMap myMime = MimeTypeMap.getSingleton();
-                Intent newIntent = new Intent(Intent.ACTION_VIEW);
-                File file = new File(message.downloadfilename);
-                String mimeType = myMime.getMimeTypeFromExtension(getFileExt(message.downloadfilename));
-                newIntent.setDataAndType(Uri.fromFile(file), mimeType);
-                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                try {
-                    startActivity(newIntent);
-                } catch (ActivityNotFoundException e) {
-                    Toast.makeText(getActivity(), "No handler for this type of file.", Toast.LENGTH_LONG).show();
+                if (isImage(message.filename)){
+
+                    new ImageViewer.Builder<>(getActivity(), new String[]{
+                            String.format("file://%s" ,message.downloadfilename)})
+                            .setBackgroundColor(Color.parseColor("#dedede"))
+                            .setStartPosition(0)
+                            .show();
+                }
+                else {
+
+                    MimeTypeMap myMime = MimeTypeMap.getSingleton();
+                    Intent newIntent = new Intent(Intent.ACTION_VIEW);
+                    File file = new File(message.downloadfilename);
+                    String mimeType = myMime.getMimeTypeFromExtension(getFileExt(message.downloadfilename));
+                    newIntent.setDataAndType(Uri.fromFile(file), mimeType);
+                    newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    try {
+                        startActivity(newIntent);
+                    } catch (ActivityNotFoundException e) {
+                        Toast.makeText(getActivity(), "No handler for this type of file.", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });

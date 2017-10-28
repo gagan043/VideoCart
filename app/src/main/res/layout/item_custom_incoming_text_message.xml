@@ -6,7 +6,8 @@
     android:layout_marginBottom="8dp"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
-    android:layout_marginTop="8dp">
+    android:layout_marginTop="8dp"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:id="@id/bubble"
@@ -20,7 +21,97 @@
         <TextView
             android:id="@id/messageText"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            />
+
+        <LinearLayout
+            android:id="@+id/pre_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:visibility="gone">
+
+            <mehdi.sakout.fancybuttons.FancyButton
+                android:id="@+id/accept_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                fancy:fb_defaultColor="#00dd00"
+                fancy:fb_radius="10dp"
+                fancy:fb_text="Accept"
+                fancy:fb_textColor="#FFFFFF" />
+
+            <mehdi.sakout.fancybuttons.FancyButton
+                android:id="@+id/reject_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                fancy:fb_defaultColor="#00dd00"
+                fancy:fb_radius="10dp"
+                fancy:fb_text="Reject"
+                fancy:fb_textColor="#FFFFFF" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/next_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:visibility="gone">
+
+            <mehdi.sakout.fancybuttons.FancyButton
+                android:id="@+id/view_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="5dp"
+                fancy:fb_defaultColor="#00dd00"
+                fancy:fb_radius="10dp"
+                fancy:fb_text="View"
+                fancy:fb_textColor="#FFFFFF" />
+
+            <mehdi.sakout.fancybuttons.FancyButton
+                android:id="@+id/save_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="5dp"
+                fancy:fb_defaultColor="#00dd00"
+                fancy:fb_radius="10dp"
+                fancy:fb_text="Save"
+                fancy:fb_textColor="#FFFFFF"
+                android:visibility="invisible"/>
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progressDrawable="@drawable/custom_progress_bar"
+            android:paddingTop="5dp"
+            android:max="100"
+            android:progress="0"
+            android:minHeight="3dp"
+            android:maxHeight="3dp"
+            android:visibility="gone" />
 
     </LinearLayout>
 

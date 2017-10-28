@@ -1,13 +1,18 @@
 package com.gp2u.lite.model;
 
+import android.support.annotation.IntDef;
+
 import com.stfalcon.chatkit.commons.models.IMessage;
 import com.stfalcon.chatkit.commons.models.MessageContentType;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.Date;
 
 /*
  * Created by troy379 on 04.04.17.
  */
+
 public class Message implements IMessage,
         MessageContentType.Image, /*this is for default image messages implementation*/
         MessageContentType /*and this one is for custom content type (in this case - voice message)*/ {
@@ -17,6 +22,27 @@ public class Message implements IMessage,
     private Date createdAt;
     private User user;
     private Image image;
+
+    public String filename;
+    public String downloadfilename;
+    public String peerId;
+    public float progress;
+    public boolean isFile;
+
+    public static final int RECEIVER_FILE_REQUEST = 0;
+    public static final int RECEIVER_FILE_ACCEPTED = 1;
+    public static final int RECEIVER_FILE_REJECTED = 2;
+    public static final int RECEIVER_FILE_PROGRESS = 3;
+    public static final int RECEIVER_FILE_COMPLETE = 4;
+    public static final int SEND_FILE_REQUEST = 5;
+    public static final int SEND_FILE_PROGRESS = 6;
+    public static final int SEND_FILE_COMPLETE = 7;
+
+    @IntDef({RECEIVER_FILE_REQUEST ,RECEIVER_FILE_ACCEPTED ,RECEIVER_FILE_REJECTED ,RECEIVER_FILE_PROGRESS ,RECEIVER_FILE_COMPLETE ,SEND_FILE_REQUEST ,SEND_FILE_PROGRESS ,SEND_FILE_COMPLETE})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface FileStatus{}
+
+    public  @FileStatus int status;
 
     public Message(String id, User user, String text) {
         this(id, user, text, new Date());

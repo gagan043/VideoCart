@@ -1,20 +1,31 @@
 package com.gp2u.lite.fragment;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.esafirm.imagepicker.features.ImagePicker;
+import com.esafirm.imagepicker.features.camera.OnImageReadyListener;
+import com.esafirm.imagepicker.model.Image;
 import com.gp2u.lite.R;
 import com.gp2u.lite.activity.VideoChatActivity;
 import com.gp2u.lite.model.Message;
 import com.gp2u.lite.model.User;
+import com.gp2u.lite.utils.Utils;
+import com.gp2u.lite.view.CustomIncomingMessageViewHolder;
+import com.gp2u.lite.view.CustomOutcomingMessageViewHolder;
 import com.squareup.picasso.Picasso;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.messages.MessageHolders;
@@ -23,16 +34,28 @@ import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
 import com.stfalcon.chatkit.utils.DateFormatter;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.ListIterator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import sg.com.temasys.skylink.sdk.listener.FileTransferListener;
 import sg.com.temasys.skylink.sdk.listener.MessagesListener;
 import sg.com.temasys.skylink.sdk.rtc.SkylinkConnection;
 import sg.com.temasys.skylink.sdk.rtc.SkylinkException;
 
-import static android.content.ContentValues.TAG;
+import static android.app.Activity.RESULT_OK;
+import static com.gp2u.lite.model.Message.RECEIVER_FILE_PROGRESS;
+import static com.gp2u.lite.model.Message.RECEIVER_FILE_REJECTED;
+import static com.gp2u.lite.model.Message.RECEIVER_FILE_REQUEST;
+import static com.gp2u.lite.utils.Utils.getDownloadedFilePath;
+import static com.gp2u.lite.utils.Utils.getFileExt;
+import static com.gp2u.lite.utils.Utils.getPeerIdNick;
+import static com.gp2u.lite.utils.Utils.getRandomId;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,7 +63,7 @@ import static android.content.ContentValues.TAG;
  * {@link MessageFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class MessageFragment extends Fragment implements MessagesListener{
+public class MessageFragment extends Fragment implements MessagesListener ,FileTransferListener{
 
     @BindView(R.id.cancel_button)
     Button cancelBtn;
@@ -55,6 +78,8 @@ public class MessageFragment extends Fragment implements MessagesListener{
     String senderId = "me";
     public String userName;
     public SkylinkConnection skylinkConnection;
+
+    private static String TAG = VideoChatActivity.class.getName();
 
     public MessageFragment() {
         // Required empty public constructor
@@ -114,8 +139,8 @@ public class MessageFragment extends Fragment implements MessagesListener{
         };
 
         MessageHolders holdersConfig = new MessageHolders()
-                .setIncomingTextLayout(R.layout.item_custom_incoming_text_message)
-                .setOutcomingTextLayout(R.layout.item_custom_outcoming_text_message);
+                .setIncomingTextConfig(CustomIncomingMessageViewHolder.class, R.layout.item_custom_incoming_text_message)
+                .setOutcomingTextConfig(CustomOutcomingMessageViewHolder.class, R.layout.item_custom_outcoming_text_message);
         messagesAdapter = new MessagesListAdapter<>(senderId, holdersConfig ,imageLoader);
         messagesAdapter.setDateHeadersFormatter(new DateFormatter.Formatter() {
             @Override
@@ -127,6 +152,8 @@ public class MessageFragment extends Fragment implements MessagesListener{
                 }
             }
         });
+
+        addListeners();
         messagesList.setAdapter(messagesAdapter);
     }
 
@@ -136,7 +163,7 @@ public class MessageFragment extends Fragment implements MessagesListener{
             @Override
             public boolean onSubmit(CharSequence charSequence) {
 
-                Message message = new Message(null , new User(senderId ,userName),charSequence.toString());
+                Message message = new Message(getRandomId() , new User(senderId ,userName),charSequence.toString());
                 messagesAdapter.addToStart(message, true);
                 try {
                     skylinkConnection.sendP2PMessage(null ,charSequence.toString());
@@ -151,63 +178,23 @@ public class MessageFragment extends Fragment implements MessagesListener{
             @Override
             public void onAddAttachments() {
 
+                ImagePicker imagePicker = ImagePicker.create(getActivity())
+                        .returnAfterFirst(false) // set whether pick action or camera action should return immediate result or not. Only works in single mode for image picker
+                        .folderMode(true) // set folder mode (false by default)
+                        .folderTitle("Folder") // folder selection title
+                        .imageTitle("Tap to select"); // image selection title
+                imagePicker.single();
+                imagePicker.limit(1) // max images can be selected (99 by default)
+                        .showCamera(true) // show camera or not (true by default)
+                        .imageDirectory("Camera")   // captured image directory name ("Camera" folder by default)
+                        .imageFullDirectory(Environment.getExternalStorageDirectory().getPath()) // can be full path
+                        .start(1000); // start image picker activity with request code
             }
         });
     }
 
-    public static String getPeerIdNick(String peerId) {
-        String peerIdShow = peerId;
-        if (peerId == null) {
-            SkylinkConnection skylinkConnection = SkylinkConnection.getInstance();
-            if (skylinkConnection != null) {
-                peerIdShow = skylinkConnection.getPeerId();
-            }
-            if (peerIdShow == null) {
-                peerIdShow = "Self";
-            }
-        }
-        String peerIdNick = peerIdShow + " (" + getUserDataString(peerId) + ")";
-        return peerIdNick;
-    }
-
-    public static String getUserDataString(String peerId) {
-        Object userDataObject = SkylinkConnection.getInstance().getUserData(peerId);
-        String userDataString = "";
-        if (userDataObject != null) {
-            userDataString = userDataObject.toString();
-        }
-        return userDataString;
-    }
-
-    @Override
-    public void onServerMessageReceive(String remotePeerId, Object message, boolean b) {
-
-        if (message instanceof String) {
-
-            Message message1 = new Message(null , new User(remotePeerId ,getPeerIdNick(remotePeerId)),(String)message);
-            messagesAdapter.addToStart(message1, true);
-
-            showAlert((String)message);
-        }
-
-    }
-
-    @Override
-    public void onP2PMessageReceive(String remotePeerId, Object message, boolean b) {
-
-        if (message instanceof String) {
-
-            Message message1 = new Message(null , new User(remotePeerId ,getPeerIdNick(remotePeerId)),(String)message);
-            messagesAdapter.addToStart(message1, true);
-
-            showAlert((String)message);
-        }
-
-    }
-
     private void showAlert(String message)
     {
-
         // show alert if self is not shown
         if (isVisible()){
 
@@ -220,4 +207,225 @@ public class MessageFragment extends Fragment implements MessagesListener{
             ((VideoChatActivity)getActivity()).showAlert(message);
         }
     }
+
+    @Override
+    public void onServerMessageReceive(String remotePeerId, Object message, boolean b) {
+
+        if (message instanceof String) {
+
+            Message message1 = new Message(Utils.getRandomId() , new User(remotePeerId ,"peer"),(String)message);
+            messagesAdapter.addToStart(message1, true);
+
+            showAlert((String)message);
+        }
+    }
+
+    @Override
+    public void onP2PMessageReceive(String remotePeerId, Object message, boolean b) {
+
+        if (message instanceof String) {
+
+            Message message1 = new Message(Utils.getRandomId() , new User(remotePeerId ,"peer"),(String)message);
+            messagesAdapter.addToStart(message1, true);
+
+            showAlert((String)message);
+        }
+    }
+
+    @Override
+    public void onFileTransferPermissionRequest(String remotePeerId, String fileName, boolean isPrivate) {
+
+
+        Message message1 = new Message(Utils.getRandomId() , new User(remotePeerId ,"peer"),String.format("Imcoming File Transfer Request!\n File:%s" ,fileName));
+        message1.isFile = true;
+        message1.status = RECEIVER_FILE_REQUEST;
+        message1.peerId = remotePeerId;
+        message1.filename = fileName;
+        message1.downloadfilename = getDownloadedFilePath(fileName);
+        messagesAdapter.addToStart(message1, true);
+
+        showAlert(String.format("Imcoming File Transfer Request!\n File:%s" ,fileName));
+
+    }
+
+    @Override
+    public void onFileTransferPermissionResponse(String remotePeerId, String fileName, boolean isPermitted) {
+
+        if (isPermitted){
+
+            ArrayList<Message> messageArrayList = messagesAdapter.getAllMessages();
+            ListIterator li = messageArrayList.listIterator(messageArrayList.size());
+            boolean keep = true;
+            while (li.hasPrevious() && keep){
+
+                Message message = (Message) li.previous();
+                if (message.isFile && message.status == Message.SEND_FILE_REQUEST)
+                {
+                    message.status = Message.SEND_FILE_PROGRESS;
+                    messagesAdapter.update(message);
+                    keep = false;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onFileTransferDrop(String remotePeerId, String fileName, String message, boolean isExplicit) {
+
+        Message message1 = new Message(Utils.getRandomId() , new User(remotePeerId ,"peer"),message);
+        messagesAdapter.addToStart(message1, true);
+    }
+
+    @Override
+    public void onFileSendComplete(String remotePeerId, String fileName) {
+
+        ArrayList<Message> messageArrayList = messagesAdapter.getAllMessages();
+        ListIterator li = messageArrayList.listIterator(messageArrayList.size());
+        boolean keep = true;
+        while (li.hasPrevious() && keep){
+
+            Message message = (Message) li.previous();
+            if (message.isFile && message.status == Message.SEND_FILE_PROGRESS)
+            {
+                message.status = Message.SEND_FILE_COMPLETE;
+                messagesAdapter.update(message);
+                keep = false;
+            }
+        }
+    }
+
+    @Override
+    public void onFileSendProgress(String remotePeerId, String fileName, double percentage) {
+
+        ArrayList<Message> messageArrayList = messagesAdapter.getAllMessages();
+        ListIterator li = messageArrayList.listIterator(messageArrayList.size());
+        boolean keep = true;
+        while (li.hasPrevious() && keep){
+
+            Message message = (Message) li.previous();
+            if (message.isFile && message.status == Message.SEND_FILE_PROGRESS)
+            {
+                message.progress = (float)percentage;
+                messagesAdapter.update(message);
+                keep = false;
+            }
+        }
+    }
+
+    @Override
+    public void onFileReceiveComplete(String remotePeerId, String fileName) {
+
+        ArrayList<Message> messageArrayList = messagesAdapter.getAllMessages();
+        ListIterator li = messageArrayList.listIterator(messageArrayList.size());
+        boolean keep = true;
+        while (li.hasPrevious() && keep){
+
+            Message message = (Message) li.previous();
+            if (message.isFile && message.status == RECEIVER_FILE_PROGRESS)
+            {
+                message.status = Message.RECEIVER_FILE_COMPLETE;
+                messagesAdapter.update(message);
+                keep = false;
+            }
+        }
+    }
+
+    @Override
+    public void onFileReceiveProgress(String remotePeerId, String fileName, double percentage) {
+
+        ArrayList<Message> messageArrayList = messagesAdapter.getAllMessages();
+        ListIterator li = messageArrayList.listIterator(messageArrayList.size());
+        boolean keep = true;
+        while (li.hasPrevious() && keep){
+
+            Message message = (Message) li.previous();
+            if (message.isFile && message.status == RECEIVER_FILE_PROGRESS)
+            {
+                message.progress = (float)percentage;
+                messagesAdapter.update(message);
+                keep = false;
+            }
+        }
+    }
+
+    private void addListeners()
+    {
+        messagesAdapter.registerViewClickListener(R.id.accept_btn, new MessagesListAdapter.OnMessageViewClickListener<Message>() {
+            @Override
+            public void onMessageViewClick(View view, Message message) {
+
+                try {
+                    skylinkConnection.sendFileTransferPermissionResponse(message.peerId , getDownloadedFilePath(message.filename),true);
+                    message.status = RECEIVER_FILE_PROGRESS;
+                    messagesAdapter.update(message);
+
+                } catch (SkylinkException e) {
+                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        messagesAdapter.registerViewClickListener(R.id.reject_btn, new MessagesListAdapter.OnMessageViewClickListener<Message>() {
+            @Override
+            public void onMessageViewClick(View view, Message message) {
+
+                try {
+                    skylinkConnection.sendFileTransferPermissionResponse(message.peerId , getDownloadedFilePath(message.filename),false);
+                    message.status = RECEIVER_FILE_REJECTED;
+                    messagesAdapter.update(message);
+
+                    Message message1 = new Message(Utils.getRandomId() , new User(senderId ,"peer"), String.format("Sorry , file transfer rejected by %s" ,getPeerIdNick(message.peerId)));
+                    messagesAdapter.addToStart(message1, true);
+
+                } catch (SkylinkException e) {
+                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        messagesAdapter.registerViewClickListener(R.id.view_btn, new MessagesListAdapter.OnMessageViewClickListener<Message>() {
+            @Override
+            public void onMessageViewClick(View view, Message message) {
+
+                MimeTypeMap myMime = MimeTypeMap.getSingleton();
+                Intent newIntent = new Intent(Intent.ACTION_VIEW);
+                File file = new File(message.downloadfilename);
+                String mimeType = myMime.getMimeTypeFromExtension(getFileExt(message.downloadfilename));
+                newIntent.setDataAndType(Uri.fromFile(file), mimeType);
+                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                try {
+                    startActivity(newIntent);
+                } catch (ActivityNotFoundException e) {
+                    Toast.makeText(getActivity(), "No handler for this type of file.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        messagesAdapter.registerViewClickListener(R.id.save_btn, new MessagesListAdapter.OnMessageViewClickListener<Message>() {
+            @Override
+            public void onMessageViewClick(View view, Message message) {
+
+                Log.d(TAG ,"Save Clicked");
+            }
+        });
+    }
+
+    public void sendImage(Image image)
+    {
+
+        try {
+            skylinkConnection.sendFileTransferPermissionRequest(null ,image.getName() ,image.getPath());
+
+            Message message1 = new Message(Utils.getRandomId() , new User(senderId ,"me"),String.format("You're sending file:%s" ,image.getName()));
+            message1.isFile = true;
+            message1.status = Message.SEND_FILE_REQUEST;
+            messagesAdapter.addToStart(message1, true);
+
+        } catch (SkylinkException e) {
+            String exMsg = e.getMessage();
+            Message message = new Message(Utils.getRandomId(), new User(senderId, "me"), exMsg);
+            messagesAdapter.addToStart(message, true);
+        }
+    }
+
 }

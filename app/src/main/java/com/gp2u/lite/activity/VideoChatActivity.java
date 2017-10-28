@@ -1,5 +1,6 @@
 package com.gp2u.lite.activity;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.esafirm.imagepicker.features.ImagePicker;
 import com.gp2u.lite.R;
 import com.gp2u.lite.control.AudioRouter;
 import com.gp2u.lite.fragment.MessageFragment;
@@ -201,6 +203,16 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         finish();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, final int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1000 && resultCode == RESULT_OK && data != null) {
+
+            messageFragment.sendImage((ImagePicker.getImages(data)).get(0));
+        }
+
+    }
     private String getPeerId(int index) {
         if (skylinkConnection == null) {
             return null;
@@ -229,6 +241,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         skylinkConnection.setMediaListener(this);
         skylinkConnection.setRemotePeerListener(this);
         skylinkConnection.setMessagesListener(messageFragment);
+        skylinkConnection.setFileTransferListener(messageFragment);
 
         boolean connectFailed;
         connectFailed = !skylinkConnection.connectToRoom(Config.APP_KEY_SECRET ,roomName ,userName);
@@ -669,8 +682,8 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 
-                            dialog.dismiss();
                             showAlert = false;
+                            dialog.dismiss();
 
                         }
                     })
@@ -678,9 +691,9 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 
-                            dialog.dismiss();
                             showAlert = false;
                             unreadMessages = 0;
+                            dialog.dismiss();
                             setBadge();
                             messageFragment.toggleShow(true);
                         }

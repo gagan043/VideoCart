@@ -118,6 +118,21 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         initMediaPlayer();
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+
+    }
+
     public void showUserDialog()
     {
         new MaterialDialog.Builder(this)
@@ -195,12 +210,20 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     @Override
     public void onBackPressed(){
 
-        if (skylinkConnection != null && skylinkConnection.isConnected())
-        {
-            skylinkConnection.unlockRoom();
-            skylinkConnection.disconnectFromRoom();
+        if (messageFragment.isVisible()){
+
+            messageFragment.toggleShow(false);
         }
-        finish();
+        else{
+
+            if (skylinkConnection != null && skylinkConnection.isConnected())
+            {
+                skylinkConnection.unlockRoom();
+                skylinkConnection.disconnectFromRoom();
+            }
+            finish();
+        }
+
     }
 
     @Override

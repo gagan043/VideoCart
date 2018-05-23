@@ -262,13 +262,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
             messageFragment.toggleShow(false);
         }
         else{
-
-            if (skylinkConnection != null && skylinkConnection.isConnected())
-            {
-                skylinkConnection.unlockRoom();
-                skylinkConnection.disconnectFromRoom();
-            }
-            finish();
+            showPermission();
         }
 
     }
@@ -375,25 +369,28 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     public void onCancel(View view)
     {
-        if (skylinkConnection != null && skylinkConnection.isConnected())
-        {
-            skylinkConnection.unlockRoom();
-            skylinkConnection.disconnectFromRoom();
-        }
-        finish();
+        showPermission();
     }
 
     public void onDisconnect(View view)
     {
         exitPlayer.start();
-        if (skylinkConnection != null && skylinkConnection.isConnected())
+        showPermission();
+
+    }
+
+    private void showPermission()
+    {
+        if (skylinkConnection != null && skylinkConnection.getSkylinkState() == SkylinkConnection.SkylinkState.CONNECTED)
         {
             skylinkConnection.unlockRoom();
             skylinkConnection.disconnectFromRoom();
         }
 
+        Intent intent = new Intent(this ,PermissionActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
         finish();
-
     }
 
     public void onRefresh(View view)

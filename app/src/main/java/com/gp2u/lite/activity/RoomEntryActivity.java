@@ -29,7 +29,6 @@ public class RoomEntryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_room_entry);
 
         ButterKnife.bind(this);
-
         roomEdit.setText(Prefs.getString(Config.ROOM_NAME ,""));
     }
 
@@ -37,6 +36,11 @@ public class RoomEntryActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(this ,QRCodeActivity.class);
         startActivityForResult(intent ,1);
+    }
+
+    public void onExit(View view)
+    {
+        finishAffinity();
     }
 
     public void onEnter(View view)

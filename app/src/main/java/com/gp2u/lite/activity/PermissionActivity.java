@@ -2,10 +2,12 @@ package com.gp2u.lite.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -16,6 +18,8 @@ import com.pixplicity.easyprefs.library.Prefs;
 public class PermissionActivity extends AppCompatActivity {
 
 
+    public static String TAG = "PermissionActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,10 +27,15 @@ public class PermissionActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_permission);
 
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Prefs.getBoolean(Config.bPermissionAsked,false)) {
-
-            gotoRoomEntry();
-
+            showNext();
         }
     }
 
@@ -35,8 +44,7 @@ public class PermissionActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         Prefs.putBoolean(Config.bPermissionAsked ,true);
-        gotoRoomEntry();
-
+        showNext();
     }
 
     public void onAllow(View view)
@@ -49,8 +57,7 @@ public class PermissionActivity extends AppCompatActivity {
     {
 
         Prefs.putBoolean(Config.bPermissionAsked ,true);
-        gotoRoomEntry();
-
+        showNext();
     }
 
     private void gotoRoomEntry()
@@ -58,5 +65,44 @@ public class PermissionActivity extends AppCompatActivity {
         Intent intent = new Intent(this ,RoomEntryActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private void gotoChat(String room)
+    {
+        Intent intent = new Intent(this ,VideoChatActivity.class);
+        intent.putExtra(Config.ROOM_NAME ,room);
+        startActivity(intent);
+        finish();
+    }
+
+    private void showNext()
+    {
+        Intent intent = getIntent();
+        if (Intent.ACTION_VIEW.equals(intent.getAction())){
+
+            Uri uri = intent.getData();
+            String roomname = "";
+            try {
+                roomname = uri.getFragment();
+                Log.d(TAG ,roomname);
+            }catch (NullPointerException e){
+                Log.d(TAG ,e.getLocalizedMessage());
+                roomname = "";
+            }
+            if (roomname.equals("")){
+                try {
+                    roomname = uri.getQueryParameter("room");
+                    Log.d(TAG ,roomname);
+                }catch (NullPointerException e){
+                    Log.d(TAG ,e.getLocalizedMessage());
+                    roomname = "";
+                }
+            }
+
+            Prefs.putString(Config.ROOM_NAME ,(roomname.length() == 0) ? "default" : roomname);
+            gotoChat(roomname);
+
+        }else
+            gotoRoomEntry();
     }
 }

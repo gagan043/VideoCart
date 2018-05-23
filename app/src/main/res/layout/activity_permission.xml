@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.gp2u.lite.activity.PermissionActivity"
-    android:background="@android:color/black">
+    android:background="@android:color/white">
 
     <TextView
         android:id="@+id/textView2"
@@ -16,7 +16,7 @@
         android:layout_marginTop="80dp"
         android:gravity="center_horizontal"
         android:text="@string/permission_instruction"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +31,7 @@
         android:background="@android:color/transparent"
         android:text="Skip"
         android:textAllCaps="false"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

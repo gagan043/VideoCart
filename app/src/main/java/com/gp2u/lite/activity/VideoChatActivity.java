@@ -21,11 +21,14 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.esafirm.imagepicker.features.ImagePicker;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.gp2u.lite.R;
+import com.gp2u.lite.control.APICallback;
+import com.gp2u.lite.control.APIService;
 import com.gp2u.lite.control.AudioRouter;
 import com.gp2u.lite.fragment.MessageFragment;
 import com.gp2u.lite.model.Config;
-import com.pixplicity.easyprefs.library.Prefs;
 
 import net.colindodd.toggleimagebutton.ToggleImageButton;
 
@@ -36,10 +39,12 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
+import rx.Subscription;
 import sg.com.temasys.skylink.sdk.listener.LifeCycleListener;
 import sg.com.temasys.skylink.sdk.listener.MediaListener;
 import sg.com.temasys.skylink.sdk.listener.OsListener;
 import sg.com.temasys.skylink.sdk.listener.RemotePeerListener;
+import sg.com.temasys.skylink.sdk.rtc.SkylinkCaptureFormat;
 import sg.com.temasys.skylink.sdk.rtc.SkylinkConfig;
 import sg.com.temasys.skylink.sdk.rtc.SkylinkConnection;
 import sg.com.temasys.skylink.sdk.rtc.UserInfo;
@@ -99,6 +104,8 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     MessageFragment messageFragment;
 
+    Subscription subscription;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,6 +142,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     public void showUserDialog()
     {
+        /*
         new MaterialDialog.Builder(this)
                 .title("User Name")
                 .input("Please Set Your Name", Prefs.getString(Config.USER_NAME ,""), new MaterialDialog.InputCallback() {
@@ -161,7 +169,45 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
                     }
                 })
                 .alwaysCallInputCallback()
-                .show();
+                .show();*/
+
+        // get room name from API , connect to skylink
+        subscription = APIService.getInstance().getUserName(roomName);
+        APIService.getInstance().setOnCallback(new APICallback() {
+            @Override
+            public void doNext(JsonObject jsonObject) {
+
+                //Log.d("user name" ,jsonObject.get("user").getAsString());
+                userName = jsonObject.get("user").getAsString();
+                connectToRoom();
+                messageFragment.userName = userName;
+                messageFragment.skylinkConnection = skylinkConnection;
+
+            }
+
+            @Override
+            public void doNext(JsonArray jsonObject) {
+
+            }
+
+            @Override
+            public void doNext(String str) {
+
+            }
+
+            @Override
+            public void doCompleted() {
+
+            }
+
+            @Override
+            public void doError(Throwable e) {
+
+                showToastWithError(e.getLocalizedMessage());
+
+            }
+        });
+
     }
 
     private void initMediaPlayer()
@@ -204,6 +250,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
         emptyLayout();
         AudioRouter.stopAudioRouting(this.getApplicationContext());
+        if (subscription != null) subscription.unsubscribe();
 
     }
 
@@ -430,6 +477,24 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     @Override
     public void onVideoSizeChange(String s, Point point) {
+
+    }
+
+    @Override
+    public void onSentVideoResolutionObtained(String var1, int var2, int var3, int var4)
+    {
+
+    }
+
+    @Override
+    public void onInputVideoResolutionObtained(int var1, int var2, int var3, SkylinkCaptureFormat var4)
+    {
+
+    }
+
+    @Override
+    public void onReceivedVideoResolutionObtained(String var1, int var2, int var3, int var4)
+    {
 
     }
 

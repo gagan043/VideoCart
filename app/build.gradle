@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.butterknife'
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion 27
     defaultConfig {
         applicationId "com.gp2u.lite"
         minSdkVersion 17
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -17,33 +17,63 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
+    flavorDimensions "GP2U Lite"
+    productFlavors {
+
+        cc {
+            applicationId "com.gp2u.carecomplete"
+            resValue "string", "app_name", "CareComplete"
+            buildConfigField "String", "subdomain", '"cc."'
+            dimension "GP2U Lite"
+        }
+
+        prod {
+            resValue "string", "app_name", "GP2U Lite"
+            buildConfigField "String", "subdomain", '""'
+            dimension "GP2U Lite"
+        }
+    }
 }
 
 dependencies {
-    //implementation fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:26.0.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:support-v4:26.0.1'
-    compile 'com.android.support:support-annotations:25.3.1'
-    testCompile 'junit:junit:4.12'
-    compile 'com.pixplicity.easyprefs:library:1.9.0'
-    compile 'com.dlazaro66.qrcodereaderview:qrcodereaderview:2.0.2'
-    compile 'com.afollestad.material-dialogs:core:0.9.4.7'
-    compile 'com.afollestad.material-dialogs:commons:0.9.4.7'
-    compile 'com.jakewharton:butterknife:8.8.1'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "com.android.support:appcompat-v7:$supportlib_version"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation "com.android.support:support-v4:$supportlib_version"
+    implementation 'com.android.support:support-annotations:27.1.1'
+    testImplementation 'junit:junit:4.12'
+    implementation 'com.pixplicity.easyprefs:library:1.9.0'
+    implementation 'com.dlazaro66.qrcodereaderview:qrcodereaderview:2.0.2'
+    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+    implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
+    implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    compile('sg.com.temasys.skylink.sdk:skylink_sdk:0.10.0-RELEASE@aar') {
+    implementation(group: 'sg.com.temasys.skylink.sdk',
+            name: 'skylink_sdk',
+            version: '0.11.0-RELEASE',
+            ext: 'aar') {
         transitive = true
     }
-    compile 'net.colindodd:toggleimagebutton:1.2'
-    compile 'com.github.GrenderG:Toasty:1.2.5'
-    //compile 'com.github.stfalcon:chatkit:0.2.2'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.github.medyo:fancybuttons:1.8.4'
-    compile 'com.github.esafirm.android-image-picker:imagepicker:1.8.0'
-    compile 'com.github.esafirm.android-image-picker:rximagepicker:1.8.0'
-    compile project(':chatkit')
-    compile 'com.github.stfalcon:frescoimageviewer:0.5.0'
-    compile 'jp.wasabeef:fresco-processors:2.0.0'
-
+    implementation 'net.colindodd:toggleimagebutton:1.2'
+    implementation 'com.github.GrenderG:Toasty:1.2.5'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.github.medyo:fancybuttons:1.8.4'
+    implementation 'com.github.esafirm.android-image-picker:imagepicker:1.8.0'
+    implementation 'com.github.esafirm.android-image-picker:rximagepicker:1.8.0'
+    implementation project(':chatkit')
+    implementation 'com.github.stfalcon:frescoimageviewer:0.5.0'
+    implementation 'jp.wasabeef:fresco-processors:2.0.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.google.code.gson:gson:2.8.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    implementation 'com.google.code.gson:gson:2.8.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'io.reactivex:rxjava:1.2.1'
+    implementation 'io.reactivex:rxandroid:1.2.1'
 }

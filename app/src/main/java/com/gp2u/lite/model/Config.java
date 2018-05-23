@@ -1,5 +1,7 @@
 package com.gp2u.lite.model;
 
+import com.gp2u.lite.BuildConfig;
+
 /**
  * Created by mac on 19/10/2017.
  */
@@ -15,4 +17,7 @@ public class Config {
     public static final String USER_NAME = "UserName";
     public static final String bPermissionAsked = "bPermissionAsked";
 
+    private static final String         SUBDOMAIN = BuildConfig.subdomain;
+    public static final String          WEBRTC_DOMAIN  = SUBDOMAIN + "gp2u.com.au";
+    public static final String          MAIN_DOMAIN = "https://" + WEBRTC_DOMAIN;
 }

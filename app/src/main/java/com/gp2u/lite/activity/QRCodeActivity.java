@@ -48,8 +48,7 @@ public class QRCodeActivity extends AppCompatActivity implements QRCodeReaderVie
 
         if (!isScanned){
 
-            isScanned = true;
-            //Log.d(TAG ,text);
+            isScanned = true;//Log.d(TAG ,text);
             Intent intent = new Intent();
             intent.setData(Uri.parse(text));
             setResult(RESULT_OK ,intent);

@@ -15,6 +15,7 @@ public class Config {
 
     public static final String ROOM_NAME = "RoomName";
     public static final String USER_NAME = "UserName";
+    public static final String UUID = "uuid";
     public static final String bPermissionAsked = "bPermissionAsked";
 
     private static final String         SUBDOMAIN = BuildConfig.subdomain;

@@ -13,6 +13,7 @@ import android.view.WindowManager;
 
 import com.gp2u.lite.R;
 import com.gp2u.lite.model.Config;
+import com.gp2u.lite.model.Global;
 import com.pixplicity.easyprefs.library.Prefs;
 
 public class PermissionActivity extends AppCompatActivity {
@@ -67,10 +68,9 @@ public class PermissionActivity extends AppCompatActivity {
         finish();
     }
 
-    private void gotoChat(String room)
+    private void gotoChat()
     {
         Intent intent = new Intent(this ,VideoChatActivity.class);
-        intent.putExtra(Config.ROOM_NAME ,room);
         startActivity(intent);
         finish();
     }
@@ -99,8 +99,9 @@ public class PermissionActivity extends AppCompatActivity {
                 }
             }
 
+            Global.isHook = true;
             Prefs.putString(Config.ROOM_NAME ,(roomname.length() == 0) ? "default" : roomname);
-            gotoChat(roomname);
+            gotoChat();
 
         }else
             gotoRoomEntry();

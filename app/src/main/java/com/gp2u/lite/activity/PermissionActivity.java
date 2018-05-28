@@ -98,12 +98,13 @@ public class PermissionActivity extends AppCompatActivity {
                     roomname = "";
                 }
             }
-
             Global.isHook = true;
             Prefs.putString(Config.ROOM_NAME ,(roomname.length() == 0) ? "default" : roomname);
-            gotoChat();
 
-        }else
-            gotoRoomEntry();
+        }
+        gotoRoomEntry();
+
     }
+
+
 }

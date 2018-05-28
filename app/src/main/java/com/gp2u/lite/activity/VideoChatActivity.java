@@ -21,11 +21,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.esafirm.imagepicker.features.ImagePicker;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.gp2u.lite.R;
-import com.gp2u.lite.control.APICallback;
-import com.gp2u.lite.control.APIService;
 import com.gp2u.lite.control.AudioRouter;
 import com.gp2u.lite.fragment.MessageFragment;
 import com.gp2u.lite.model.Config;
@@ -117,6 +113,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
         ButterKnife.bind(this);
 
+        Global.isHook = false;
         messageFragment = (MessageFragment)getSupportFragmentManager().findFragmentById(R.id.message_fragment);
         messageFragment.toggleShow(false);
 
@@ -144,69 +141,10 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     public void showUserDialog()
     {
         roomName =  Prefs.getString(Config.ROOM_NAME ,"default");
-        if (Global.isHook){
-            Global.isHook = false;
-            // get room name from API , connect to skylink
-            subscription = APIService.getInstance().getUserName(roomName);
-            APIService.getInstance().setOnCallback(new APICallback() {
-                @Override
-                public void doNext(JsonObject jsonObject) {
-
-                    int found = jsonObject.get("found").getAsInt();
-                    if (found == 1) {
-
-                        String firstname = jsonObject.get("firstname").getAsString();String lastname = jsonObject.get("lastname").getAsString();
-                        userName = firstname + " " + lastname;
-                        Prefs.putString(Config.USER_NAME ,userName);
-                        connectToRoom();
-                        messageFragment.userName = userName;
-                        messageFragment.skylinkConnection = skylinkConnection;
-                    }else {
-                        // show alert
-                        new MaterialDialog.Builder(VideoChatActivity.this)
-                                .title("Error")
-                                .content("Not found room")
-                                .positiveText("OK")
-                                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(MaterialDialog dialog, DialogAction which) {
-                                        showPermission();
-                                    }
-                                })
-                                .show();
-                    }
-                }
-
-                @Override
-                public void doNext(JsonArray jsonObject) {
-
-                }
-
-                @Override
-                public void doNext(String str) {
-
-                }
-
-                @Override
-                public void doCompleted() {
-
-                }
-
-                @Override
-                public void doError(Throwable e) {
-
-                    showToastWithError(e.getLocalizedMessage());
-
-                }
-            });
-        }else {
-
-            userName = Prefs.getString(Config.USER_NAME ,"");
-            connectToRoom();
-            messageFragment.userName = userName;
-            messageFragment.skylinkConnection = skylinkConnection;
-        }
-
+        userName = Prefs.getString(Config.USER_NAME ,"");
+        connectToRoom();
+        messageFragment.userName = userName;
+        messageFragment.skylinkConnection = skylinkConnection;
     }
 
     private void initMediaPlayer()
@@ -261,7 +199,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
             messageFragment.toggleShow(false);
         }
         else{
-            showPermission();
+            goBack();
         }
 
     }
@@ -368,17 +306,17 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     public void onCancel(View view)
     {
-        showPermission();
+        goBack();
     }
 
     public void onDisconnect(View view)
     {
         exitPlayer.start();
-        showPermission();
+        goBack();
 
     }
 
-    private void showPermission()
+    private void goBack()
     {
         if (skylinkConnection != null && skylinkConnection.getSkylinkState() == SkylinkConnection.SkylinkState.CONNECTED)
         {
@@ -386,9 +324,6 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
             skylinkConnection.disconnectFromRoom();
         }
 
-        Intent intent = new Intent(this ,PermissionActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
         finish();
     }
 

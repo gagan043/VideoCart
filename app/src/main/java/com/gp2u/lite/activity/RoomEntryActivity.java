@@ -1,29 +1,36 @@
 package com.gp2u.lite.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.SpannableString;
+import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.gp2u.lite.R;
 import com.gp2u.lite.control.APICallback;
 import com.gp2u.lite.control.APIService;
 import com.gp2u.lite.model.Config;
+import com.gp2u.lite.model.Global;
 import com.pixplicity.easyprefs.library.Prefs;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -40,9 +47,17 @@ public class RoomEntryActivity extends AppCompatActivity {
     @BindView(R.id.appointment_text)
     TextView appointmentTextView;
 
+    @BindView(R.id.appointment_text1)
+    TextView appointmentTextView1;
+
+    @BindView(R.id.appointment_text2)
+    TextView appointmentTextView2;
+
     Subscription subscription;
     Timer timer;
     Boolean isFound = false;
+
+    List <String> autoconnectArr = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,20 +68,22 @@ public class RoomEntryActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
         roomEdit.setText(Prefs.getString(Config.ROOM_NAME ,""));
+        entryChangeListener();
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        checkRemember();
     }
 
     @Override
     public void onPause()
     {
         super.onPause();
-        if (timer != null){
-            timer.purge();
-            timer.cancel();
-            timer = null;
-        }
-
-        isFound = false;
-        appointmentTextView.setText("");
+        cancelTimer();
+        hideKeyboard();
     }
 
     @Override
@@ -96,70 +113,20 @@ public class RoomEntryActivity extends AppCompatActivity {
             return;
         }
         Prefs.putString(Config.ROOM_NAME ,roomEdit.getText().toString());
+
         subscription = APIService.getInstance().getUserName(roomEdit.getText().toString());
         APIService.getInstance().setOnCallback(new APICallback() {
             @Override
             public void doNext(JsonObject jsonObject) {
 
                 int found = jsonObject.get("found").getAsInt();
+                Prefs.putString(Config.USER_NAME ,jsonObject.get("for_name").getAsString());
                 if (found == 1){
-
-                    String firstname = jsonObject.get("firstname").getAsString();
-                    String lastname = jsonObject.get("lastname").getAsString();
-                    Long timestamp = jsonObject.get("appointment_date").getAsLong();
-                    String uuid = jsonObject.get("uuid").getAsString();
-                    Prefs.putString(Config.UUID ,uuid);
-                    Prefs.putString(Config.USER_NAME ,firstname + " " + lastname);
-                    Date appointDate = new Date(timestamp * 1000L);
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss" ,Locale.ENGLISH);
-                    String dateStr = format.format(appointDate);
-                    if (timer != null){
-                        timer.cancel();
-                        timer.purge();
-                    }
-
-                    timer = new Timer();
-                    timer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-
-                            String futureStr;
-                            boolean isFuture = false;
-                            Date currentDate = new Date();
-                            futureStr = stringFromTimeInterval(Math.abs(currentDate.getTime() - appointDate.getTime()) / 1000L);
-                            if (currentDate.getTime() < appointDate.getTime()) isFuture = true;
-                            String str = String.format("Hello %s %s \nYour appointment is at %s \n%s \nClick the green phone button below to connect",firstname ,lastname ,dateStr ,futureStr);
-                            SpannableString ss = new SpannableString(str);
-                            int startIndex = str.indexOf(futureStr);
-                            int endIndex= startIndex + futureStr.length();
-                            ss.setSpan(new RelativeSizeSpan(1.5f) ,startIndex ,endIndex ,0);
-                            if (isFuture){
-                                ss.setSpan(new ForegroundColorSpan(Color.GREEN) ,startIndex ,endIndex ,0);
-                            }else {
-                                ss.setSpan(new ForegroundColorSpan(Color.RED) ,startIndex ,endIndex ,0);
-                            }
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    appointmentTextView.setText(ss);
-                                }
-                            });
-                        }
-                    } ,0 ,1000);
-                    isFound = true;
+                    checkAutoConnection(jsonObject);
                 }else {
-                    appointmentTextView.setText("Not found room");
+                    Intent intent = new Intent(RoomEntryActivity.this ,VideoChatActivity.class);
+                    startActivity(intent);
                 }
-            }
-
-            @Override
-            public void doNext(JsonArray jsonObject) {
-
-            }
-
-            @Override
-            public void doNext(String str) {
-
             }
 
             @Override
@@ -186,12 +153,30 @@ public class RoomEntryActivity extends AppCompatActivity {
 
     private void parseUrl(String url)
     {
-        if (url.contains("https://gp2u.com.au/video?room="))
+        if (url.contains("cc.gp2u.com.au"))
         {
-            Intent intent = new Intent(this ,VideoChatActivity.class);
-            String replaceStr = url.replace("https://gp2u.com.au/video?room=" ,"");
-            intent.putExtra(Config.ROOM_NAME,replaceStr);
-            startActivity(intent);
+            Uri uri = Uri.parse(url);
+            String roomname = "";
+            try {
+                roomname = uri.getFragment();
+                Log.d(TAG ,roomname);
+            }catch (NullPointerException e){
+                Log.d(TAG ,e.getLocalizedMessage());
+                roomname = "";
+            }
+            if (roomname.equals("")){
+                try {
+                    roomname = uri.getQueryParameter("room");
+                    Log.d(TAG ,roomname);
+                }catch (NullPointerException e){
+                    Log.d(TAG ,e.getLocalizedMessage());
+                    roomname = "";
+                }
+            }
+            roomEdit.setText(roomname);
+            Prefs.putString(Config.ROOM_NAME ,(roomname.length() == 0) ? "default" : roomname);
+            onEnter(null);
+
         }
         else{
 
@@ -207,7 +192,167 @@ public class RoomEntryActivity extends AppCompatActivity {
         long seconds = interval % 60;
         long minutes = (interval / 60) % 60;
         long hours = (interval / 3600);
-        return String.format(Locale.ENGLISH ,"%2d:%2d:%2d" , hours, minutes, seconds);
+        return String.format(Locale.ENGLISH ,"%02d:%02d:%02d" , hours, minutes, seconds);
     }
 
+    private void entryChangeListener()
+    {
+        roomEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                if (Global.isHook){
+
+                    new MaterialDialog.Builder(RoomEntryActivity.this)
+                            .content("You have arrived here via a video link with a room in it. If you change the room you will not connect to the expected room")
+                            .positiveText("Change Room")
+                            .negativeText("Cancel")
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(MaterialDialog dialog, DialogAction which) {
+
+                                    cancelTimer();
+                                }
+                            })
+                            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(MaterialDialog dialog, DialogAction which) {
+                                    roomEdit.setText(Prefs.getString(Config.ROOM_NAME ,""));
+                                }
+                            })
+                            .show();
+
+                    Global.isHook = false;
+                }else
+                    cancelTimer();
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
+
+    private void cancelTimer()
+    {
+        if (timer != null){
+            timer.purge();
+            timer.cancel();
+            timer = null;
+        }
+
+        isFound = false;
+        appointmentTextView.setText("");
+        appointmentTextView1.setText("");
+        appointmentTextView2.setText("");
+    }
+
+    private void hideKeyboard()
+    {
+        // Check if no view has focus:
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    private void checkAutoConnection(JsonObject jsonObject)
+    {
+        String name = jsonObject.get("for_name").getAsString();
+        String with_name = jsonObject.get("with_name").getAsString();
+        Long timestamp = jsonObject.get("appointment_date").getAsLong();
+        String uuid = jsonObject.get("uuid").getAsString();
+        Prefs.putString(Config.UUID ,uuid);
+        Date appointDate = new Date(timestamp * 1000L);
+        SimpleDateFormat format = new SimpleDateFormat("EEEE, dd MMMM h:mm a" ,Locale.ENGLISH);
+        String dateStr = format.format(appointDate);
+        if (timer != null){
+            timer.cancel();
+            timer.purge();
+            timer = null;
+        }
+
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                String futureStr;
+                boolean isFuture = false;
+                Date currentDate = new Date();
+                Long interval = Math.abs(currentDate.getTime() - appointDate.getTime()) / 1000L;
+                futureStr = stringFromTimeInterval(interval);
+                if (currentDate.getTime() < appointDate.getTime()) isFuture = true;
+                String str = String.format("Hello %s \nYour appointment is with\n %s on \n%s",name ,with_name ,dateStr);
+                SpannableString ss = new SpannableString(futureStr);
+                if (isFuture){
+                    ss.setSpan(new ForegroundColorSpan(Color.GREEN) ,0 ,futureStr.length() ,0);
+                }else {
+                    ss.setSpan(new ForegroundColorSpan(Color.RED) ,0 ,futureStr.length() ,0);
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        appointmentTextView1.setText(ss);
+                        appointmentTextView.setText(str);
+                        appointmentTextView2.setText("Press the green phone to connect");
+                    }
+                });
+
+                if ((isFuture && interval < 300) || (!isFuture && Math.abs(interval - 300) < 1)){
+
+                    boolean autoconnect = autoconnectArr.contains(roomEdit.getText().toString());
+                    if (!autoconnect){
+                        autoconnectArr.add(roomEdit.getText().toString());
+                        onEnter(null);
+                    }
+                }
+
+            }
+        } ,0 ,1000);
+        isFound = true;
+    }
+
+    private void checkRemember()
+    {
+        String room = Prefs.getString(Config.ROOM_NAME ,"");
+        if (room.length() != 0){
+
+            subscription = APIService.getInstance().getUserName(roomEdit.getText().toString());
+            APIService.getInstance().setOnCallback(new APICallback() {
+                @Override
+                public void doNext(JsonObject jsonObject) {
+
+                    Prefs.putString(Config.USER_NAME ,jsonObject.get("for_name").getAsString());
+                    int found = jsonObject.get("found").getAsInt();
+                    if (found == 1){
+                        checkAutoConnection(jsonObject);
+                    }else if (Global.isHook){
+
+                        Intent intent = new Intent(RoomEntryActivity.this ,VideoChatActivity.class);
+                        startActivity(intent);
+                    }
+                }
+
+                @Override
+                public void doCompleted() {
+
+                }
+
+                @Override
+                public void doError(Throwable e) {
+
+                }
+            });
+        }
+    }
 }

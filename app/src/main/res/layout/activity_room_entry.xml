@@ -100,7 +100,8 @@
         app:layout_constraintBottom_toTopOf="@+id/exitButton"
         app:srcCompat="@drawable/qr_code_filled"
         android:onClick="onQRScan"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:visibility="invisible"/>
 
     <Button
         android:id="@+id/exitButton"

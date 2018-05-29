@@ -8,12 +8,15 @@ import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +25,6 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.gp2u.lite.R;
-import com.gp2u.lite.control.AudioRouter;
 import com.gp2u.lite.fragment.MessageFragment;
 import com.gp2u.lite.model.Config;
 import com.gp2u.lite.model.Global;
@@ -100,6 +102,9 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     @BindView(R.id.peer4_layout)
     RelativeLayout peer4Layout;
 
+    @BindView(R.id.chat_layout)
+    FrameLayout chatLayout;
+
     MessageFragment messageFragment;
 
     Subscription subscription;
@@ -112,10 +117,15 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         setContentView(R.layout.activity_video_chat);
 
         ButterKnife.bind(this);
-
         Global.isHook = false;
-        messageFragment = (MessageFragment)getSupportFragmentManager().findFragmentById(R.id.message_fragment);
-        messageFragment.toggleShow(false);
+
+        messageFragment = new MessageFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.chat_layout ,messageFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+        showMessage(false);
 
         unreadMessages = 0;
         showUserDialog();
@@ -127,7 +137,6 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     public void onResume()
     {
         super.onResume();
-
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
@@ -145,6 +154,15 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         connectToRoom();
         messageFragment.userName = userName;
         messageFragment.skylinkConnection = skylinkConnection;
+    }
+
+    public void showMessage(boolean isShow)
+    {
+        if (isShow)
+            chatLayout.setVisibility(View.VISIBLE);
+        else
+            chatLayout.setVisibility(View.INVISIBLE);
+
     }
 
     private void initMediaPlayer()
@@ -186,7 +204,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         super.onDestroy();
 
         emptyLayout();
-        AudioRouter.stopAudioRouting(this.getApplicationContext());
+        //AudioRouter.stopAudioRouting(this.getApplicationContext());
         if (subscription != null) subscription.unsubscribe();
 
     }
@@ -194,9 +212,9 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     @Override
     public void onBackPressed(){
 
-        if (messageFragment.isVisible()){
+        if (chatLayout.getVisibility() == View.VISIBLE){
 
-            messageFragment.toggleShow(false);
+            showMessage(false);
         }
         else{
             goBack();
@@ -251,7 +269,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
             showToast(error);
             return;
         }
-        AudioRouter.startAudioRouting(this);
+        //AudioRouter.startAudioRouting(this);
 
     }
 
@@ -306,7 +324,12 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     public void onCancel(View view)
     {
-        goBack();
+        if (chatLayout.getVisibility() == View.VISIBLE){
+            showMessage(false);
+        }
+        else{
+            goBack();
+        }
     }
 
     public void onDisconnect(View view)
@@ -336,7 +359,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     {
         unreadMessages = 0;
         setBadge();
-        messageFragment.toggleShow(true);
+        showMessage(true);
     }
 
     public void setBadge()
@@ -714,7 +737,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
                             unreadMessages = 0;
                             dialog.dismiss();
                             setBadge();
-                            messageFragment.toggleShow(true);
+                            showMessage(true);
                         }
                     })
                     .show();

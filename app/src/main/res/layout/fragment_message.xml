@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.gp2u.lite.fragment.MessageFragment"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:clickable="true"
+    android:focusable="true">
 
     <com.stfalcon.chatkit.messages.MessagesList
         android:id="@+id/messagesList"
@@ -22,7 +24,8 @@
         android:layout_height="30dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="25dp"
-        android:background="@drawable/cancel" />
+        android:background="@drawable/cancel"
+        android:visibility="invisible"/>
 
     <View
         android:layout_width="match_parent"
@@ -39,7 +42,7 @@
         android:layout_alignParentBottom="true"
         app:inputHint="@string/hint_enter_a_message"
         app:attachmentButtonIcon="@drawable/attachment"
-        app:showAttachmentButton="true"
+        app:showAttachmentButton="false"
         app:inputButtonDefaultBgPressedColor="@color/colorBlue"
         app:inputButtonDefaultBgColor="@color/colorBlue"/>
 

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -85,7 +86,6 @@ public class MessageFragment extends Fragment implements MessagesListener ,FileT
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -116,17 +116,9 @@ public class MessageFragment extends Fragment implements MessagesListener ,FileT
 
     }
 
-    public void toggleShow(boolean isShow){
-
-        if (isShow)
-            getView().setVisibility(View.VISIBLE);
-        else
-            getView().setVisibility(View.INVISIBLE);
-    }
-
     @OnClick(R.id.cancel_button) void onCancel(){
 
-        toggleShow(false);
+
     }
 
     private void initAdapter()
@@ -170,6 +162,13 @@ public class MessageFragment extends Fragment implements MessagesListener ,FileT
                 } catch (SkylinkException e) {
                     Log.e(TAG, e.getMessage(), e);
                 }
+
+                View view = getActivity().getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+
                 return true;
             }
         });

@@ -37,6 +37,8 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cc.cloudist.acplibrary.ACProgressConstant;
+import cc.cloudist.acplibrary.ACProgressFlower;
 import rx.Subscription;
 
 public class RoomEntryActivity extends AppCompatActivity {
@@ -114,18 +116,32 @@ public class RoomEntryActivity extends AppCompatActivity {
         }
         Prefs.putString(Config.ROOM_NAME ,roomEdit.getText().toString());
 
+        ACProgressFlower dialog = new ACProgressFlower.Builder(this)
+                .direction(ACProgressConstant.PIE_AUTO_UPDATE)
+                .themeColor(Color.WHITE)
+                .text(Config.CHECKING_ROOM_INFO)
+                .fadeColor(Color.DKGRAY).build();
+        dialog.show();
+
         subscription = APIService.getInstance().getUserName(roomEdit.getText().toString());
         APIService.getInstance().setOnCallback(new APICallback() {
             @Override
             public void doNext(JsonObject jsonObject) {
 
+                dialog.dismiss();
                 int found = jsonObject.get("found").getAsInt();
                 Prefs.putString(Config.USER_NAME ,jsonObject.get("for_name").getAsString());
+                Prefs.putString(Config.UUID ,jsonObject.get("uuid").getAsString());
+                isFound = true;
+
                 if (found == 1){
                     checkAutoConnection(jsonObject);
                 }else {
-                    Intent intent = new Intent(RoomEntryActivity.this ,VideoChatActivity.class);
-                    startActivity(intent);
+                   // Intent intent = new Intent(RoomEntryActivity.this ,VideoChatActivity.class);
+                   // startActivity(intent);
+                    appointmentTextView.setText("");
+                    appointmentTextView1.setText("Room not found");
+                    appointmentTextView2.setText("Press green phone to connect anyway");
                 }
             }
 
@@ -136,7 +152,7 @@ public class RoomEntryActivity extends AppCompatActivity {
 
             @Override
             public void doError(Throwable e) {
-
+                dialog.dismiss();
             }
         });
     }
@@ -319,7 +335,6 @@ public class RoomEntryActivity extends AppCompatActivity {
 
             }
         } ,0 ,1000);
-        isFound = true;
     }
 
     private void checkRemember()
@@ -327,19 +342,28 @@ public class RoomEntryActivity extends AppCompatActivity {
         String room = Prefs.getString(Config.ROOM_NAME ,"");
         if (room.length() != 0){
 
+            ACProgressFlower dialog = new ACProgressFlower.Builder(this)
+                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                    .themeColor(Color.WHITE)
+                    .text(Config.CHECKING_ROOM_INFO)
+                    .fadeColor(Color.DKGRAY).build();
+            dialog.show();
             subscription = APIService.getInstance().getUserName(roomEdit.getText().toString());
             APIService.getInstance().setOnCallback(new APICallback() {
                 @Override
                 public void doNext(JsonObject jsonObject) {
 
+                    dialog.dismiss();
+                    isFound = true;
                     Prefs.putString(Config.USER_NAME ,jsonObject.get("for_name").getAsString());
+                    Prefs.putString(Config.UUID ,jsonObject.get("uuid").getAsString());
                     int found = jsonObject.get("found").getAsInt();
                     if (found == 1){
                         checkAutoConnection(jsonObject);
-                    }else if (Global.isHook){
-
-                        Intent intent = new Intent(RoomEntryActivity.this ,VideoChatActivity.class);
-                        startActivity(intent);
+                    }else {
+                        appointmentTextView.setText("");
+                        appointmentTextView1.setText("Room not found");
+                        appointmentTextView2.setText("Press green phone to connect anyway");
                     }
                 }
 
@@ -350,7 +374,7 @@ public class RoomEntryActivity extends AppCompatActivity {
 
                 @Override
                 public void doError(Throwable e) {
-
+                    dialog.dismiss();
                 }
             });
         }

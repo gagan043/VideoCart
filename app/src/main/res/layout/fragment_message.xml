@@ -6,7 +6,8 @@
     tools:context="com.gp2u.lite.fragment.MessageFragment"
     android:background="@android:color/white"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:isScrollContainer="true">
 
     <com.stfalcon.chatkit.messages.MessagesList
         android:id="@+id/messagesList"

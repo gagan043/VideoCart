@@ -28,8 +28,10 @@
                 <data android:scheme="carecomplete" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.RoomEntryActivity" android:configChanges="keyboardHidden|orientation|screenSize"/>
-        <activity android:name=".activity.SplashActivity" android:configChanges="keyboardHidden|orientation|screenSize">
+        <activity android:name=".activity.RoomEntryActivity" android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SplashActivity" android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

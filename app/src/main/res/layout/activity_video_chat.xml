@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.gp2u.lite.activity.VideoChatActivity"
-    android:background="@android:color/black">
-
+    android:background="@android:color/black"
+    android:id="@+id/parent_layout">
 
     <RelativeLayout
         android:id="@+id/remote_layout"
@@ -24,28 +24,28 @@
             android:id="@+id/peer1_layout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@android:color/black">
+            android:background="@android:color/transparent">
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/peer2_layout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@android:color/black">
+            android:background="@android:color/transparent">
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/peer3_layout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@android:color/black">
+            android:background="@android:color/transparent">
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/peer4_layout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@android:color/black">
+            android:background="@android:color/transparent">
         </RelativeLayout>
 
     </RelativeLayout>
@@ -64,106 +64,113 @@
 
     </RelativeLayout>
 
-    <net.colindodd.toggleimagebutton.ToggleImageButton
-        xmlns:tib="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/lock_button"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        tib:tib_drawable_on="@drawable/unlock"
-        tib:tib_drawable_off="@drawable/lock"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="25dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:stateListAnimator="@null"/>
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/control_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/badge_layout1"
-        android:layout_marginTop="20dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/lock_button"
-        android:layout_marginRight="0dp"
-        app:layout_constraintLeft_toRightOf="@+id/button5"
-        android:layout_marginLeft="10dp">
+        <net.colindodd.toggleimagebutton.ToggleImageButton
+            xmlns:tib="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/lock_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            tib:tib_drawable_on="@drawable/unlock"
+            tib:tib_drawable_off="@drawable/lock"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="25dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:stateListAnimator="@null"/>
 
         <RelativeLayout
-            android:id="@+id/relative_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/button1"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/message"
-                android:onClick="onMessage"/>
+            android:id="@+id/badge_layout1"
+            android:layout_marginTop="20dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/lock_button"
+            android:layout_marginRight="0dp"
+            app:layout_constraintLeft_toRightOf="@+id/button5"
+            android:layout_marginLeft="10dp">
+
+            <RelativeLayout
+                android:id="@+id/relative_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/button1"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/message"
+                    android:onClick="onMessage"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/badge_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@id/relative_layout"
+                android:background="@drawable/item_count"
+                android:text=" 1 "
+                android:textColor="#FFF"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                />
+
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/badge_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@id/relative_layout"
-            android:background="@drawable/item_count"
-            android:text=" 1 "
-            android:textColor="#FFF"
-            android:textSize="10sp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            />
-
-    </RelativeLayout>
-
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/switch_camera"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:onClick="onSwitchCamera"
-        android:stateListAnimator="@null"/>
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/switch_camera"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:onClick="onSwitchCamera"
+            android:stateListAnimator="@null"/>
 
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/disconnect"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:onClick="onDisconnect"
-        android:stateListAnimator="@null" />
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/disconnect"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:onClick="onDisconnect"
+            android:stateListAnimator="@null" />
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="25dp"
-        android:background="@drawable/refresh"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:onClick="onRefresh"
-        android:stateListAnimator="@null"/>
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/refresh"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:onClick="onRefresh"
+            android:stateListAnimator="@null"/>
 
-    <net.colindodd.toggleimagebutton.ToggleImageButton
-        xmlns:tib="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/mute_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="25dp"
-        tib:tib_drawable_on="@drawable/muted"
-        tib:tib_drawable_off="@drawable/unmuted"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:stateListAnimator="@null"/>
+        <net.colindodd.toggleimagebutton.ToggleImageButton
+            xmlns:tib="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/mute_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="25dp"
+            tib:tib_drawable_on="@drawable/muted"
+            tib:tib_drawable_off="@drawable/unmuted"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:stateListAnimator="@null"/>
+
+    </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.Guideline
         android:layout_width="1dp"
@@ -191,21 +198,23 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:clickable="true"
-        android:focusable="true">
+        android:focusable="true"
+        android:isScrollContainer="true">
 
     </FrameLayout>
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/cancel"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:onClick="onCancel"
-        android:alpha="0.5"
-         />
+     <Button
+         android:id="@+id/cancel_button"
+         android:layout_width="40dp"
+         android:layout_height="40dp"
+         android:background="@drawable/cancel"
+         android:onClick="onCancel"
+         android:alpha="0.5"
+         android:layout_marginLeft="10dp"
+         android:layout_marginTop="20dp"
+         app:layout_constraintLeft_toLeftOf="parent"
+         app:layout_constraintTop_toTopOf="parent" />
+
+
 
 </android.support.constraint.ConstraintLayout>

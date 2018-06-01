@@ -22,6 +22,7 @@ import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.model.Image;
 import com.gp2u.lite.R;
 import com.gp2u.lite.activity.VideoChatActivity;
+import com.gp2u.lite.model.Config;
 import com.gp2u.lite.model.Message;
 import com.gp2u.lite.model.User;
 import com.gp2u.lite.utils.Utils;
@@ -94,6 +95,8 @@ public class MessageFragment extends Fragment implements MessagesListener ,FileT
         ButterKnife.bind(this ,view);
         initAdapter();
         initInput();
+        Message message1 = new Message(Utils.getRandomId() , new User("remote" ,"peer"), Config.WELCOME_MESSAGE);
+        messagesAdapter.addToStart(message1, true);
 
         return view;
     }
@@ -195,13 +198,13 @@ public class MessageFragment extends Fragment implements MessagesListener ,FileT
     private void showAlert(String message)
     {
         // show alert if self is not shown
-        if (isVisible()){
+        boolean isShow = ((VideoChatActivity)getActivity()).isShownMessage();
+        if (isShow){
 
             ((VideoChatActivity)getActivity()).unreadMessages = 0;
 
         }
         else {
-
             ((VideoChatActivity)getActivity()).unreadMessages++;
             ((VideoChatActivity)getActivity()).showAlert(message);
         }

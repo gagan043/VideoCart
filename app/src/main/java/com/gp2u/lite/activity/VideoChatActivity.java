@@ -8,6 +8,7 @@ import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -105,6 +107,15 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     @BindView(R.id.chat_layout)
     FrameLayout chatLayout;
 
+    @BindView(R.id.control_layout)
+    ConstraintLayout controlLayout;
+
+    @BindView(R.id.parent_layout)
+    ConstraintLayout parentLayout;
+
+    @BindView(R.id.cancel_button)
+    Button cancelButton;
+
     MessageFragment messageFragment;
 
     Subscription subscription;
@@ -158,11 +169,29 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     public void showMessage(boolean isShow)
     {
-        if (isShow)
+        if (isShow){
+
+            int peerCount = 0;
+            for (int i = 0; i < peerList.length ; i ++){
+                if (peerList[i] != null) peerCount++;
+            }
+            if (peerCount == 0){
+                showToastWithError(Config.OPEN_MESSAGE_ERROR);
+                return;
+            }
             chatLayout.setVisibility(View.VISIBLE);
+        }
         else
             chatLayout.setVisibility(View.INVISIBLE);
 
+        refreshPeerViews();
+    }
+
+    public boolean isShownMessage()
+    {
+        if (chatLayout.getVisibility() == View.VISIBLE)
+            return true;
+        return false;
     }
 
     private void initMediaPlayer()
@@ -179,6 +208,25 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
                 .setErrorColor(Color.parseColor("#dd0000")) // optional
                 .setInfoColor(Color.parseColor("#999999")) // optional
                 .apply();
+
+        peer1Layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (chatLayout.getVisibility() == View.VISIBLE){
+
+                   int count = peer1Layout.getChildCount();
+                   for (int i = 0 ; i < count ; i ++){
+
+                       View subView = peer1Layout.getChildAt(i);
+                       if (subView.getVisibility() == View.VISIBLE)
+                           subView.setVisibility(View.INVISIBLE);
+                       else
+                           subView.setVisibility(View.VISIBLE);
+                   }
+                }
+            }
+        });
     }
 
     private SkylinkConfig getSkylinkConfig() {
@@ -581,6 +629,46 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
             params.width = (isPortrait) ? (int)(screenWidth * RECTS[i][2]) : (int)(screenHeight * RECTS[i][3]);
             params.height = (isPortrait) ? (int)(screenHeight * RECTS[i][3]) : (int)(screenWidth * RECTS[i][2]);
             layout.setLayoutParams(params);
+        }
+
+        if (chatLayout.getVisibility() == View.VISIBLE){
+
+            peer1Layout.setVisibility(View.INVISIBLE);
+            peer2Layout.setVisibility(View.INVISIBLE);
+            peer3Layout.setVisibility(View.INVISIBLE);
+            peer4Layout.setVisibility(View.INVISIBLE);
+
+            if (peerCount > 0){
+
+                peer1Layout.setVisibility(View.VISIBLE);
+                RelativeLayout layout = peer1Layout;
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) layout.getLayoutParams();
+                int width =  screenWidth / 2;
+                int height =  (int)(width * 0.75)  ;
+                params.leftMargin = (isPortrait) ?  screenWidth - width : screenHeight - width;
+                params.topMargin = 0;
+                params.width = width;
+                params.height = height;
+                layout.setLayoutParams(params);
+            }
+
+            parentLayout.bringChildToFront(chatLayout);
+            parentLayout.bringChildToFront(remoteLayout);
+            parentLayout.bringChildToFront(cancelButton);
+
+        }else {
+
+            peer1Layout.setVisibility(View.VISIBLE);
+            peer2Layout.setVisibility(View.VISIBLE);
+            peer3Layout.setVisibility(View.VISIBLE);
+            peer4Layout.setVisibility(View.VISIBLE);
+
+            parentLayout.bringChildToFront(remoteLayout);
+            parentLayout.bringChildToFront(localLayout);
+            parentLayout.bringChildToFront(controlLayout);
+            parentLayout.bringChildToFront(chatLayout);
+            parentLayout.bringChildToFront(cancelButton);
+
         }
     }
 

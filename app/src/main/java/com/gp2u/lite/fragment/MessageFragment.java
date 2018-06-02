@@ -9,13 +9,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -26,6 +24,7 @@ import com.gp2u.lite.activity.VideoChatActivity;
 import com.gp2u.lite.model.Config;
 import com.gp2u.lite.model.Message;
 import com.gp2u.lite.model.User;
+import com.gp2u.lite.utils.KeyboardUtil;
 import com.gp2u.lite.utils.Utils;
 import com.gp2u.lite.view.CustomIncomingMessageViewHolder;
 import com.gp2u.lite.view.CustomOutcomingMessageViewHolder;
@@ -48,7 +47,6 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import sg.com.temasys.skylink.sdk.listener.FileTransferListener;
 import sg.com.temasys.skylink.sdk.listener.MessagesListener;
 import sg.com.temasys.skylink.sdk.rtc.SkylinkConnection;
@@ -70,9 +68,6 @@ import static com.gp2u.lite.utils.Utils.isImage;
  * to handle interaction events.
  */
 public class MessageFragment extends Fragment implements MessagesListener ,FileTransferListener{
-
-    @BindView(R.id.cancel_button)
-    Button cancelBtn;
 
     @BindView(R.id.messagesList)
     MessagesList messagesList;
@@ -101,7 +96,6 @@ public class MessageFragment extends Fragment implements MessagesListener ,FileT
         initInput();
         Message message1 = new Message(Utils.getRandomId() , new User("remote" ,"peer"), Config.WELCOME_MESSAGE);
         messagesAdapter.addToStart(message1, true);
-
         return view;
     }
 
@@ -120,11 +114,6 @@ public class MessageFragment extends Fragment implements MessagesListener ,FileT
     public void onStart(){
 
         super.onStart();
-
-    }
-
-    @OnClick(R.id.cancel_button) void onCancel(){
-
 
     }
 

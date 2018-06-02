@@ -18,6 +18,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -35,6 +36,7 @@ import com.gp2u.lite.control.AudioRouter;
 import com.gp2u.lite.fragment.MessageFragment;
 import com.gp2u.lite.model.Config;
 import com.gp2u.lite.model.Global;
+import com.gp2u.lite.utils.KeyboardUtil;
 import com.pixplicity.easyprefs.library.Prefs;
 
 import net.colindodd.toggleimagebutton.ToggleImageButton;
@@ -135,6 +137,8 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         this.setVolumeControlStream(AudioManager.STREAM_VOICE_CALL);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_video_chat);
+
+        new KeyboardUtil(this, findViewById(R.id.chat_layout));
 
         ButterKnife.bind(this);
         Global.isHook = false;
@@ -380,6 +384,13 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     public void onCancel(View view)
     {
+
+        // hide keyboard
+        View view1 = getCurrentFocus();
+        if (view1 != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
         if (webView.getVisibility() == View.VISIBLE){
 
             webView.setVisibility(View.INVISIBLE);
@@ -391,6 +402,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         else{
             goBack();
         }
+
     }
 
     public void onDisconnect(View view)

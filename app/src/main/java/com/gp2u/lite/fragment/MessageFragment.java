@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,10 @@ import com.stfalcon.frescoimageviewer.ImageViewer;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.ListIterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -421,6 +425,34 @@ public class MessageFragment extends Fragment implements MessagesListener ,FileT
                 Log.d(TAG ,"Save Clicked");
             }
         });
+
+        messagesAdapter.registerViewClickListener(R.id.messageText, new MessagesListAdapter.OnMessageViewClickListener<Message>() {
+            @Override
+            public void onMessageViewClick(View view, Message message) {
+
+                String[] urls = extractLinks(message.getText());
+                if (urls.length > 0){
+
+                    VideoChatActivity activity = (VideoChatActivity) getActivity();
+                    activity.openWebView(urls[0]);
+                }
+
+            }
+        });
+    }
+
+    public static String[] extractLinks(String text) {
+        String urlRegex = "((https?|ftp|gopher|telnet|file):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)";
+        Pattern pattern = Pattern.compile(urlRegex, Pattern.CASE_INSENSITIVE);
+        List<String> links = new ArrayList<>();
+        Matcher m = pattern.matcher(text);
+        while (m.find()) {
+            String url = m.group();
+            Log.d(TAG, "URL extracted: " + url);
+            links.add(url);
+        }
+
+        return links.toArray(new String[links.size()]);
     }
 
     public void sendImage(Image image)

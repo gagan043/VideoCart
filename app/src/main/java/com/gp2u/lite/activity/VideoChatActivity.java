@@ -18,6 +18,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
@@ -119,6 +121,9 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     @BindView(R.id.cancel_button)
     Button cancelButton;
+
+    @BindView(R.id.web_view)
+    WebView webView;
 
     MessageFragment messageFragment;
 
@@ -375,6 +380,11 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     public void onCancel(View view)
     {
+        if (webView.getVisibility() == View.VISIBLE){
+
+            webView.setVisibility(View.INVISIBLE);
+            return;
+        }
         if (chatLayout.getVisibility() == View.VISIBLE){
             showMessage(false);
         }
@@ -659,6 +669,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
             parentLayout.bringChildToFront(chatLayout);
             parentLayout.bringChildToFront(remoteLayout);
+            parentLayout.bringChildToFront(webView);
             parentLayout.bringChildToFront(cancelButton);
 
         }else {
@@ -672,6 +683,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
             parentLayout.bringChildToFront(localLayout);
             parentLayout.bringChildToFront(controlLayout);
             parentLayout.bringChildToFront(chatLayout);
+            parentLayout.bringChildToFront(webView);
             parentLayout.bringChildToFront(cancelButton);
 
         }
@@ -835,5 +847,13 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
                     })
                     .show();
         }
+    }
+
+    public void openWebView(String url){
+
+        webView.setVisibility(View.VISIBLE);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebViewClient(new WebViewClient());
+        webView.loadUrl(url);
     }
 }

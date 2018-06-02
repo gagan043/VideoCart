@@ -1,8 +1,7 @@
 package com.gp2u.lite.activity;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -256,7 +255,6 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         super.onDestroy();
 
         emptyLayout();
-        //AudioRouter.stopAudioRouting(this.getApplicationContext());
         if (subscription != null) subscription.unsubscribe();
 
     }
@@ -397,6 +395,8 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         {
             skylinkConnection.unlockRoom();
             skylinkConnection.disconnectFromRoom();
+            AudioRouter.stopAudioRouting(context);
+
         }
 
         finish();

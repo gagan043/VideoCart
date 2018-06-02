@@ -1,6 +1,8 @@
 package com.gp2u.lite.activity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -27,6 +29,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.gp2u.lite.R;
+import com.gp2u.lite.control.AudioRouter;
 import com.gp2u.lite.fragment.MessageFragment;
 import com.gp2u.lite.model.Config;
 import com.gp2u.lite.model.Global;
@@ -55,6 +58,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     private static String TAG = VideoChatActivity.class.getName();
 
+    Context context = this;
     SkylinkConnection skylinkConnection;
     String roomName;
     String userName;
@@ -317,7 +321,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
             showToast(error);
             return;
         }
-        //AudioRouter.startAudioRouting(this);
+        AudioRouter.startAudioRouting(context);
 
     }
 

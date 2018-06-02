@@ -160,6 +160,7 @@ public class AudioRouter {
             throw new RuntimeException(
                     "Attempt to set audio path before setting AudioManager");
         }
+        //audioManager.setMode(AudioManager.MODE_IN_CALL);
         boolean isWiredHeadsetOn = audioManager.isWiredHeadsetOn();
         if (isWiredHeadsetOn) {
             log = logTag + "Setting Speakerphone to off as wired headset is on.";
@@ -167,6 +168,8 @@ public class AudioRouter {
         } else {
             audioManager.setSpeakerphoneOn(true);
             log = logTag + "Setting Speakerphone to on as wired headset is off.";
+            boolean sf = audioManager.isSpeakerphoneOn();
+            log = logTag + "Speakerpone:" + sf;
         }
         Log.d(TAG, log);
 

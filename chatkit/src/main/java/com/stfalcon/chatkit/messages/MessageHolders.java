@@ -3,12 +3,9 @@ package com.stfalcon.chatkit.messages;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
-import android.text.Spannable;
-import android.text.method.LinkMovementMethod;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -489,17 +486,17 @@ public class MessageHolders {
 
         protected void configureLinksBehavior(final TextView text) {
             text.setLinksClickable(false);
-            text.setMovementMethod(new LinkMovementMethod() {
-                @Override
-                public boolean onTouchEvent(TextView widget, Spannable buffer, MotionEvent event) {
-                    boolean result = false;
-                    if (!MessagesListAdapter.isSelectionModeEnabled) {
-                        result = super.onTouchEvent(widget, buffer, event);
-                    }
-                    itemView.onTouchEvent(event);
-                    return result;
-                }
-            });
+//            text.setMovementMethod(new LinkMovementMethod() {
+//                @Override
+//                public boolean onTouchEvent(TextView widget, Spannable buffer, MotionEvent event) {
+//                    boolean result = false;
+//                    if (!MessagesListAdapter.isSelectionModeEnabled) {
+//                        result = super.onTouchEvent(widget, buffer, event);
+//                    }
+//                    itemView.onTouchEvent(event);
+//                    return result;
+//                }
+//            });
         }
 
     }

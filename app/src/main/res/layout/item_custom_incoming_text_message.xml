@@ -22,8 +22,7 @@
             android:id="@id/messageText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
-            />
+            android:paddingTop="5dp" />
 
         <LinearLayout
             android:id="@+id/pre_layout"

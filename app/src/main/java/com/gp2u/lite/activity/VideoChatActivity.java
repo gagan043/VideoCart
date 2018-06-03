@@ -70,6 +70,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     String userName;
     public int unreadMessages;
     boolean bFromRemote;
+    boolean localDisconnect = false;
     boolean showAlert;
 
     private static String[] peerList = new String[4];
@@ -361,6 +362,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
             showToast(error);
             return;
         }
+        localDisconnect = false;
     }
 
     private void configToggleButtons()
@@ -440,8 +442,9 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     public void onDisconnect(View view)
     {
         exitPlayer.start();
+        showToast(getString(R.string.LOCAL_PEER_DISCONNECTED));
+        localDisconnect = true;
         goBack();
-
     }
 
     private void goBack()
@@ -450,8 +453,6 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         {
             skylinkConnection.unlockRoom();
             skylinkConnection.disconnectFromRoom();
-            //AudioRouter.stopAudioRouting(context);
-
         }
 
         finish();
@@ -564,17 +565,16 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     @Override
     public void onRemotePeerAudioToggle(String remotePeerId, boolean muted) {
 
-         Log.d("MUTE", "String: " + remotePeerId + " bool:" + muted );
-        Button[] peerButtons = {peer1muteButton ,peer2muteButton ,peer3muteButton ,peer4muteButton};
+        Log.d("MUTE", "String: " + remotePeerId + " bool:" + muted );
         int buttonIndex = Arrays.asList(peerList).indexOf(remotePeerId);
         if (buttonIndex >= 0)
         if (muted) {
              //showToast("Remote peer:" + remotePeerId + "has muted their microphone");
-            peerButtons[buttonIndex].setVisibility(View.VISIBLE);
+            muteButtons[buttonIndex].setVisibility(View.VISIBLE);
          }
          else {
              //showToast("Remote peer:" + remotePeerId + "has unmuted their microphone");
-            peerButtons[buttonIndex].setVisibility(View.INVISIBLE);
+            muteButtons[buttonIndex].setVisibility(View.INVISIBLE);
         }
     }
 
@@ -614,8 +614,10 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     @Override
     public void onRemotePeerLeave(String remotePeerId, String message, UserInfo userInfo) {
-
-        showToast(getString(R.string.REMOTE_PEER_DISCONNECTED));
+        Log.d("[PEER LEAVING]", "remotePeerId: " + remotePeerId + " message: " +  message +" userInfo: " + userInfo);
+        if (! localDisconnect) {
+            showToast(getString(R.string.REMOTE_PEER_DISCONNECTED));
+        }
         exitPlayer.start();
         skylinkConnection.unlockRoom();
 
@@ -932,6 +934,9 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new MyWebViewClient());
         webView.loadUrl(url);
+        chatLayout.setVisibility(View.VISIBLE);
+        cancelButton.setVisibility(View.VISIBLE);
+        refreshPeerViews();
     }
 
     private class MyWebViewClient extends WebViewClient {

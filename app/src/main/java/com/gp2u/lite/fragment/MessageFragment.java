@@ -213,8 +213,8 @@ public class MessageFragment extends Fragment implements MessagesListener ,FileT
             String strMessage = (String)message;
             if ( strMessage.contains("goto://")) {
                 String url = strMessage.replace("goto://", "https://");
-                Log.d("GOTO", "URL fragment: " + url);
-                showToast("Opening webpage " + url);
+                Log.d("GOTO", "URL fragment: " + url + "&is_app=1");
+                showToast("Opening webpage...");
                 VideoChatActivity activity = (VideoChatActivity) getActivity();
                 activity.openWebView(url);
             }

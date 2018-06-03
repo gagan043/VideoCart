@@ -694,8 +694,8 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
             }
 
             parentLayout.bringChildToFront(chatLayout);
-            parentLayout.bringChildToFront(remoteLayout);
             parentLayout.bringChildToFront(webView);
+            parentLayout.bringChildToFront(remoteLayout);
             parentLayout.bringChildToFront(cancelButton);
 
         }else {

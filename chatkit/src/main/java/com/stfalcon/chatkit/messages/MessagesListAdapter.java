@@ -21,11 +21,8 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.method.LinkMovementMethod;
 import android.util.SparseArray;
 import android.util.TypedValue;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -845,17 +842,17 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
 
         protected void configureLinksBehavior(final TextView text) {
             text.setLinksClickable(false);
-            text.setMovementMethod(new LinkMovementMethod() {
-                @Override
-                public boolean onTouchEvent(TextView widget, Spannable buffer, MotionEvent event) {
-                    boolean result = false;
-                    if (!isSelectionModeEnabled) {
-                        result = super.onTouchEvent(widget, buffer, event);
-                    }
-                    itemView.onTouchEvent(event);
-                    return result;
-                }
-            });
+//            text.setMovementMethod(new LinkMovementMethod() {
+//                @Override
+//                public boolean onTouchEvent(TextView widget, Spannable buffer, MotionEvent event) {
+//                    boolean result = false;
+//                    if (!isSelectionModeEnabled) {
+//                        result = super.onTouchEvent(widget, buffer, event);
+//                    }
+//                    itemView.onTouchEvent(event);
+//                    return result;
+//                }
+//            });
         }
 
     }

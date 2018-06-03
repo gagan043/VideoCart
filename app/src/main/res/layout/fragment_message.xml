@@ -15,7 +15,10 @@
         android:layout_above="@+id/input"
         app:outcomingDefaultBubbleColor="@color/colorBlue"
         app:incomingBubbleDrawable="@drawable/bg_custom_incoming_message"
-        app:outcomingBubbleDrawable="@drawable/bg_custom_outcoming_message" />
+        app:outcomingBubbleDrawable="@drawable/bg_custom_outcoming_message"
+        app:outcomingTextLinkColor="@color/colorBlue"
+        app:incomingTextLinkColor="@color/colorBlue"
+        app:textAutoLink="all" />
 
     <View
         android:layout_width="match_parent"

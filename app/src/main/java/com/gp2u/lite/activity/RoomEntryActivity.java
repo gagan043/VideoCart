@@ -23,6 +23,7 @@ import com.google.gson.JsonObject;
 import com.gp2u.lite.R;
 import com.gp2u.lite.control.APICallback;
 import com.gp2u.lite.control.APIService;
+import com.gp2u.lite.control.AudioRouter;
 import com.gp2u.lite.model.Config;
 import com.gp2u.lite.model.Global;
 import com.pixplicity.easyprefs.library.Prefs;
@@ -67,6 +68,7 @@ public class RoomEntryActivity extends AppCompatActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_room_entry);
+        AudioRouter.startAudioRouting(this);
 
         ButterKnife.bind(this);
         roomEdit.setText(Prefs.getString(Config.ROOM_NAME ,""));

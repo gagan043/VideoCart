@@ -84,6 +84,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     MediaPlayer arrivePlayer;
     MediaPlayer mutePlayer;
     MediaPlayer unmutePlayer;
+    MediaPlayer refreshPlayer;
 
     @BindView(R.id.lock_button)
     ToggleImageButton lockButton;
@@ -134,6 +135,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AudioRouter.startAudioRouting(this);
         this.setVolumeControlStream(AudioManager.STREAM_VOICE_CALL);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_video_chat);
@@ -209,12 +211,15 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     private void initMediaPlayer()
     {
+        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 20, 0);
         lockPlayer = MediaPlayer.create(this ,R.raw.unlock);
         unlockPlayer = MediaPlayer.create(this ,R.raw.unlock);
         exitPlayer = MediaPlayer.create(this ,R.raw.close_door);
         arrivePlayer = MediaPlayer.create(this ,R.raw.ding_dong);
         mutePlayer = MediaPlayer.create(this ,R.raw.click_off);
         unmutePlayer = MediaPlayer.create(this ,R.raw.click_on);
+        refreshPlayer = MediaPlayer.create(this,R.raw.refresh);
 
         videoViewLayouts = new RelativeLayout[]{peer1Layout, peer2Layout, peer3Layout ,peer4Layout};
         Toasty.Config.getInstance()
@@ -329,8 +334,6 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
             showToast(error);
             return;
         }
-        AudioRouter.startAudioRouting(context);
-
     }
 
     private void configToggleButtons()
@@ -379,6 +382,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     public void onSwitchCamera(View view)
     {
+        showToast(getString(R.string.SWAP_CAMERA));
         skylinkConnection.switchCamera();
     }
 
@@ -418,7 +422,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         {
             skylinkConnection.unlockRoom();
             skylinkConnection.disconnectFromRoom();
-            AudioRouter.stopAudioRouting(context);
+            //AudioRouter.stopAudioRouting(context);
 
         }
 
@@ -427,7 +431,9 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     public void onRefresh(View view)
     {
+        refreshPlayer.start();
         skylinkConnection.refreshConnection(null, false);
+        showToast(getString(R.string.REFRESHING_CONNECTION));
     }
 
     public void onMessage(View view)
@@ -547,6 +553,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     @Override
     public void onRemotePeerJoin(String remotePeerId, Object userData, boolean hasDataChannel) {
 
+        arrivePlayer.start();
         addRemotePeer(remotePeerId);
     }
 

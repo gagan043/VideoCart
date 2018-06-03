@@ -44,6 +44,7 @@ import net.colindodd.toggleimagebutton.ToggleImageButton;
 
 import org.webrtc.SurfaceViewRenderer;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -73,6 +74,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     private static String[] peerList = new String[4];
     private RelativeLayout[] videoViewLayouts;
+    private Button[] muteButtons ;
 
     public static final float[][] RECT_WHEN_PEER1 = {{0, 0, 1, 1} ,{0, 1, 0, 0} ,{0, 1, 0, 0},{0, 1, 0, 0}};
     public static final float[][] RECT_WHEN_PEER2 = {{0, 0, 1, 0.5f} ,{0 , 0.5f ,1 ,0.5f} ,{0 , 1 ,0 ,0},{0 , 1 ,0 ,0}};
@@ -125,6 +127,18 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     @BindView(R.id.cancel_button)
     Button cancelButton;
+
+    @BindView(R.id.peer1_mute)
+    Button peer1muteButton;
+
+    @BindView(R.id.peer2_mute)
+    Button peer2muteButton;
+
+    @BindView(R.id.peer3_mute)
+    Button peer3muteButton;
+
+    @BindView(R.id.peer4_mute)
+    Button peer4muteButton;
 
     @BindView(R.id.web_view)
     WebView webView;
@@ -228,6 +242,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         refreshPlayer = MediaPlayer.create(this,R.raw.refresh);
 
         videoViewLayouts = new RelativeLayout[]{peer1Layout, peer2Layout, peer3Layout ,peer4Layout};
+        muteButtons = new Button[]{peer1muteButton, peer2muteButton, peer3muteButton ,peer4muteButton};
         Toasty.Config.getInstance()
                 .setErrorColor(Color.parseColor("#dd0000")) // optional
                 .setInfoColor(Color.parseColor("#999999")) // optional
@@ -548,13 +563,19 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     @Override
     public void onRemotePeerAudioToggle(String remotePeerId, boolean muted) {
+
          Log.d("MUTE", "String: " + remotePeerId + " bool:" + muted );
-         if (muted) {
-             showToast("Remote peer:" + remotePeerId + "has muted their microphone");
+        Button[] peerButtons = {peer1muteButton ,peer2muteButton ,peer3muteButton ,peer4muteButton};
+        int buttonIndex = Arrays.asList(peerList).indexOf(remotePeerId);
+        if (buttonIndex >= 0)
+        if (muted) {
+             //showToast("Remote peer:" + remotePeerId + "has muted their microphone");
+            peerButtons[buttonIndex].setVisibility(View.VISIBLE);
          }
          else {
-             showToast("Remote peer:" + remotePeerId + "has unmuted their microphone");
-         }
+             //showToast("Remote peer:" + remotePeerId + "has unmuted their microphone");
+            peerButtons[buttonIndex].setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -640,11 +661,21 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
         float[][] RECTS;
         RelativeLayout[] peerLayouts = {peer1Layout ,peer2Layout ,peer3Layout ,peer4Layout};
-
+        muteButtons = new Button[]{peer1muteButton, peer2muteButton, peer3muteButton ,peer4muteButton};
         int peerCount = 0;
         for (int i = 0; i < peerList.length ; i ++){
 
-            if (peerList[i] != null) peerCount++;
+            muteButtons[i].setVisibility(View.INVISIBLE);
+            if (peerList[i] != null && skylinkConnection != null) {
+                UserInfo userInfo = skylinkConnection.getUserInfo(peerList[i]);
+                if (userInfo != null){
+                    if (userInfo.isAudioMuted())
+                        muteButtons[i].setVisibility(View.VISIBLE);
+                    else
+                        muteButtons[i].setVisibility(View.INVISIBLE);
+                }
+                peerCount++;
+            }
         }
         switch (peerCount)
         {
@@ -767,7 +798,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         }
 
         addFullSubView(videoViewLayouts[index] ,videoView);
-
+        videoViewLayouts[index].bringChildToFront(muteButtons[index]);
     }
 
     private int removePeerView(String peerId) {
@@ -777,7 +808,15 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
             return -1;
         }
         // Remove view
-        videoViewLayouts[indexToRemove].removeAllViews();
+        for (int i = 0 ; i < videoViewLayouts[indexToRemove].getChildCount() ; i ++){
+
+            View subView = videoViewLayouts[indexToRemove].getChildAt(i);
+            if (subView instanceof Button){
+            }else {
+                videoViewLayouts[indexToRemove].removeView(subView);
+            }
+        }
+        //videoViewLayouts[indexToRemove].removeAllViews();
         return indexToRemove;
     }
 
@@ -802,7 +841,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
                 if (view != null) {
                     peerFrameLayout.removeAllViews();
                     addFullSubView(videoViewLayouts[indexEmpty] ,view);
-
+                    videoViewLayouts[indexEmpty].bringChildToFront(muteButtons[indexEmpty]);
                 }
                 ++indexEmpty;
             }

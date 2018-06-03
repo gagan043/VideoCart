@@ -25,6 +25,15 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@android:color/transparent">
+
+            <Button
+                android:id="@+id/peer1_mute"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/muted"
+                android:layout_centerInParent="true"
+                android:visibility="invisible"/>
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -32,6 +41,15 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@android:color/transparent">
+
+            <Button
+                android:id="@+id/peer2_mute"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/muted"
+                android:layout_centerInParent="true"
+                android:visibility="invisible"/>
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -39,6 +57,15 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@android:color/transparent">
+
+            <Button
+                android:id="@+id/peer3_mute"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/muted"
+                android:layout_centerInParent="true"
+                android:visibility="invisible"/>
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -46,6 +73,15 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@android:color/transparent">
+
+            <Button
+                android:id="@+id/peer4_mute"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/muted"
+                android:layout_centerInParent="true"
+                android:visibility="invisible"/>
+
         </RelativeLayout>
 
     </RelativeLayout>

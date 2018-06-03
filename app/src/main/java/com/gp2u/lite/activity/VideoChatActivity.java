@@ -159,7 +159,6 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         configToggleButtons();
         initMediaPlayer();
 
-        Button cancelButton = (Button) findViewById(R.id.cancel_button);
         cancelButton.setVisibility(View.INVISIBLE);
     }
 

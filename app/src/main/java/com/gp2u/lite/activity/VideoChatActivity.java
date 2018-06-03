@@ -547,8 +547,14 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     }
 
     @Override
-    public void onRemotePeerAudioToggle(String s, boolean b) {
-
+    public void onRemotePeerAudioToggle(String remotePeerId, boolean muted) {
+         Log.d("MUTE", "String: " + remotePeerId + " bool:" + muted );
+         if (muted) {
+             showToast("Remote peer:" + remotePeerId + "has muted their microphone");
+         }
+         else {
+             showToast("Remote peer:" + remotePeerId + "has unmuted their microphone");
+         }
     }
 
     @Override

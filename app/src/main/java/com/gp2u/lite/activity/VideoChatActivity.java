@@ -14,6 +14,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -157,6 +158,9 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         showUserDialog();
         configToggleButtons();
         initMediaPlayer();
+
+        Button cancelButton = (Button) findViewById(R.id.cancel_button);
+        cancelButton.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -195,9 +199,12 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
                 return;
             }
             chatLayout.setVisibility(View.VISIBLE);
+            cancelButton.setVisibility(View.VISIBLE);
         }
-        else
+        else {
             chatLayout.setVisibility(View.INVISIBLE);
+            cancelButton.setVisibility(View.INVISIBLE);
+        }
 
         refreshPeerViews();
     }
@@ -406,6 +413,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         else{
             goBack();
         }
+
 
     }
 
@@ -872,7 +880,25 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
         webView.setVisibility(View.VISIBLE);
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.setWebViewClient(new WebViewClient());
+        webView.setWebViewClient(new MyWebViewClient());
         webView.loadUrl(url);
+    }
+
+    private class MyWebViewClient extends WebViewClient {
+        @Override
+        public void onPageStarted(WebView view, String url, android.graphics.Bitmap favicon) {
+            Log.d("[WebView] ", " onPageStarted " + url);
+        }
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            // capture "cancel_webview" to exit the webview and chat and drop back to video
+            if (url.contains("cancel_webview")) {
+                webView.setVisibility(View.INVISIBLE);
+                showMessage(false);
+                return true;  // finish processing
+            }
+            // else proceed as normal
+            return false;
+        }
     }
 }

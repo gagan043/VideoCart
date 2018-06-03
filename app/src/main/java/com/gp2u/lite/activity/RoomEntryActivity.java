@@ -11,11 +11,13 @@ import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -40,6 +42,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
+import es.dmoral.toasty.Toasty;
 import rx.Subscription;
 
 public class RoomEntryActivity extends AppCompatActivity {
@@ -79,7 +82,7 @@ public class RoomEntryActivity extends AppCompatActivity {
     public void onStart()
     {
         super.onStart();
-        checkRemember();
+        checkRoom();
     }
 
     @Override
@@ -110,53 +113,12 @@ public class RoomEntryActivity extends AppCompatActivity {
     public void onEnter(View view)
     {
         if (isFound){
-
             Intent intent = new Intent(this ,VideoChatActivity.class);
             startActivity(intent);
             isFound = false;
             return;
         }
-        Prefs.putString(Config.ROOM_NAME ,roomEdit.getText().toString());
-
-        ACProgressFlower dialog = new ACProgressFlower.Builder(this)
-                .direction(ACProgressConstant.PIE_AUTO_UPDATE)
-                .themeColor(Color.WHITE)
-                .text(Config.CHECKING_ROOM_INFO)
-                .fadeColor(Color.DKGRAY).build();
-        dialog.show();
-
-        subscription = APIService.getInstance().getUserName(roomEdit.getText().toString());
-        APIService.getInstance().setOnCallback(new APICallback() {
-            @Override
-            public void doNext(JsonObject jsonObject) {
-
-                dialog.dismiss();
-                int found = jsonObject.get("found").getAsInt();
-                Prefs.putString(Config.USER_NAME ,jsonObject.get("for_name").getAsString());
-                Prefs.putString(Config.UUID ,jsonObject.get("uuid").getAsString());
-                isFound = true;
-
-                if (found == 1){
-                    checkAutoConnection(jsonObject);
-                }else {
-                   // Intent intent = new Intent(RoomEntryActivity.this ,VideoChatActivity.class);
-                   // startActivity(intent);
-                    appointmentTextView.setText("");
-                    appointmentTextView1.setText("Room not found");
-                    appointmentTextView2.setText("Press green phone to connect anyway");
-                }
-            }
-
-            @Override
-            public void doCompleted() {
-
-            }
-
-            @Override
-            public void doError(Throwable e) {
-                dialog.dismiss();
-            }
-        });
+        checkRoom();
     }
 
     @Override
@@ -233,7 +195,6 @@ public class RoomEntryActivity extends AppCompatActivity {
                             .onPositive(new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(MaterialDialog dialog, DialogAction which) {
-
                                     cancelTimer();
                                 }
                             })
@@ -241,6 +202,7 @@ public class RoomEntryActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(MaterialDialog dialog, DialogAction which) {
                                     roomEdit.setText(Prefs.getString(Config.ROOM_NAME ,""));
+
                                 }
                             })
                             .show();
@@ -253,7 +215,7 @@ public class RoomEntryActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                checkRoom();
             }
         });
     }
@@ -339,23 +301,24 @@ public class RoomEntryActivity extends AppCompatActivity {
         } ,0 ,1000);
     }
 
-    private void checkRemember()
+    private void checkRoom()
     {
         String room = Prefs.getString(Config.ROOM_NAME ,"");
         if (room.length() != 0){
-
+            /*
             ACProgressFlower dialog = new ACProgressFlower.Builder(this)
                     .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                     .themeColor(Color.WHITE)
                     .text(Config.CHECKING_ROOM_INFO)
                     .fadeColor(Color.DKGRAY).build();
             dialog.show();
+            */
             subscription = APIService.getInstance().getUserName(roomEdit.getText().toString());
             APIService.getInstance().setOnCallback(new APICallback() {
                 @Override
                 public void doNext(JsonObject jsonObject) {
 
-                    dialog.dismiss();
+                    //dialog.dismiss();
                     isFound = true;
                     Prefs.putString(Config.USER_NAME ,jsonObject.get("for_name").getAsString());
                     Prefs.putString(Config.UUID ,jsonObject.get("uuid").getAsString());
@@ -376,7 +339,7 @@ public class RoomEntryActivity extends AppCompatActivity {
 
                 @Override
                 public void doError(Throwable e) {
-                    dialog.dismiss();
+                    //dialog.dismiss();
                 }
             });
         }

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,7 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import es.dmoral.toasty.Toasty;
 import sg.com.temasys.skylink.sdk.listener.FileTransferListener;
 import sg.com.temasys.skylink.sdk.listener.MessagesListener;
 import sg.com.temasys.skylink.sdk.rtc.SkylinkConnection;
@@ -60,6 +62,7 @@ import static com.gp2u.lite.utils.Utils.getFileExt;
 import static com.gp2u.lite.utils.Utils.getPeerIdNick;
 import static com.gp2u.lite.utils.Utils.getRandomId;
 import static com.gp2u.lite.utils.Utils.isImage;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -193,9 +196,7 @@ public class MessageFragment extends Fragment implements MessagesListener ,FileT
         // show alert if self is not shown
         boolean isShow = ((VideoChatActivity)getActivity()).isShownMessage();
         if (isShow){
-
             ((VideoChatActivity)getActivity()).unreadMessages = 0;
-
         }
         else {
             ((VideoChatActivity)getActivity()).unreadMessages++;
@@ -209,22 +210,24 @@ public class MessageFragment extends Fragment implements MessagesListener ,FileT
         if (message instanceof String) {
 
             Message message1 = new Message(Utils.getRandomId() , new User(remotePeerId ,"peer"),(String)message);
-            messagesAdapter.addToStart(message1, true);
-
-            showAlert((String)message);
+            String strMessage = (String)message;
+            if ( strMessage.contains("goto://")) {
+                String url = strMessage.replace("goto://", "https://");
+                Log.d("GOTO", "URL fragment: " + url);
+                showToast("Opening webpage " + url);
+                VideoChatActivity activity = (VideoChatActivity) getActivity();
+                activity.openWebView(url);
+            }
+            else {
+                messagesAdapter.addToStart(message1, true);
+                showAlert((String) message);
+            }
         }
     }
 
     @Override
     public void onP2PMessageReceive(String remotePeerId, Object message, boolean b) {
-
-        if (message instanceof String) {
-
-            Message message1 = new Message(Utils.getRandomId() , new User(remotePeerId ,"peer"),(String)message);
-            messagesAdapter.addToStart(message1, true);
-
-            showAlert((String)message);
-        }
+        onServerMessageReceive(remotePeerId, message, b);
     }
 
     @Override
@@ -460,6 +463,13 @@ public class MessageFragment extends Fragment implements MessagesListener ,FileT
             Message message = new Message(Utils.getRandomId(), new User(senderId, "me"), exMsg);
             messagesAdapter.addToStart(message, true);
         }
+    }
+
+    public void showToast(String message)
+    {
+        Toast toast = Toasty.info(getContext(), message, Toast.LENGTH_SHORT, false);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 
 }

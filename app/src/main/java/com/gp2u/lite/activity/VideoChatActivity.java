@@ -249,6 +249,12 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
                            subView.setVisibility(View.VISIBLE);
                    }
                 }
+                if (localLayout.getVisibility() == View.VISIBLE) {
+                    localLayout.setVisibility(View.INVISIBLE);
+                }
+                else {
+                    localLayout.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

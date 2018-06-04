@@ -29,4 +29,6 @@ public class Config {
     public static final String CHECKING_ROOM_INFO =  "Checking info";
 
     public static final String INTERNET_ERROR = "No Internet Connection";
+    public static final String PLEASE_TURN_VOLUME_UP = "Please turn your volume up";
+
 }

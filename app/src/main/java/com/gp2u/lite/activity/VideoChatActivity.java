@@ -233,7 +233,12 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     private void initMediaPlayer()
     {
         AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 20, 0);
+        //audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 20, 0);
+        int currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        if (currentVolume < maxVolume / 2)
+            showToastWithError(Config.PLEASE_TURN_VOLUME_UP);
+
         lockPlayer = MediaPlayer.create(this ,R.raw.unlock);
         unlockPlayer = MediaPlayer.create(this ,R.raw.unlock);
         exitPlayer = MediaPlayer.create(this ,R.raw.close_door);
@@ -738,7 +743,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
                 int width =  screenWidth / 2;
                 int height =  (int)(width * 0.75)  ;
                 params.leftMargin = (isPortrait) ?  screenWidth - width : screenHeight - width;
-                params.topMargin = 100;
+                params.topMargin = 0;
                 params.width = width;
                 params.height = height;
                 layout.setLayoutParams(params);
@@ -746,8 +751,8 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
             parentLayout.bringChildToFront(chatLayout);
             parentLayout.bringChildToFront(webView);
-            parentLayout.bringChildToFront(remoteLayout);
             parentLayout.bringChildToFront(cancelButton);
+            parentLayout.bringChildToFront(remoteLayout);
 
         }else {
 

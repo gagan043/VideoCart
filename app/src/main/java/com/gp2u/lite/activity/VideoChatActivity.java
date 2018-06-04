@@ -72,6 +72,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     boolean bFromRemote;
     boolean localDisconnect = false;
     boolean showAlert;
+    boolean showRemote = true;
 
     private static String[] peerList = new String[4];
     private RelativeLayout[] videoViewLayouts;
@@ -140,6 +141,9 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     @BindView(R.id.peer4_mute)
     Button peer4muteButton;
+
+    @BindView(R.id.localtoggle_button)
+    Button localtoggleButton;
 
     @BindView(R.id.web_view)
     WebView webView;
@@ -264,17 +268,21 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
                    for (int i = 0 ; i < count ; i ++){
 
                        View subView = peer1Layout.getChildAt(i);
-                       if (subView.getVisibility() == View.VISIBLE)
-                           subView.setVisibility(View.INVISIBLE);
-                       else
-                           subView.setVisibility(View.VISIBLE);
+                       if (!(subView instanceof Button)){
+                           if (subView.getVisibility() == View.VISIBLE)
+                               subView.setVisibility(View.INVISIBLE);
+                           else
+                               subView.setVisibility(View.VISIBLE);
+                           showRemote = subView.getVisibility() == View.VISIBLE;
+                       }else {
+                           if (subView.getVisibility() == View.VISIBLE)
+                               subView.setVisibility(View.INVISIBLE);
+                           else
+                               subView.setVisibility(View.VISIBLE);
+                       }
                    }
-                }
-                if (localLayout.getVisibility() == View.VISIBLE) {
-                    localLayout.setVisibility(View.INVISIBLE);
-                }
-                else {
-                    localLayout.setVisibility(View.VISIBLE);
+                   if (!showRemote) peer1muteButton.setAlpha(0);
+                   else peer1muteButton.setAlpha(1);
                 }
             }
         });
@@ -542,6 +550,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
             return;
         }
         addFullSubView(localLayout ,getVideoView(null));
+        localLayout.bringChildToFront(localtoggleButton);
     }
 
     @Override
@@ -576,8 +585,8 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         if (muted) {
              //showToast("Remote peer:" + remotePeerId + "has muted their microphone");
             muteButtons[buttonIndex].setVisibility(View.VISIBLE);
-         }
-         else {
+        }
+        else {
              //showToast("Remote peer:" + remotePeerId + "has unmuted their microphone");
             muteButtons[buttonIndex].setVisibility(View.INVISIBLE);
         }
@@ -686,6 +695,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
                     else {
                         muteButtons[i].setVisibility(View.INVISIBLE);
                     }
+                    muteButtons[i].setAlpha(1);
                 }
                 peerCount++;
             }
@@ -757,6 +767,14 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         }else {
 
             peer1Layout.setVisibility(View.VISIBLE);
+            int count = peer1Layout.getChildCount();
+            for (int i = 0 ; i < count ; i ++){
+                View subView = peer1Layout.getChildAt(i);
+                if (!(subView instanceof Button)){
+                    subView.setVisibility(View.VISIBLE);
+                    showRemote = true;
+                }
+            }
             peer2Layout.setVisibility(View.VISIBLE);
             peer3Layout.setVisibility(View.VISIBLE);
             peer4Layout.setVisibility(View.VISIBLE);
@@ -948,6 +966,21 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         chatLayout.setVisibility(View.VISIBLE);
         cancelButton.setVisibility(View.VISIBLE);
         refreshPeerViews();
+    }
+
+    public void onToggleLocalVideo(View view)
+    {
+        int count = localLayout.getChildCount();
+        for (int i = 0 ; i < count ; i ++){
+
+            View subView = localLayout.getChildAt(i);
+            if(!(subView instanceof Button)){
+                if (subView.getVisibility() == View.VISIBLE)
+                    subView.setVisibility(View.INVISIBLE);
+                else
+                    subView.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     private class MyWebViewClient extends WebViewClient {

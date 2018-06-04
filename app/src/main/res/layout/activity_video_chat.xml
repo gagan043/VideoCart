@@ -98,6 +98,13 @@
         app:layout_constraintRight_toRightOf="@+id/localvertical_guideline"
         app:layout_constraintBottom_toBottomOf="@+id/localhorizontal_guideline">
 
+        <Button
+            android:id="@+id/localtoggle_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:onClick="onToggleLocalVideo"/>
+
     </RelativeLayout>
 
     <android.support.constraint.ConstraintLayout

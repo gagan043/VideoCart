@@ -301,7 +301,7 @@ public class RoomEntryActivity extends AppCompatActivity {
 
     private void checkRoom()
     {
-        String room = Prefs.getString(Config.ROOM_NAME ,"");
+        String room = roomEdit.getText().toString();
         if (room.length() != 0){
             /*
             ACProgressFlower dialog = new ACProgressFlower.Builder(this)
@@ -318,7 +318,7 @@ public class RoomEntryActivity extends AppCompatActivity {
 
                     //dialog.dismiss();
                     isFound = true;
-                    //Prefs.putString(Config.ROOM_NAME ,roomEdit.getText().toString());
+                    Prefs.putString(Config.ROOM_NAME ,roomEdit.getText().toString());
                     Prefs.putString(Config.USER_NAME ,jsonObject.get("for_name").getAsString());
                     Prefs.putString(Config.UUID ,jsonObject.get("uuid").getAsString());
                     int found = jsonObject.get("found").getAsInt();

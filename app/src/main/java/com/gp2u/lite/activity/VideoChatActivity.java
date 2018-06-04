@@ -127,7 +127,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     ConstraintLayout parentLayout;
 
     @BindView(R.id.cancel_button)
-    Button cancelButton;
+    RelativeLayout cancelButton;
 
     @BindView(R.id.peer1_mute)
     Button peer1muteButton;
@@ -738,7 +738,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
                 int width =  screenWidth / 2;
                 int height =  (int)(width * 0.75)  ;
                 params.leftMargin = (isPortrait) ?  screenWidth - width : screenHeight - width;
-                params.topMargin = 0;
+                params.topMargin = 100;
                 params.width = width;
                 params.height = height;
                 layout.setLayoutParams(params);

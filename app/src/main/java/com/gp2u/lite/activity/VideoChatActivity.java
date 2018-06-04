@@ -586,15 +586,18 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     @Override
     public void onRemotePeerMediaReceive(String remotePeerId, SurfaceViewRenderer surfaceViewRenderer) {
 
+        int i = addRemotePeer(remotePeerId);
         addRemoteView(remotePeerId);
         refreshPeerViews();
+        // this is a hack to hide incorrect rendering of mute button
+        // this is SDK issue TODO - get it fixed!
+        muteButtons[i].setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void onRemotePeerJoin(String remotePeerId, Object userData, boolean hasDataChannel) {
 
         arrivePlayer.start();
-        addRemotePeer(remotePeerId);
     }
 
     @Override
@@ -671,10 +674,13 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
             if (peerList[i] != null && skylinkConnection != null) {
                 UserInfo userInfo = skylinkConnection.getUserInfo(peerList[i]);
                 if (userInfo != null){
-                    if (userInfo.isAudioMuted())
+                    if (userInfo.isAudioMuted()) {
+                        Log.d("[MUTE]", +i + " peer: " + peerList[i]);
                         muteButtons[i].setVisibility(View.VISIBLE);
-                    else
+                    }
+                    else {
                         muteButtons[i].setVisibility(View.INVISIBLE);
+                    }
                 }
                 peerCount++;
             }

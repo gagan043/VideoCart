@@ -40,8 +40,6 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cc.cloudist.acplibrary.ACProgressConstant;
-import cc.cloudist.acplibrary.ACProgressFlower;
 import es.dmoral.toasty.Toasty;
 import rx.Subscription;
 
@@ -340,8 +338,17 @@ public class RoomEntryActivity extends AppCompatActivity {
                 @Override
                 public void doError(Throwable e) {
                     //dialog.dismiss();
+                    showToastWithError(Config.INTERNET_ERROR);
+
                 }
             });
         }
+    }
+
+    public void showToastWithError(String message)
+    {
+        Toast toast = Toasty.error(this, message, Toast.LENGTH_SHORT, false);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 }

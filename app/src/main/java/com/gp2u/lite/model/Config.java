@@ -28,4 +28,5 @@ public class Config {
     public static final String OPEN_MESSAGE_ERROR = "There is nobody connected to chat to!";
     public static final String CHECKING_ROOM_INFO =  "Checking info";
 
+    public static final String INTERNET_ERROR = "No Internet Connection";
 }

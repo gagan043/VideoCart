@@ -80,5 +80,6 @@ dependencies {
     implementation 'io.reactivex:rxjava:1.2.1'
     implementation 'io.reactivex:rxandroid:1.2.1'
 
-    implementation 'cc.cloudist.acplibrary:library:1.2.1'
+    //implementation 'cc.cloudist.acplibrary:library:1.2.1'
+
 }

@@ -1,6 +1,7 @@
 package com.gp2u.lite.view;
 
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,13 +15,18 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 
 
 public class CCView extends View {
 
     private float arcAngle;
+    private float scale = 1.0f;
+
     Path crossPath = new Path();
     Paint mPaint = new Paint();
+    Paint fillPaint = new Paint();
+
     Canvas canvas;
     float length;
 
@@ -31,10 +37,16 @@ public class CCView extends View {
         mPaint = new Paint();
         mPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
         mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setColor(Color.WHITE);
         mPaint.setStrokeWidth(10);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setColor(Color.argb(255, 0, 66, 128));
+
+        fillPaint = new Paint();
+        fillPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+        fillPaint.setStyle(Paint.Style.FILL);
+        fillPaint.setColor(Color.WHITE);
     }
 
     public CCView(Context context, AttributeSet attrs) {
@@ -44,10 +56,16 @@ public class CCView extends View {
         mPaint = new Paint();
         mPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
         mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setColor(Color.WHITE);
         mPaint.setStrokeWidth(10);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setColor(Color.argb(255, 0, 66, 128));
+
+        fillPaint = new Paint();
+        fillPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+        fillPaint.setStyle(Paint.Style.FILL);
+        fillPaint.setColor(Color.WHITE);
     }
 
     @Override
@@ -56,7 +74,12 @@ public class CCView extends View {
 
         this.canvas = canvas;
         addCircle(canvas);
-        //addCross(canvas);
+
+        int width = canvas.getWidth();
+        int height = canvas.getHeight();
+        Point center = new Point(width / 2 + 225 * width / 800, height / 2);
+        canvas.scale(scale ,scale ,center.x ,center.y);
+        canvas.drawPath(crossPath ,fillPaint);
         canvas.drawPath(crossPath ,mPaint);
     }
 
@@ -90,8 +113,9 @@ public class CCView extends View {
         int width = canvas.getWidth();
         int height = canvas.getHeight();
         Point center = new Point(width / 2 + 225 * width / 800, height / 2);
-        float scale = (float) (50.0 * width / 800);
+        float scale = (float) (50.0 * width / 800) * this.scale;
 
+        crossPath = new Path();
         crossPath.moveTo(center.x + scale * -1 ,center.y + scale * -1);
         drawLine(center ,scale ,new Point(-1 ,-1) ,new Point(-1 ,-2));
         drawHalfCircle(center ,scale ,new Point(0 ,-2) , 180 ,180);
@@ -112,7 +136,6 @@ public class CCView extends View {
 
         PathMeasure measure = new PathMeasure(crossPath, false);
         length = measure.getLength();
-
         //canvas.drawPath(crossPath ,mPaint);
     }
 
@@ -127,12 +150,53 @@ public class CCView extends View {
         crossPath.arcTo(new RectF(center.x + scale * offset.x - scale , center.y + scale * offset.y - scale,center.x + scale * offset.x + scale  ,center.y + scale * offset.y + scale) ,start ,end);
     }
 
-    public void init()
+    public void crossAnimation()
     {
         addCross(canvas);
         ObjectAnimator animator = ObjectAnimator.ofFloat(this, "phase", 1.0f, 0.0f);
         animator.setDuration(1000);
         animator.start();
+
+        ValueAnimator valueAnimator1 = ValueAnimator.ofFloat(1.0f ,1.5f);
+        valueAnimator1.setInterpolator(new AccelerateInterpolator());
+        valueAnimator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+
+                scale = (float)valueAnimator.getAnimatedValue();
+                invalidate();
+            }
+        });
+        valueAnimator1.setDuration(500);
+        valueAnimator1.setStartDelay(1000);
+        valueAnimator1.start();
+
+        ValueAnimator valueAnimator2 = ValueAnimator.ofFloat(1.5f ,1.0f);
+        valueAnimator2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+
+                scale = (float)valueAnimator.getAnimatedValue();
+                invalidate();
+            }
+        });
+        valueAnimator2.setDuration(500);
+        valueAnimator2.setInterpolator(new AccelerateInterpolator());
+        valueAnimator2.setStartDelay(1500);
+        valueAnimator2.start();
+
+        ValueAnimator valueAnimator3 = ValueAnimator.ofFloat(0f ,70.0f);
+        valueAnimator3.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+
+                scale = (float)valueAnimator.getAnimatedValue();
+                invalidate();
+            }
+        });
+        valueAnimator3.setDuration(500);
+        valueAnimator3.setStartDelay(3500);
+        valueAnimator3.start();
     }
 
     public void setPhase(float phase)
@@ -147,4 +211,5 @@ public class CCView extends View {
         return new DashPathEffect(new float[] { pathLength, pathLength },
                 Math.max(phase * pathLength, offset));
     }
+
 }

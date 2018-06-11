@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private final int SPLASH_DISPLAY_LENGTH = 4000;
+    private final int SPLASH_DISPLAY_LENGTH = 5000;
 
     @BindView(R.id.ccView)
     CCView ccView;
@@ -37,10 +37,6 @@ public class SplashActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         AudioRouter.startAudioRouting(this);
 
-//        ImageView imageView = (ImageView) findViewById(R.id.imageView);
-//        Animation hyperspaceJump = AnimationUtils.loadAnimation(this, R.anim.hyperspace_jump);
-//        imageView.startAnimation(hyperspaceJump);
-
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
@@ -50,6 +46,17 @@ public class SplashActivity extends AppCompatActivity {
                 SplashActivity.this.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
+
+        new Handler().postDelayed(new Runnable(){
+            @Override
+            public void run() {
+
+                AlphaAnimation alphaAnimation1 = new AlphaAnimation(1.0f ,0.0f);
+                alphaAnimation1.setDuration(100);
+                alphaAnimation1.setFillAfter(true);
+                imageView.startAnimation(alphaAnimation1);
+            }
+        }, 4400);
 
         CircleAnimation animation = new CircleAnimation(ccView, 300);
         animation.setDuration(1000);
@@ -63,7 +70,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 // start animation cross
-                ccView.init();
+                ccView.crossAnimation();
             }
 
             @Override

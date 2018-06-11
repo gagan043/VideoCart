@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
+    android:clipChildren="false"
     tools:context="com.gp2u.lite.activity.SplashActivity">
 
     <ImageView
@@ -15,19 +16,25 @@
         app:srcCompat="@drawable/splash"
         android:visibility="invisible" />
 
+    <View
+        android:id="@+id/center_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"/>
+
     <com.gp2u.lite.view.CCView
         android:id="@+id/ccView"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_centerInParent="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/cc_imageview" />
 
     <ImageView
         android:id="@+id/cc_imageview"
         android:layout_width="240dp"
         android:layout_height="50dp"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/ccView"
-        android:src="@drawable/carecomplete"
-        android:layout_marginTop="10dp"/>
+        android:layout_below="@+id/center_view"
+        android:src="@drawable/carecomplete" />
     
 </RelativeLayout>

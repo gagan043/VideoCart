@@ -101,11 +101,11 @@ public class CCView extends View {
         Paint paint = new Paint();
         paint.setFlags(Paint.ANTI_ALIAS_FLAG);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(50);
+        paint.setStrokeWidth(42);
         paint.setStrokeJoin(Paint.Join.ROUND);
         paint.setStrokeCap(Paint.Cap.ROUND);
         paint.setColor(Color.argb(255, 85, 138, 200));
-        canvas.drawArc(rect1 , 330f - arcAngle ,arcAngle ,false ,paint);
+        canvas.drawArc(rect1 , 30f - arcAngle ,arcAngle ,false ,paint);
     }
 
     public void addCross(Canvas canvas)

@@ -20,7 +20,7 @@ public class CircleAnimation extends Animation{
 
     @Override
     protected void applyTransformation(float interpolatedTime, Transformation transformation) {
-        float angle = 0 + ((newAngle - oldAngle) * interpolatedTime);
+        float angle = 0 + ((oldAngle - newAngle) * interpolatedTime);
 
         arcView.setArcAngle(angle);
         arcView.requestLayout();

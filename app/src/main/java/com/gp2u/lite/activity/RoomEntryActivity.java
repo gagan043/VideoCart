@@ -74,20 +74,22 @@ public class RoomEntryActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         roomEdit.setText(Prefs.getString(Config.ROOM_NAME ,""));
         entryChangeListener();
+        checkRoom();
+
     }
 
     @Override
     public void onStart()
     {
         super.onStart();
-        checkRoom();
+        //checkRoom();
     }
 
     @Override
     public void onPause()
     {
         super.onPause();
-        cancelTimer();
+        //cancelTimer();
         hideKeyboard();
     }
 
@@ -111,9 +113,11 @@ public class RoomEntryActivity extends AppCompatActivity {
     public void onEnter(View view)
     {
         if (isFound){
+
+            autoconnectArr.remove(roomEdit.getText().toString());
+            autoconnectArr.add(roomEdit.getText().toString());
             Intent intent = new Intent(this ,VideoChatActivity.class);
             startActivity(intent);
-            isFound = false;
             return;
         }
         checkRoom();
@@ -290,7 +294,6 @@ public class RoomEntryActivity extends AppCompatActivity {
 
                     boolean autoconnect = autoconnectArr.contains(roomEdit.getText().toString());
                     if (!autoconnect){
-                        autoconnectArr.add(roomEdit.getText().toString());
                         onEnter(null);
                     }
                 }

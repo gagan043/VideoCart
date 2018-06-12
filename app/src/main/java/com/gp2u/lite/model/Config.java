@@ -22,13 +22,4 @@ public class Config {
     public static final String          WEBRTC_DOMAIN  = SUBDOMAIN + "gp2u.com.au";
     public static final String          MAIN_DOMAIN = "https://" + WEBRTC_DOMAIN;
 
-    public static final String ROOM_NOT_FOUND  =  "Room not found\nPress green phone to connect anyway";
-    public static final String ROOM_NOT_FOUND1 =  "Show room not found";
-    public static final String WELCOME_MESSAGE = "Welcome!\nClick the remote\nuser to hide.\nClick top right\nagain to show.";
-    public static final String OPEN_MESSAGE_ERROR = "There is nobody connected to chat to!";
-    public static final String CHECKING_ROOM_INFO =  "Checking info";
-
-    public static final String INTERNET_ERROR = "No Internet Connection";
-    public static final String PLEASE_TURN_VOLUME_UP = "Please turn your volume up";
-
 }

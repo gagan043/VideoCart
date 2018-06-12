@@ -97,7 +97,7 @@ public class MessageFragment extends Fragment implements MessagesListener ,FileT
         ButterKnife.bind(this ,view);
         initAdapter();
         initInput();
-        Message message1 = new Message(Utils.getRandomId() , new User("remote" ,"peer"), Config.WELCOME_MESSAGE);
+        Message message1 = new Message(Utils.getRandomId() , new User("remote" ,"peer"), getString(R.string.WELCOME_MESSAGE));
         messagesAdapter.addToStart(message1, true);
         return view;
     }

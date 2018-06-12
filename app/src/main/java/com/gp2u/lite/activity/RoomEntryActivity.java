@@ -187,8 +187,8 @@ public class RoomEntryActivity extends AppCompatActivity {
                 if (Global.isHook){
 
                     new MaterialDialog.Builder(RoomEntryActivity.this)
-                            .content("You have arrived here via a video link with a room in it. If you change the room you will not connect to the expected room")
-                            .positiveText("Change Room")
+                            .content(getString(R.string.ROOMCHANGE_MESSAGE))
+                            .positiveText(getString(R.string.CHANGE_ROOM))
                             .negativeText("Cancel")
                             .onPositive(new MaterialDialog.SingleButtonCallback() {
                                 @Override
@@ -282,7 +282,7 @@ public class RoomEntryActivity extends AppCompatActivity {
                     public void run() {
                         appointmentTextView1.setText(ss);
                         appointmentTextView.setText(str);
-                        appointmentTextView2.setText("Press the green phone to connect");
+                        appointmentTextView2.setText(getString(R.string.PRESS_PHONE));
                     }
                 });
 
@@ -326,8 +326,8 @@ public class RoomEntryActivity extends AppCompatActivity {
                         checkAutoConnection(jsonObject);
                     }else {
                         appointmentTextView.setText("");
-                        appointmentTextView1.setText("Room not found");
-                        appointmentTextView2.setText("Press green phone to connect anyway");
+                        appointmentTextView1.setText(getString(R.string.ROOM_NOT_FOUND));
+                        appointmentTextView2.setText(getString(R.string.PRESS_PHONE));
                     }
                 }
 
@@ -339,7 +339,7 @@ public class RoomEntryActivity extends AppCompatActivity {
                 @Override
                 public void doError(Throwable e) {
                     //dialog.dismiss();
-                    showToastWithError(Config.INTERNET_ERROR);
+                    showToastWithError(getString(R.string.INTERNET_ERROR));
 
                 }
             });

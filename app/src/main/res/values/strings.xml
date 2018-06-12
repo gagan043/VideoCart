@@ -17,5 +17,14 @@
     <string name="SWAP_CAMERA">Swapping Cameras...</string>
 
     <string name="hint_enter_a_message">Type a message…</string>
+    <string name="ROOM_NOT_FOUND">Room not found</string>
+    <string name="PRESS_PHONE">Press green phone to connect anyway</string>
+    <string name="WELCOME_MESSAGE">Welcome!\nClick the remote\nuser to hide.\nClick top right\nagain to show.</string>
+    <string name="OPEN_MESSAGE_ERROR">There is nobody connected to chat to!</string>
+    <string name="CHECKING_ROOM_INFO">Checking info</string>
+    <string name="INTERNET_ERROR">No Internet Connection</string>
+    <string name="PLEASE_TURN_VOLUME_UP">Please turn your volume up</string>
 
+    <string name="ROOMCHANGE_MESSAGE">You have arrived here via a video link with a room in it. If you change the room you will not connect to the expected room</string>
+    <string name="CHANGE_ROOM">Change Room</string>
 </resources>

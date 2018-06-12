@@ -213,7 +213,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
                 if (peerList[i] != null) peerCount++;
             }
             if (peerCount == 0){
-                showToastWithError(Config.OPEN_MESSAGE_ERROR);
+                showToastWithError(getString(R.string.OPEN_MESSAGE_ERROR));
                 return;
             }
             chatLayout.setVisibility(View.VISIBLE);
@@ -241,7 +241,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         int currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         if (currentVolume < maxVolume / 2)
-            showToastWithError(Config.PLEASE_TURN_VOLUME_UP);
+            showToastWithError(getString(R.string.PLEASE_TURN_VOLUME_UP));
 
         lockPlayer = MediaPlayer.create(this ,R.raw.unlock);
         unlockPlayer = MediaPlayer.create(this ,R.raw.unlock);

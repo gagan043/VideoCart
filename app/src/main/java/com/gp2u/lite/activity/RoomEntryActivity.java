@@ -114,6 +114,8 @@ public class RoomEntryActivity extends AppCompatActivity {
     {
         if (isFound){
 
+            APIService.getInstance().logConnection(0 ,"Enter" ,"");
+
             autoconnectArr.remove(roomEdit.getText().toString());
             autoconnectArr.add(roomEdit.getText().toString());
             Intent intent = new Intent(this ,VideoChatActivity.class);

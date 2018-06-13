@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.gp2u.lite.model.Config;
+import com.pixplicity.easyprefs.library.Prefs;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -73,6 +74,32 @@ public class APIService {
 
                         Log.d("response" ,jsonObject.toString());
                         callback.doNext(jsonObject);
+                    }
+                });
+
+    }
+
+    public Subscription logConnection(int peerCount ,String status ,String error)
+    {
+        String room = Prefs.getString(Config.ROOM_NAME ,"");
+        String username = Prefs.getString(Config.USER_NAME ,"");
+        final Observable<JsonObject> call = apiService.logConnection(room ,username ,String.valueOf(peerCount) ,status ,error);
+        return call
+                .subscribeOn(Schedulers.io()) // optional if you do not wish to override the default behavior
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<JsonObject>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(JsonObject jsonObject) {
+
+                        Log.d("response" ,jsonObject.toString());
                     }
                 });
 

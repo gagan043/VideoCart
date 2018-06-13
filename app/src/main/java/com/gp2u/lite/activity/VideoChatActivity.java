@@ -33,6 +33,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.gp2u.lite.R;
+import com.gp2u.lite.control.APIService;
 import com.gp2u.lite.control.AudioRouter;
 import com.gp2u.lite.fragment.MessageFragment;
 import com.gp2u.lite.model.Config;
@@ -449,7 +450,6 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
             goBack();
         }
 
-
     }
 
     public void onDisconnect(View view)
@@ -468,6 +468,8 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
             skylinkConnection.disconnectFromRoom();
         }
 
+        APIService.getInstance().logConnection(peerCount() ,"Disconnect" ,"");
+        APIService.getInstance().logConnection(peerCount() ,"Exit" ,"");
         finish();
     }
 
@@ -502,9 +504,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     @Override
     public void onConnect(boolean isSuccess, String s) {
 
-        if (isSuccess){
-
-        }
+        APIService.getInstance().logConnection(peerCount() ,"Connect" ,s);
     }
 
     @Override
@@ -516,7 +516,6 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     @Override
     public void onDisconnect(int i, String s) {
-
     }
 
     @Override
@@ -606,6 +605,8 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         // this is a hack to hide incorrect rendering of mute button
         // this is SDK issue TODO - get it fixed!
         muteButtons[i].setVisibility(View.INVISIBLE);
+
+        APIService.getInstance().logConnection(peerCount() ,"Peer Joined" ,"");
     }
 
     @Override
@@ -640,6 +641,9 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
         removeRemotePeer(remotePeerId);
         refreshPeerViews();
+
+        APIService.getInstance().logConnection(peerCount() ,"Peer Left" ,"");
+
     }
 
     @Override
@@ -999,5 +1003,15 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
             // else proceed as normal
             return false;
         }
+    }
+
+    private int peerCount()
+    {
+        int peerCount = 0;
+        for (int i = 0; i < peerList.length ; i ++){
+            if (peerList[i] != null)
+                peerCount++;
+        }
+        return peerCount;
     }
 }

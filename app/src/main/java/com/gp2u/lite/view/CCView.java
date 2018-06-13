@@ -15,7 +15,9 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 
 
 public class CCView extends View {
@@ -157,8 +159,8 @@ public class CCView extends View {
         animator.setDuration(1000);
         animator.start();
 
-        ValueAnimator valueAnimator1 = ValueAnimator.ofFloat(1.0f ,1.5f);
-        valueAnimator1.setInterpolator(new AccelerateInterpolator());
+        ValueAnimator valueAnimator1 = ValueAnimator.ofFloat(1.0f ,1.4f);
+        valueAnimator1.setInterpolator(new DecelerateInterpolator());
         valueAnimator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -167,11 +169,12 @@ public class CCView extends View {
                 invalidate();
             }
         });
-        valueAnimator1.setDuration(500);
+        valueAnimator1.setDuration(400);
         valueAnimator1.setStartDelay(1000);
         valueAnimator1.start();
 
-        ValueAnimator valueAnimator2 = ValueAnimator.ofFloat(1.5f ,1.0f);
+        ValueAnimator valueAnimator2 = ValueAnimator.ofFloat(1.4f ,0.8f);
+        valueAnimator2.setInterpolator(new AccelerateDecelerateInterpolator());
         valueAnimator2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -180,12 +183,12 @@ public class CCView extends View {
                 invalidate();
             }
         });
-        valueAnimator2.setDuration(500);
-        valueAnimator2.setInterpolator(new AccelerateInterpolator());
-        valueAnimator2.setStartDelay(1500);
+        valueAnimator2.setDuration(600);
+        valueAnimator2.setStartDelay(1400);
         valueAnimator2.start();
 
-        ValueAnimator valueAnimator3 = ValueAnimator.ofFloat(0f ,70.0f);
+        ValueAnimator valueAnimator3 = ValueAnimator.ofFloat(0.8f ,1.0f);
+        valueAnimator3.setInterpolator(new AccelerateInterpolator());
         valueAnimator3.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -194,9 +197,22 @@ public class CCView extends View {
                 invalidate();
             }
         });
-        valueAnimator3.setDuration(500);
-        valueAnimator3.setStartDelay(3500);
+        valueAnimator3.setDuration(400);
+        valueAnimator3.setStartDelay(2000);
         valueAnimator3.start();
+
+        ValueAnimator valueAnimator4 = ValueAnimator.ofFloat(0f ,80.0f);
+        valueAnimator4.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+
+                scale = (float)valueAnimator.getAnimatedValue();
+                invalidate();
+            }
+        });
+        valueAnimator4.setDuration(500);
+        valueAnimator4.setStartDelay(3500);
+        valueAnimator4.start();
     }
 
     public void setPhase(float phase)

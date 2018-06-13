@@ -81,7 +81,7 @@ public class SplashActivity extends AppCompatActivity {
 
         AlphaAnimation alphaAnimation = new AlphaAnimation(0.0f ,1.0f);
         alphaAnimation.setDuration(2000);
-        alphaAnimation.setStartOffset(1500);
+        alphaAnimation.setStartOffset(2500);
         alphaAnimation.setFillAfter(true);
         imageView.startAnimation(alphaAnimation);
     }

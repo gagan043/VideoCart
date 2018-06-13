@@ -187,6 +187,7 @@
     <orderEntry type="library" scope="TEST" name="Gradle: com.android.support.test:runner-1.0.2" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-annotations:27.1.1@jar" level="project" />
     <orderEntry type="library" name="Gradle: jp.wasabeef:fresco-processors-2.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.sjl:Foredroid-1.0.2" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-v4-27.0.1" level="project" />
     <orderEntry type="library" name="Gradle: me.relex:photodraweeview-1.1.0" level="project" />
     <orderEntry type="library" name="Gradle: com.jakewharton:butterknife-annotations:8.8.1@jar" level="project" />

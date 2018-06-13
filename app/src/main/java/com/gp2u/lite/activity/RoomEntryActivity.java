@@ -29,6 +29,7 @@ import com.gp2u.lite.control.AudioRouter;
 import com.gp2u.lite.model.Config;
 import com.gp2u.lite.model.Global;
 import com.pixplicity.easyprefs.library.Prefs;
+import com.sjl.foreground.Foreground;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -70,6 +71,7 @@ public class RoomEntryActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_room_entry);
         AudioRouter.startAudioRouting(this);
+        addForegroundListener();
 
         ButterKnife.bind(this);
         roomEdit.setText(Prefs.getString(Config.ROOM_NAME ,""));
@@ -97,6 +99,24 @@ public class RoomEntryActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         if (subscription != null) subscription.unsubscribe();
+    }
+
+    private void addForegroundListener()
+    {
+        Foreground.init(getApplication());
+        Foreground.Listener listener = new Foreground.Listener() {
+            @Override
+            public void onBecameForeground() {
+
+            }
+
+            @Override
+            public void onBecameBackground() {
+
+                cancelTimer();
+            }
+        };
+        Foreground.get().addListener(listener);
     }
 
     public void onQRScan(View view)

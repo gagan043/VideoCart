@@ -22,5 +22,6 @@ public class Config {
     private static final String         SUBDOMAIN = BuildConfig.subdomain;
     public static final String          WEBRTC_DOMAIN  = SUBDOMAIN + "gp2u.com.au";
     public static final String          MAIN_DOMAIN = "https://" + WEBRTC_DOMAIN;
+    public static final String          VIDEO_URL = MAIN_DOMAIN + "/static/videos/CareFirstParticipants.mp4";
 
 }

@@ -89,6 +89,17 @@ public class PermissionActivity extends AppCompatActivity {
                 Log.d(TAG ,e.getLocalizedMessage());
                 roomname = "";
             }
+            Boolean isTest = false;
+            try {
+                String testStr = uri.getQueryParameter("test");
+                if (testStr.length() > 0) isTest = true;
+
+            }catch (NullPointerException e){
+                Log.d(TAG ,e.getLocalizedMessage());
+                isTest = false;
+            }
+            Log.d(TAG + "IS_TEST: ", Boolean.toString(isTest));
+            Prefs.putBoolean(Config.IS_TEST , isTest);
             if (roomname.equals("")){
                 try {
                     roomname = uri.getQueryParameter("room");
@@ -105,6 +116,5 @@ public class PermissionActivity extends AppCompatActivity {
         gotoRoomEntry();
 
     }
-
 
 }

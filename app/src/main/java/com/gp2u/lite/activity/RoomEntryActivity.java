@@ -168,6 +168,17 @@ public class RoomEntryActivity extends AppCompatActivity {
                 Log.d(TAG ,e.getLocalizedMessage());
                 roomname = "";
             }
+            Boolean isTest = false;
+            try {
+                String testStr = uri.getQueryParameter("test");
+                if (testStr.length() > 0) isTest = true;
+
+            }catch (NullPointerException e){
+                Log.d(TAG ,e.getLocalizedMessage());
+                isTest = false;
+            }
+            Log.d(TAG + "IS_TEST: ", Boolean.toString(isTest));
+            Prefs.putBoolean(Config.IS_TEST , isTest);
             if (roomname.equals("")){
                 try {
                     roomname = uri.getQueryParameter("room");
@@ -176,15 +187,6 @@ public class RoomEntryActivity extends AppCompatActivity {
                     Log.d(TAG ,e.getLocalizedMessage());
                     roomname = "";
                 }
-                String testStr = "";
-                try {
-                    testStr = uri.getQueryParameter("test");
-                    Log.d(TAG ,testStr);
-                    Prefs.putString(Config.IS_TEST ,(testStr.length() == 0) ? "0" : "1");
-                }catch (NullPointerException e){
-                    Log.d(TAG ,e.getLocalizedMessage());
-                }
-
             }
             roomEdit.setText(roomname);
             Prefs.putString(Config.ROOM_NAME ,(roomname.length() == 0) ? "default" : roomname);

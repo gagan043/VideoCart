@@ -14,6 +14,7 @@ public class Config {
     public static boolean IS_APP_KEY_SMR = false;
 
     public static final String ROOM_NAME = "RoomName";
+    public static final String IS_TEST   = "IsTest";
     public static final String USER_NAME = "UserName";
     public static final String UUID = "uuid";
     public static final String bPermissionAsked = "bPermissionAsked";

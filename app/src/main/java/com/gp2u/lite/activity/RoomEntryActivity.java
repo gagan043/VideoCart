@@ -176,9 +176,21 @@ public class RoomEntryActivity extends AppCompatActivity {
                     Log.d(TAG ,e.getLocalizedMessage());
                     roomname = "";
                 }
+                String testStr = "";
+                try {
+                    testStr = uri.getQueryParameter("test");
+                    Log.d(TAG ,testStr);
+                    Prefs.putString(Config.IS_TEST ,(testStr.length() == 0) ? "0" : "1");
+                }catch (NullPointerException e){
+                    Log.d(TAG ,e.getLocalizedMessage());
+                }
+
             }
             roomEdit.setText(roomname);
             Prefs.putString(Config.ROOM_NAME ,(roomname.length() == 0) ? "default" : roomname);
+
+
+
             onEnter(null);
 
         }

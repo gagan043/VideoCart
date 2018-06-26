@@ -693,13 +693,10 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
                 UserInfo userInfo = skylinkConnection.getUserInfo(peerList[i]);
                 if (userInfo != null){
                     if (userInfo.isAudioMuted()) {
-                        Log.d("[MUTE]", +i + " peer: " + peerList[i]);
+                        Log.d("[MUTE]", +i + " peer: " + peerList[i] + " isAudioMuted: " + userInfo.isAudioMuted());
                         muteButtons[i].setVisibility(View.VISIBLE);
+                        muteButtons[i].setAlpha(1);
                     }
-                    else {
-                        muteButtons[i].setVisibility(View.INVISIBLE);
-                    }
-                    muteButtons[i].setAlpha(1);
                 }
                 peerCount++;
             }
@@ -761,6 +758,9 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
                 params.width = width;
                 params.height = height;
                 layout.setLayoutParams(params);
+                // this is a hack to hide incorrect rendering of mute button
+                // this is SDK issue TODO - get it fixed!
+                muteButtons[0].setVisibility(View.INVISIBLE);
             }
 
             parentLayout.bringChildToFront(chatLayout);
@@ -955,6 +955,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
                             dialog.dismiss();
                             setBadge();
                             showMessage(true);
+                            refreshPeerViews();
                         }
                     })
                     .show();

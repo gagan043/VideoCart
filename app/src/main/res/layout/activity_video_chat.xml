@@ -312,7 +312,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/cc_imageview"
-                android:textColor="#000"
+                android:textColor="#fff"
                 android:textSize="14sp"
                 android:text="Your CareCoordinator will be with you shortly."/>
         </RelativeLayout>

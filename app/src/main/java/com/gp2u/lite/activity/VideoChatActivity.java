@@ -294,6 +294,12 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         });
     }
 
+    public void hideConnectedVideo() {
+        videoView = (VideoView) findViewById(R.id.video_view);
+        videoView.stopPlayback();
+        videoView.setVisibility(View.INVISIBLE);
+    }
+
     public void showUserDialog()
     {
         roomName =  Prefs.getString(Config.ROOM_NAME ,"default");
@@ -703,6 +709,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         // this is a hack to hide incorrect rendering of mute button
         // this is SDK issue TODO - get it fixed!
         muteButtons[i].setVisibility(View.INVISIBLE);
+        hideConnectedVideo();
 
         APIService.getInstance().logConnection(peerCount() ,"Peer Joined" ,"");
     }
@@ -734,7 +741,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         if (! localDisconnect) {
             showToast(getString(R.string.REMOTE_PEER_DISCONNECTED));
         }
-        background_view.setVisibility(View.VISIBLE);
+
         webView.setVisibility(View.INVISIBLE);
         exitPlayer.start();
         skylinkConnection.unlockRoom();
@@ -889,7 +896,9 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
             parentLayout.bringChildToFront(chatLayout);
             parentLayout.bringChildToFront(webView);
             parentLayout.bringChildToFront(cancelButton);
-
+            if (peerCount == 0 ) {
+                background_view.setVisibility(View.VISIBLE);
+            }
         }
     }
 

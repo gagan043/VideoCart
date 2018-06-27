@@ -29,7 +29,9 @@
         android:layout_marginRight="40dp"
         android:layout_marginTop="40dp"
         android:ems="10"
-        android:hint="Please Enter Room Name"
+        android:text="prince"
+        android:enabled="false"
+
         android:inputType="textPersonName"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"

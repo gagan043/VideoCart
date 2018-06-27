@@ -20,12 +20,14 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,7 +42,9 @@ import com.gp2u.lite.control.AudioRouter;
 import com.gp2u.lite.fragment.MessageFragment;
 import com.gp2u.lite.model.Config;
 import com.gp2u.lite.model.Global;
+import com.gp2u.lite.utils.CircleAnimation;
 import com.gp2u.lite.utils.KeyboardUtil;
+import com.gp2u.lite.view.CCView;
 import com.pixplicity.easyprefs.library.Prefs;
 
 import net.colindodd.toggleimagebutton.ToggleImageButton;
@@ -76,7 +80,6 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     boolean localDisconnect = false;
     boolean showAlert;
     boolean showRemote = true;
-
     private static String[] peerList = new String[4];
     private RelativeLayout[] videoViewLayouts;
     private Button[] muteButtons ;
@@ -161,6 +164,14 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     Subscription subscription;
 
+    @BindView(R.id.background_view)
+    RelativeLayout background_view;
+
+    @BindView(R.id.ccView)
+    CCView ccView;
+
+    @BindView(R.id.cc_imageview)
+    ImageView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -189,11 +200,55 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
         cancelButton.setVisibility(View.INVISIBLE);
 
-        if (Prefs.getBoolean(Config.IS_TEST, false))  {
+        if (Prefs.getBoolean(Config.IS_TEST, true))  {
             Log.d("IS_TEST", "here");
             showConnectedVideo();
         }
+        animatedCenterLogoMethod();
+    }
+    public void animatedCenterLogoMethod(){
+        /*new Handler().postDelayed(new Runnable(){
+            @Override
+            public void run() {
 
+                AlphaAnimation alphaAnimation1 = new AlphaAnimation(1.0f ,0.0f);
+                alphaAnimation1.setDuration(100);
+                alphaAnimation1.setFillAfter(true);
+                imageView.startAnimation(alphaAnimation1);
+            }
+        }, 4400);
+*/
+        CircleAnimation animation = new CircleAnimation(ccView, 300);
+        animation.setDuration(1000);
+
+        ccView.startAnimation(animation);
+
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                // start animation cross
+                ccView.crossAnimation();
+                ccView.startAnimation(animation);
+
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+       /* AlphaAnimation alphaAnimation = new AlphaAnimation(0.0f ,1.0f);
+        alphaAnimation.setDuration(2000);
+        alphaAnimation.setStartOffset(2500);
+        alphaAnimation.setFillAfter(true);
+        imageView.startAnimation(alphaAnimation);*/
     }
 
     @Override
@@ -211,6 +266,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     }
 
     public void showConnectedVideo() {
+
         videoView = (VideoView) findViewById(R.id.video_view);
 
         Uri video = Uri.parse(Config.VIDEO_URL);
@@ -218,8 +274,20 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
+                background_view.setVisibility(View.GONE);
+                webView.setVisibility(View.INVISIBLE);
                 mp.setLooping(false);
                 videoView.start();
+
+            }
+
+        });
+        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer mp) {
+
+                if(mp.isPlaying()==false){
+                    background_view.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
@@ -664,6 +732,8 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         if (! localDisconnect) {
             showToast(getString(R.string.REMOTE_PEER_DISCONNECTED));
         }
+        background_view.setVisibility(View.VISIBLE);
+        webView.setVisibility(View.INVISIBLE);
         exitPlayer.start();
         skylinkConnection.unlockRoom();
 
@@ -768,7 +838,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         }
 
         if (chatLayout.getVisibility() == View.VISIBLE){
-
+            background_view.setVisibility(View.GONE);
             peer1Layout.setVisibility(View.INVISIBLE);
             peer2Layout.setVisibility(View.INVISIBLE);
             peer3Layout.setVisibility(View.INVISIBLE);
@@ -857,9 +927,12 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
         int index = getPeerIndex(remotePeerId);
         if (index < 0 || index > videoViewLayouts.length) {
+            background_view.setVisibility(View.VISIBLE);
+            webView.setVisibility(View.INVISIBLE);
             return;
         }
-
+        background_view.setVisibility(View.GONE);
+        webView.setVisibility(View.VISIBLE);
         addFullSubView(videoViewLayouts[index] ,videoView);
         videoViewLayouts[index].bringChildToFront(muteButtons[index]);
     }

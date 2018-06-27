@@ -53,6 +53,7 @@ import org.webrtc.SurfaceViewRenderer;
 
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -283,7 +284,11 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     public void showUserDialog()
     {
-        roomName =  Prefs.getString(Config.ROOM_NAME ,"default");
+
+        roomName =  Prefs.getString(Config.ROOM_NAME ,"");
+        if (roomName.isEmpty() ) {
+            roomName =  UUID.randomUUID().toString().replace("-", "");
+        }
         userName = Prefs.getString(Config.USER_NAME ,"");
         connectToRoom();
         messageFragment.userName = userName;

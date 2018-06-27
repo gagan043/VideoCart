@@ -16,6 +16,8 @@ import com.gp2u.lite.model.Config;
 import com.gp2u.lite.model.Global;
 import com.pixplicity.easyprefs.library.Prefs;
 
+import java.util.UUID;
+
 public class PermissionActivity extends AppCompatActivity {
 
 
@@ -111,7 +113,10 @@ public class PermissionActivity extends AppCompatActivity {
             }
             Global.isHook = true;
             Log.d(TAG + "IS_TEST Global.isHook", Boolean.toString(Global.isHook));
-            Prefs.putString(Config.ROOM_NAME ,(roomname.length() == 0) ? "default" : roomname);
+            if (roomname.isEmpty()) {
+                roomname =  UUID.randomUUID().toString().replace("-", "");
+            }
+            Prefs.putString(Config.ROOM_NAME , roomname);
 
         }
         gotoRoomEntry();

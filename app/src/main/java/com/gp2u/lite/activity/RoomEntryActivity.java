@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,7 +75,12 @@ public class RoomEntryActivity extends AppCompatActivity {
         addForegroundListener();
 
         ButterKnife.bind(this);
-        roomEdit.setText(Prefs.getString(Config.ROOM_NAME ,""));
+        String roomname = Prefs.getString(Config.ROOM_NAME ,"");
+        if (roomname.isEmpty()) {
+            roomname =  UUID.randomUUID().toString().replace("-", "");
+        }
+        Prefs.putString(Config.ROOM_NAME , roomname);
+        roomEdit.setText(roomname);
         entryChangeListener();
         checkRoom();
 
@@ -179,7 +185,7 @@ public class RoomEntryActivity extends AppCompatActivity {
             }
             Log.d(TAG + "IS_TEST: ", Boolean.toString(isTest));
             Prefs.putBoolean(Config.IS_TEST , isTest);
-            if (roomname.equals("")){
+            if (roomname.isEmpty()){
                 try {
                     roomname = uri.getQueryParameter("room");
                     Log.d(TAG ,roomname);
@@ -188,10 +194,13 @@ public class RoomEntryActivity extends AppCompatActivity {
                     roomname = "";
                 }
             }
+            if (roomname.isEmpty()) {
+                roomname =  UUID.randomUUID().toString().replace("-", "");
+            }
+            Prefs.putString(Config.ROOM_NAME , roomname);
             roomEdit.setText(roomname);
             Global.isHook = true;
             Log.d(TAG + "IS_TEST Global.isHook", Boolean.toString(Global.isHook));
-            Prefs.putString(Config.ROOM_NAME ,(roomname.length() == 0) ? "default" : roomname);
 
             onEnter(null);
 

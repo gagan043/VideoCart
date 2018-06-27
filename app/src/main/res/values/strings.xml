@@ -3,6 +3,8 @@
     <string name="permission_instruction">For videoconferencing to work this App needs access to your camera and microphone \n \n Please press Allow and then OK for each device in the permisson pop up.</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="ROOM_NAME_CANNOT_BE_BLANK">Room name cannot be blank</string>
+
     <string name="REMOTE_PEER_DISCONNECTED">Remote peer has disconnected</string>
     <string name="LOCAL_PEER_DISCONNECTED">You have disconnected</string>
     <string name="PEER_REFRESH_ERROR">No peer connection to refresh</string>

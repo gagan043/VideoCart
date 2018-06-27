@@ -350,7 +350,10 @@ public class RoomEntryActivity extends AppCompatActivity {
     private void checkRoom()
     {
         String room = roomEdit.getText().toString();
-        if (room.length() != 0){
+        if (room.isEmpty()) {
+            showToastWithError(getString(R.string.ROOM_NAME_CANNOT_BE_BLANK));
+        }
+        else {
             /*
             ACProgressFlower dialog = new ACProgressFlower.Builder(this)
                     .direction(ACProgressConstant.DIRECT_CLOCKWISE)

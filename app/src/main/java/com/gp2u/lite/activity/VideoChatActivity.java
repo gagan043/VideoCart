@@ -395,6 +395,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         super.onConfigurationChanged(newConfig);
 
         refreshPeerViews();
+        muteButtons[0].setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -546,6 +547,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     {
         exitPlayer.start();
         showToast(getString(R.string.LOCAL_PEER_DISCONNECTED));
+        emptyLayout();
         localDisconnect = true;
         goBack();
     }

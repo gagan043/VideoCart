@@ -200,7 +200,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
         cancelButton.setVisibility(View.INVISIBLE);
 
-        if (Prefs.getBoolean(Config.IS_TEST, true))  {
+        if (Prefs.getBoolean(Config.IS_TEST, true) || ! Global.isHook )  {
             Log.d("IS_TEST", "Running Video Test Room");
             showConnectedVideo();
         }

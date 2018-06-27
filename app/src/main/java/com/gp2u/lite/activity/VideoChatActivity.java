@@ -201,10 +201,12 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         cancelButton.setVisibility(View.INVISIBLE);
 
         if (Prefs.getBoolean(Config.IS_TEST, true))  {
-            Log.d("IS_TEST", "here");
+            Log.d("IS_TEST", "Running Video Test Room");
             showConnectedVideo();
         }
-        animatedCenterLogoMethod();
+        else {
+            animatedCenterLogoMethod();
+        }
     }
     public void animatedCenterLogoMethod(){
         /*new Handler().postDelayed(new Runnable(){
@@ -219,7 +221,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         }, 4400);
 */
         CircleAnimation animation = new CircleAnimation(ccView, 300);
-        animation.setDuration(1000);
+        animation.setDuration(10);
 
         ccView.startAnimation(animation);
 

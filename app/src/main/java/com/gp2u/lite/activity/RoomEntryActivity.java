@@ -74,7 +74,7 @@ public class RoomEntryActivity extends AppCompatActivity {
         addForegroundListener();
 
         ButterKnife.bind(this);
-        roomEdit.setText(Prefs.getString(Config.ROOM_NAME ,"prince"));
+        roomEdit.setText(Prefs.getString(Config.ROOM_NAME ,""));
         entryChangeListener();
         checkRoom();
 

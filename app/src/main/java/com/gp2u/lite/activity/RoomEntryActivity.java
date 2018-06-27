@@ -189,9 +189,9 @@ public class RoomEntryActivity extends AppCompatActivity {
                 }
             }
             roomEdit.setText(roomname);
+            Global.isHook = true;
+            Log.d(TAG + "IS_TEST Global.isHook", Boolean.toString(Global.isHook));
             Prefs.putString(Config.ROOM_NAME ,(roomname.length() == 0) ? "default" : roomname);
-
-
 
             onEnter(null);
 

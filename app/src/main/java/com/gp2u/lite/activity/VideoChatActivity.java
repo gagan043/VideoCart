@@ -183,7 +183,6 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         new KeyboardUtil(this, findViewById(R.id.chat_layout));
 
         ButterKnife.bind(this);
-        Global.isHook = false;
 
         messageFragment = new MessageFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -200,8 +199,9 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
         cancelButton.setVisibility(View.INVISIBLE);
 
-        if (Prefs.getBoolean(Config.IS_TEST, true) || ! Global.isHook )  {
+        if (Prefs.getBoolean(Config.IS_TEST, false) || ! Global.isHook )  {
             Log.d("IS_TEST", "Running Video Test Room");
+            Log.d("IS_TEST Global.isHook", Boolean.toString(Global.isHook));
             showConnectedVideo();
         }
         else {
@@ -209,48 +209,12 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         }
     }
     public void animatedCenterLogoMethod(){
-        /*new Handler().postDelayed(new Runnable(){
-            @Override
-            public void run() {
 
-                AlphaAnimation alphaAnimation1 = new AlphaAnimation(1.0f ,0.0f);
-                alphaAnimation1.setDuration(100);
-                alphaAnimation1.setFillAfter(true);
-                imageView.startAnimation(alphaAnimation1);
-            }
-        }, 4400);
-*/
-        CircleAnimation animation = new CircleAnimation(ccView, 300);
-        animation.setDuration(10);
+        //CircleAnimation animation = new CircleAnimation(ccView, 300);
+       // animation.setDuration(10);
+       // ccView.startAnimation(animation);
+        //ccView.crossAnimation();
 
-        ccView.startAnimation(animation);
-
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                // start animation cross
-                ccView.crossAnimation();
-                ccView.startAnimation(animation);
-
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-       /* AlphaAnimation alphaAnimation = new AlphaAnimation(0.0f ,1.0f);
-        alphaAnimation.setDuration(2000);
-        alphaAnimation.setStartOffset(2500);
-        alphaAnimation.setFillAfter(true);
-        imageView.startAnimation(alphaAnimation);*/
     }
 
     @Override

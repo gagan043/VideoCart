@@ -152,6 +152,11 @@ public class CCView extends View {
         crossPath.arcTo(new RectF(center.x + scale * offset.x - scale , center.y + scale * offset.y - scale,center.x + scale * offset.x + scale  ,center.y + scale * offset.y + scale) ,start ,end);
     }
 
+    public void drawCross()
+    {
+        addCross(canvas);
+
+    }
     public void crossAnimation()
     {
         addCross(canvas);

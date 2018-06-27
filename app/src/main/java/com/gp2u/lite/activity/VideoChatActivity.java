@@ -210,10 +210,26 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     }
     public void animatedCenterLogoMethod(){
 
-        //CircleAnimation animation = new CircleAnimation(ccView, 300);
-       // animation.setDuration(10);
-       // ccView.startAnimation(animation);
-        //ccView.crossAnimation();
+        CircleAnimation animation = new CircleAnimation(ccView, 300);
+        animation.setDuration(100);
+        ccView.startAnimation(animation);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                // start animation cross
+                ccView.crossAnimation2();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
 
     }
 

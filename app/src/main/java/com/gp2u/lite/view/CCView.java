@@ -12,11 +12,13 @@ import android.graphics.PathEffect;
 import android.graphics.PathMeasure;
 import android.graphics.Point;
 import android.graphics.RectF;
+import android.renderscript.Sampler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 
 
@@ -152,11 +154,6 @@ public class CCView extends View {
         crossPath.arcTo(new RectF(center.x + scale * offset.x - scale , center.y + scale * offset.y - scale,center.x + scale * offset.x + scale  ,center.y + scale * offset.y + scale) ,start ,end);
     }
 
-    public void drawCross()
-    {
-        addCross(canvas);
-
-    }
     public void crossAnimation()
     {
         addCross(canvas);
@@ -178,7 +175,7 @@ public class CCView extends View {
         valueAnimator1.setStartDelay(1000);
         valueAnimator1.start();
 
-        ValueAnimator valueAnimator2 = ValueAnimator.ofFloat(1.4f ,0.8f);
+        ValueAnimator valueAnimator2 = ValueAnimator.ofFloat(1.4f ,0.9f);
         valueAnimator2.setInterpolator(new AccelerateDecelerateInterpolator());
         valueAnimator2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -192,7 +189,7 @@ public class CCView extends View {
         valueAnimator2.setStartDelay(1400);
         valueAnimator2.start();
 
-        ValueAnimator valueAnimator3 = ValueAnimator.ofFloat(0.8f ,1.0f);
+        ValueAnimator valueAnimator3 = ValueAnimator.ofFloat(0.9f ,1.0f);
         valueAnimator3.setInterpolator(new AccelerateInterpolator());
         valueAnimator3.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -218,6 +215,45 @@ public class CCView extends View {
         valueAnimator4.setDuration(500);
         valueAnimator4.setStartDelay(3500);
         valueAnimator4.start();
+    }
+
+    public void crossAnimation2()
+    {
+        addCross(canvas);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(this, "phase", 1.0f, 0.0f);
+        animator.setDuration(1000);
+        animator.start();
+
+        ValueAnimator valueAnimator1 = ValueAnimator.ofFloat(1.0f ,1.05f);
+        valueAnimator1.setInterpolator(new DecelerateInterpolator());
+        valueAnimator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+
+                scale = (float)valueAnimator.getAnimatedValue();
+                invalidate();
+            }
+        });
+        valueAnimator1.setDuration(400);
+        valueAnimator1.setStartDelay(1000);
+        valueAnimator1.start();
+
+        ValueAnimator valueAnimator2 = ValueAnimator.ofFloat(1.05f ,0.95f);
+        valueAnimator2.setInterpolator(new DecelerateInterpolator());
+        valueAnimator2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+
+                scale = (float)valueAnimator.getAnimatedValue();
+                invalidate();
+            }
+        });
+        valueAnimator2.setDuration(500);
+        valueAnimator2.setStartDelay(1400);
+        valueAnimator2.setRepeatMode(ValueAnimator.REVERSE);
+        valueAnimator2.setRepeatCount(ValueAnimator.INFINITE);
+        valueAnimator2.start();
+
     }
 
     public void setPhase(float phase)

@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -28,6 +29,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -125,6 +127,12 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     @BindView(R.id.control_layout)
     ConstraintLayout controlLayout;
 
+    @BindView(R.id.video_layout)
+    RelativeLayout videoLayout;
+
+    @BindView(R.id.video_view)
+    VideoView videoView;
+
     @BindView(R.id.parent_layout)
     ConstraintLayout parentLayout;
 
@@ -180,6 +188,12 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         initMediaPlayer();
 
         cancelButton.setVisibility(View.INVISIBLE);
+
+        if (Prefs.getBoolean(Config.IS_TEST, false))  {
+            Log.d("IS_TEST", "here");
+            showConnectedVideo();
+        }
+
     }
 
     @Override
@@ -194,6 +208,20 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     {
         super.onPause();
 
+    }
+
+    public void showConnectedVideo() {
+        videoView = (VideoView) findViewById(R.id.video_view);
+
+        Uri video = Uri.parse(Config.VIDEO_URL);
+        videoView.setVideoURI(video);
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(false);
+                videoView.start();
+            }
+        });
     }
 
     public void showUserDialog()

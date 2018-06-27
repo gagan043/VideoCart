@@ -269,6 +269,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
                 if(mp.isPlaying()==false){
                     background_view.setVisibility(View.VISIBLE);
+                    videoView.setVisibility(View.GONE);
                 }
             }
         });

@@ -2,21 +2,66 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.gp2u.lite.activity.VideoChatActivity"
     android:background="@android:color/black"
-    android:id="@+id/parent_layout">
+    tools:context="com.gp2u.lite.activity.VideoChatActivity">
+
+    <RelativeLayout
+        android:id="@+id/screensaver_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/back_image" />
+
+        <View
+            android:id="@+id/center_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerInParent="true" />
+
+        <com.gp2u.lite.view.CCView
+            android:id="@+id/ccView"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_above="@+id/cc_imageview"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:id="@+id/cc_imageview"
+            android:layout_width="240dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/center_view"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/carecomplete" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cc_imageview"
+            android:layout_centerHorizontal="true"
+            android:text="Your CareCoordinator will be with you shortly."
+            android:textColor="#fff"
+            android:textSize="14sp" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/video_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <VideoView android:id="@+id/video_view"
+
+        <VideoView
+            android:id="@+id/video_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -26,10 +71,10 @@
         android:layout_marginLeft="0dp"
         android:layout_marginTop="0dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <RelativeLayout
             android:id="@+id/peer1_layout"
@@ -41,9 +86,9 @@
                 android:id="@+id/peer1_mute"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:background="@drawable/muted"
                 android:layout_centerInParent="true"
-                android:visibility="invisible"/>
+                android:background="@drawable/muted"
+                android:visibility="invisible" />
 
         </RelativeLayout>
 
@@ -57,9 +102,9 @@
                 android:id="@+id/peer2_mute"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:background="@drawable/muted"
                 android:layout_centerInParent="true"
-                android:visibility="invisible"/>
+                android:background="@drawable/muted"
+                android:visibility="invisible" />
 
         </RelativeLayout>
 
@@ -73,9 +118,9 @@
                 android:id="@+id/peer3_mute"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:background="@drawable/muted"
                 android:layout_centerInParent="true"
-                android:visibility="invisible"/>
+                android:background="@drawable/muted"
+                android:visibility="invisible" />
 
         </RelativeLayout>
 
@@ -89,74 +134,90 @@
                 android:id="@+id/peer4_mute"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:background="@drawable/muted"
                 android:layout_centerInParent="true"
-                android:visibility="invisible"/>
+                android:background="@drawable/muted"
+                android:visibility="invisible" />
 
         </RelativeLayout>
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/local_layout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp"
-        android:orientation="vertical"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="@+id/localvertical_guideline"
-        app:layout_constraintBottom_toBottomOf="@+id/localhorizontal_guideline">
-
-        <Button
-            android:id="@+id/localtoggle_button"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:onClick="onToggleLocalVideo"/>
-
-    </RelativeLayout>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/control_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <net.colindodd.toggleimagebutton.ToggleImageButton
-            xmlns:tib="http://schemas.android.com/apk/res-auto"
+        <android.support.constraint.Guideline
+            android:id="@+id/localvertical_guideline"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="0dp"
+            app:layout_constraintGuide_percent="0.25" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/localhorizontal_guideline"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="0dp"
+            app:layout_constraintGuide_percent="0.25" />
+
+        <RelativeLayout
+            android:id="@+id/local_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/localhorizontal_guideline"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@+id/localvertical_guideline"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Button
+                android:id="@+id/localtoggle_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:onClick="onToggleLocalVideo" />
+
+        </RelativeLayout>
+
+        <net.colindodd.toggleimagebutton.ToggleImageButton xmlns:tib="http://schemas.android.com/apk/res-auto"
             android:id="@+id/lock_button"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            tib:tib_drawable_on="@drawable/unlock"
-            tib:tib_drawable_off="@drawable/lock"
             android:layout_marginRight="10dp"
             android:layout_marginTop="25dp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            />
+            tib:tib_drawable_off="@drawable/lock"
+            tib:tib_drawable_on="@drawable/unlock" />
 
         <RelativeLayout
             android:id="@+id/badge_layout1"
-            android:layout_marginTop="20dp"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/lock_button"
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="0dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintLeft_toRightOf="@+id/button5"
-            android:layout_marginLeft="10dp">
+            app:layout_constraintRight_toLeftOf="@+id/lock_button"
+            app:layout_constraintTop_toTopOf="parent">
 
             <RelativeLayout
                 android:id="@+id/relative_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+
                 <Button
                     android:id="@+id/button1"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@drawable/message"
-                    android:onClick="onMessage"/>
+                    android:onClick="onMessage" />
             </RelativeLayout>
 
             <TextView
@@ -169,8 +230,7 @@
                 android:textColor="#FFF"
                 android:textSize="10sp"
                 android:textStyle="bold"
-                android:visibility="gone"
-                />
+                android:visibility="gone" />
 
         </RelativeLayout>
 
@@ -180,11 +240,11 @@
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/switch_camera"
-            app:layout_constraintTop_toTopOf="parent"
+            android:onClick="onSwitchCamera"
+            android:stateListAnimator="@null"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:onClick="onSwitchCamera"
-            android:stateListAnimator="@null"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <Button
@@ -193,51 +253,56 @@
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/disconnect"
+            android:onClick="onDisconnect"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:onClick="onDisconnect"/>
+            app:layout_constraintRight_toRightOf="parent" />
 
         <Button
             android:id="@+id/button3"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
             android:layout_marginBottom="25dp"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/refresh"
+            android:onClick="onRefresh"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:onClick="onRefresh"/>
+            app:layout_constraintLeft_toLeftOf="parent" />
 
-        <net.colindodd.toggleimagebutton.ToggleImageButton
-            xmlns:tib="http://schemas.android.com/apk/res-auto"
+        <net.colindodd.toggleimagebutton.ToggleImageButton xmlns:tib="http://schemas.android.com/apk/res-auto"
             android:id="@+id/mute_button"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginRight="10dp"
             android:layout_marginBottom="25dp"
-            tib:tib_drawable_on="@drawable/muted"
-            tib:tib_drawable_off="@drawable/unmuted"
+            android:layout_marginRight="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintRight_toRightOf="parent"
+            tib:tib_drawable_off="@drawable/unmuted"
+            tib:tib_drawable_on="@drawable/muted" />
 
     </android.support.constraint.ConstraintLayout>
 
-    <android.support.constraint.Guideline
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/localvertical_guideline"
-        app:layout_constraintGuide_begin="0dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.25"/>
 
-    <android.support.constraint.Guideline
-        android:layout_width="1dp"
+    <RelativeLayout
+        android:id="@+id/cancel_button"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/localhorizontal_guideline"
-        app:layout_constraintGuide_begin="0dp"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.25"/>
+        android:background="@android:color/white"
+        android:visibility="invisible">
+
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:alpha="0.5"
+            android:background="@drawable/cancel"
+            android:onClick="onCancel"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/chat_layout"
@@ -246,7 +311,7 @@
         android:background="@android:color/white"
         android:clickable="true"
         android:focusable="true"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -254,89 +319,21 @@
 
     </FrameLayout>
 
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
+    <WebView
+        android:id="@+id/web_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cancel_button">
+
+    </WebView>
 
 
-        <WebView
-            android:id="@+id/web_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/white"
-
-            android:clickable="true"
-            android:focusable="true"
-            android:visibility="invisible">
-        </WebView>
-        <RelativeLayout
-            android:id="@+id/background_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
-            >
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/back_image" />
-
-            <View
-                android:id="@+id/center_view"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_centerInParent="true"/>
-
-            <com.gp2u.lite.view.CCView
-                android:id="@+id/ccView"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_centerHorizontal="true"
-                android:layout_above="@+id/cc_imageview" />
-
-            <ImageView
-                android:id="@+id/cc_imageview"
-                android:layout_width="240dp"
-                android:layout_height="50dp"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/center_view"
-                android:src="@drawable/carecomplete" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/cc_imageview"
-                android:textColor="#fff"
-                android:textSize="14sp"
-                android:text="Your CareCoordinator will be with you shortly."/>
-        </RelativeLayout>
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/cancel_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white">
-
-        <Button
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:alpha="0.5"
-            android:background="@drawable/cancel"
-            android:onClick="onCancel"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

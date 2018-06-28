@@ -492,11 +492,12 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         boolean connectFailed;
         connectFailed = !skylinkConnection.connectToRoom(Config.APP_KEY_SECRET ,roomName ,userName);
         if (connectFailed) {
-            String error = "Unable to connect to Room! Rotate device to try again later.";
-            showToast(error);
+            showToast(getString(R.string.UNABLE_TO_CONNECT_TO_ROOM));
             return;
         }
         localDisconnect = false;
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUserData( "{ name: " + userName + "}" );
     }
 
     private void configToggleButtons()

@@ -4,6 +4,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="ROOM_NAME_CANNOT_BE_BLANK">Room name cannot be blank</string>
+    <string name="UNABLE_TO_CONNECT_TO_ROOM">Sorry, we were unable to connect to the room!</string>
 
     <string name="REMOTE_PEER_DISCONNECTED">Remote peer has disconnected</string>
     <string name="LOCAL_PEER_DISCONNECTED">You have disconnected</string>

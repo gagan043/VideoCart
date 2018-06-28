@@ -55,6 +55,10 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.UUID;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
@@ -199,15 +203,6 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         initMediaPlayer();
 
         cancelButton.setVisibility(View.INVISIBLE);
-
-        if (Prefs.getBoolean(Config.IS_TEST, false) || ! Global.isHook )  {
-            Log.d("IS_TEST", "Running Video Test Room");
-            Log.d("IS_TEST Global.isHook", Boolean.toString(Global.isHook));
-            showConnectedVideo();
-        }
-        else {
-            animatedCenterLogoMethod();
-        }
     }
     public void animatedCenterLogoMethod(){
 
@@ -288,11 +283,37 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         roomName =  Prefs.getString(Config.ROOM_NAME ,"");
         if (roomName.isEmpty() ) {
             roomName =  UUID.randomUUID().toString().replace("-", "");
+            Prefs.putString(Config.ROOM_NAME , roomName);
         }
         userName = Prefs.getString(Config.USER_NAME ,"");
-        connectToRoom();
-        messageFragment.userName = userName;
-        messageFragment.skylinkConnection = skylinkConnection;
+        Log.d("USERNAME", userName);
+        if (userName.isEmpty()) {
+            // show prompt user name
+            new MaterialDialog.Builder(this)
+                    .title("User Name")
+                    .input("Please Set Your Name", Prefs.getString(Config.USER_NAME ,""), new MaterialDialog.InputCallback() {
+                        @Override
+                        public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+
+                            dialog.getActionButton(DialogAction.POSITIVE).setEnabled((input.toString().trim().length() != 0));
+                            Prefs.putString(Config.USER_NAME ,input.toString());
+                            userName = input.toString();
+                        }
+                    }).onPositive(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    connectToRoom();
+                    messageFragment.userName = userName;
+                    messageFragment.skylinkConnection = skylinkConnection;
+                }
+            }).alwaysCallInputCallback().show();
+        }
+        else {
+            connectToRoom();
+            messageFragment.userName = userName;
+            messageFragment.skylinkConnection = skylinkConnection;
+        }
+        Global.userName = userName;
     }
 
     public void showMessage(boolean isShow)
@@ -452,6 +473,14 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     private void connectToRoom()
     {
+        if (Prefs.getBoolean(Config.IS_TEST, false) || ! Global.isHook )  {
+            Log.d("IS_TEST", "Running Video Test Room");
+            Log.d("IS_TEST Global.isHook", Boolean.toString(Global.isHook));
+            showConnectedVideo();
+        }
+        else {
+            animatedCenterLogoMethod();
+        }
         skylinkConnection = SkylinkConnection.getInstance();
         skylinkConnection.init(Config.APP_KEY, getSkylinkConfig(), this.getApplicationContext());
         skylinkConnection.setLifeCycleListener(this);
@@ -690,6 +719,17 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     @Override
     public void onRemotePeerMediaReceive(String remotePeerId, SurfaceViewRenderer surfaceViewRenderer) {
+
+        Log.d("PEER_INFO", remotePeerId);
+        Log.d("PEER_INFO", skylinkConnection.getUserInfo(remotePeerId).getUserData().toString());
+        String strJSON = skylinkConnection.getUserInfo(remotePeerId).getUserData().toString();
+        try{
+            JSONObject obj = new JSONObject(strJSON);
+            String username = obj.getString("name");
+            Log.d("PEER_INFO", username);
+            Global.peerInfo.setProperty(remotePeerId, username);
+
+        } catch(JSONException e) {}
 
         int i = addRemotePeer(remotePeerId);
         addRemoteView(remotePeerId);

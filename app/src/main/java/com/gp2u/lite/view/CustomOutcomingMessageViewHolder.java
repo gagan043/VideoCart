@@ -5,6 +5,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.gp2u.lite.R;
+import com.gp2u.lite.model.Global;
 import com.gp2u.lite.model.Message;
 import com.stfalcon.chatkit.messages.MessageHolders;
 
@@ -18,6 +19,7 @@ import static com.gp2u.lite.model.Message.SEND_FILE_PROGRESS;
 public class CustomOutcomingMessageViewHolder extends MessageHolders.OutcomingTextMessageViewHolder<Message> {
 
     private TextView statusText;
+    private TextView messageUsername;
     private ProgressBar uploadProgressBar;
 
     public CustomOutcomingMessageViewHolder(View itemView) {
@@ -25,6 +27,7 @@ public class CustomOutcomingMessageViewHolder extends MessageHolders.OutcomingTe
 
         uploadProgressBar = itemView.findViewById(R.id.progress_bar);
         statusText = itemView.findViewById(R.id.status_text);
+        messageUsername = itemView.findViewById(R.id.messageUsername);
     }
 
     @Override
@@ -33,6 +36,7 @@ public class CustomOutcomingMessageViewHolder extends MessageHolders.OutcomingTe
 
         statusText.setVisibility(View.GONE);
         uploadProgressBar.setVisibility(View.GONE);
+        messageUsername.setText(Global.userName);
 
         if (!message.isFile) return;
 

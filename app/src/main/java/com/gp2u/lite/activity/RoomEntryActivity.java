@@ -138,17 +138,13 @@ public class RoomEntryActivity extends AppCompatActivity {
 
     public void onEnter(View view)
     {
-        if (isFound){
-
             APIService.getInstance().logConnection(0 ,"Enter" ,"");
 
             autoconnectArr.remove(roomEdit.getText().toString());
             autoconnectArr.add(roomEdit.getText().toString());
             Intent intent = new Intent(this ,VideoChatActivity.class);
             startActivity(intent);
-            return;
-        }
-        checkRoom();
+
     }
 
     @Override
@@ -362,20 +358,20 @@ public class RoomEntryActivity extends AppCompatActivity {
                     .fadeColor(Color.DKGRAY).build();
             dialog.show();
             */
+            Prefs.putString(Config.ROOM_NAME ,roomEdit.getText().toString());
+            Log.d("ROOM_NAME", roomEdit.getText().toString());
             subscription = APIService.getInstance().getUserName(roomEdit.getText().toString());
             APIService.getInstance().setOnCallback(new APICallback() {
                 @Override
                 public void doNext(JsonObject jsonObject) {
-
-                    //dialog.dismiss();
-                    isFound = true;
                     Prefs.putString(Config.ROOM_NAME ,roomEdit.getText().toString());
-                    Prefs.putString(Config.USER_NAME ,jsonObject.get("for_name").getAsString());
-                    Prefs.putString(Config.UUID ,jsonObject.get("uuid").getAsString());
-                    int found = jsonObject.get("found").getAsInt();
-                    if (found == 1){
+                    if (jsonObject.get("found").getAsInt() == 1){
+                        isFound = true;
+                        Prefs.putString(Config.USER_NAME ,jsonObject.get("for_name").getAsString());
+                        Prefs.putString(Config.UUID ,jsonObject.get("uuid").getAsString());
                         checkAutoConnection(jsonObject);
                     }else {
+                        isFound = false;
                         appointmentTextView.setText("");
                         appointmentTextView1.setText(getString(R.string.ROOM_NOT_FOUND));
                         appointmentTextView2.setText(getString(R.string.PRESS_PHONE));

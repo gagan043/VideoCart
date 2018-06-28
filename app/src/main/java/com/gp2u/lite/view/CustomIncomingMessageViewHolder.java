@@ -2,8 +2,10 @@ package com.gp2u.lite.view;
 
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.gp2u.lite.R;
+import com.gp2u.lite.model.Global;
 import com.gp2u.lite.model.Message;
 import com.stfalcon.chatkit.messages.MessageHolders;
 
@@ -24,6 +26,7 @@ public class CustomIncomingMessageViewHolder extends MessageHolders.IncomingText
 
     private View preView;
     private View nextView;
+    private TextView peerUsername;
     private ProgressBar downloadProgressBar;
     private FancyButton acceptBtn;
     private FancyButton rejectBtn;
@@ -35,6 +38,7 @@ public class CustomIncomingMessageViewHolder extends MessageHolders.IncomingText
 
         preView = itemView.findViewById(R.id.pre_layout);
         nextView = itemView.findViewById(R.id.next_layout);
+        peerUsername = itemView.findViewById(R.id.peerUsername);
         downloadProgressBar = itemView.findViewById(R.id.progress_bar);
         acceptBtn = itemView.findViewById(R.id.accept_btn);
         rejectBtn = itemView.findViewById(R.id.reject_btn);
@@ -49,6 +53,8 @@ public class CustomIncomingMessageViewHolder extends MessageHolders.IncomingText
         preView.setVisibility(View.GONE);
         nextView.setVisibility(View.GONE);
         downloadProgressBar.setVisibility(View.GONE);
+        // we store the peerId => username mapping in a Global because it's sensible...
+        peerUsername.setText(Global.peerInfo.getProperty(message.getUser().getId()));
 
         if (!message.isFile) return;
 

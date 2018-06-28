@@ -920,13 +920,15 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
             peer3Layout.setVisibility(View.VISIBLE);
             peer4Layout.setVisibility(View.VISIBLE);
 
+            parentLayout.bringChildToFront(background_view);
             parentLayout.bringChildToFront(remoteLayout);
+            parentLayout.bringChildToFront(videoView);
             parentLayout.bringChildToFront(localLayout);
             parentLayout.bringChildToFront(controlLayout);
             parentLayout.bringChildToFront(chatLayout);
             parentLayout.bringChildToFront(webView);
             parentLayout.bringChildToFront(cancelButton);
-            if (peerCount == 0 ) {
+            if (peerCount == 0 && videoView.getVisibility() != View.VISIBLE) {
                 background_view.setVisibility(View.VISIBLE);
             }
         }

@@ -83,6 +83,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
     public int unreadMessages;
     boolean bFromRemote;
     boolean localDisconnect = false;
+    boolean localConnected = false;
     boolean showAlert;
     boolean showRemote = true;
     private static String[] peerList = new String[4];
@@ -579,6 +580,8 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         showToast(getString(R.string.LOCAL_PEER_DISCONNECTED));
         emptyLayout();
         localDisconnect = true;
+        localConnected = false;
+        APIService.getInstance().logConnection(peerCountPlusMe() ,"Disconnect" ,"");
         goBack();
     }
 
@@ -590,8 +593,6 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
             skylinkConnection.disconnectFromRoom();
         }
 
-        APIService.getInstance().logConnection(peerCount() ,"Disconnect" ,"");
-        APIService.getInstance().logConnection(peerCount() ,"Exit" ,"");
         finish();
     }
 
@@ -625,8 +626,8 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
     @Override
     public void onConnect(boolean isSuccess, String s) {
-
-        APIService.getInstance().logConnection(peerCount() ,"Connect" ,s);
+        localConnected = true;
+        APIService.getInstance().logConnection(peerCountPlusMe() ,"Connect" ,s);
     }
 
     @Override
@@ -739,8 +740,8 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         // this is SDK issue TODO - get it fixed!
         muteButtons[i].setVisibility(View.INVISIBLE);
         hideConnectedVideo();
+        APIService.getInstance().logConnection(peerCountPlusMe() ,"Peer Joined" ,"");
 
-        APIService.getInstance().logConnection(peerCount() ,"Peer Joined" ,"");
     }
 
     @Override
@@ -778,7 +779,7 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         removeRemotePeer(remotePeerId);
         refreshPeerViews();
 
-        APIService.getInstance().logConnection(peerCount() ,"Peer Left" ,"");
+        APIService.getInstance().logConnection(peerCountPlusMe() ,"Peer Left" ,"");
 
     }
 
@@ -1052,9 +1053,10 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
 
         for (int i = 0 ; i < peerList.length ; i ++){
 
-            if (peerList[i] != null)
+            if (peerList[i] != null) {
                 removeViewFromParent(getVideoView(peerList[i]));
-
+                peerList[i] = null;
+            }
         }
     }
 
@@ -1147,13 +1149,13 @@ public class VideoChatActivity extends AppCompatActivity implements LifeCycleLis
         }
     }
 
-    private int peerCount()
+    private int peerCountPlusMe()
     {
         int peerCount = 0;
         for (int i = 0; i < peerList.length ; i ++){
             if (peerList[i] != null)
                 peerCount++;
         }
-        return peerCount;
+        return peerCount + (localConnected ? 1 : 0 );
     }
 }

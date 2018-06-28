@@ -133,6 +133,8 @@ public class RoomEntryActivity extends AppCompatActivity {
 
     public void onExit(View view)
     {
+        APIService.getInstance().logConnection(0 ,"Exit" ,"");
+
         finishAffinity();
     }
 

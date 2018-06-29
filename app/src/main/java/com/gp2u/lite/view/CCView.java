@@ -99,7 +99,7 @@ public class CCView extends View {
     {
         int width = canvas.getWidth();
         //int height = canvas.getHeight();
-        int circleWidth = 500 * width / 800;
+        int circleWidth = 500 * width / 835;
 
         RectF rect1 = new RectF((width - circleWidth) / 2 , (width - circleWidth) / 2,(width + circleWidth) / 2  ,(width + circleWidth) / 2);
         Paint paint = new Paint();
@@ -116,8 +116,8 @@ public class CCView extends View {
     {
         int width = canvas.getWidth();
         int height = canvas.getHeight();
-        Point center = new Point(width / 2 + 225 * width / 800, height / 2);
-        float scale = (float) (50.0 * width / 800) * this.scale;
+        Point center = new Point(width / 2 + 225 * width / 870, height / 2);
+        float scale = (float) (50.0 * width / 870) * this.scale;
 
         crossPath = new Path();
         crossPath.moveTo(center.x + scale * -1 ,center.y + scale * -1);
@@ -224,7 +224,7 @@ public class CCView extends View {
         animator.setDuration(1000);
         animator.start();
 
-        ValueAnimator valueAnimator1 = ValueAnimator.ofFloat(1.0f ,1.05f);
+        ValueAnimator valueAnimator1 = ValueAnimator.ofFloat(1.0f ,1.4f);
         valueAnimator1.setInterpolator(new DecelerateInterpolator());
         valueAnimator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -238,8 +238,8 @@ public class CCView extends View {
         valueAnimator1.setStartDelay(1000);
         valueAnimator1.start();
 
-        ValueAnimator valueAnimator2 = ValueAnimator.ofFloat(1.05f ,0.95f);
-        valueAnimator2.setInterpolator(new DecelerateInterpolator());
+        ValueAnimator valueAnimator2 = ValueAnimator.ofFloat(1.4f ,0.9f);
+        valueAnimator2.setInterpolator(new AccelerateDecelerateInterpolator());
         valueAnimator2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -248,8 +248,35 @@ public class CCView extends View {
                 invalidate();
             }
         });
-        valueAnimator2.setDuration(500);
+        valueAnimator2.setDuration(600);
         valueAnimator2.setStartDelay(1400);
+        valueAnimator2.start();
+
+        ValueAnimator valueAnimator3 = ValueAnimator.ofFloat(0.9f ,1.0f);
+        valueAnimator3.setInterpolator(new AccelerateInterpolator());
+        valueAnimator3.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+
+                scale = (float)valueAnimator.getAnimatedValue();
+                invalidate();
+            }
+        });
+        valueAnimator3.setDuration(400);
+        valueAnimator3.setStartDelay(2000);
+        valueAnimator3.start();
+
+        ValueAnimator valueAnimator4 = ValueAnimator.ofFloat(1.0f ,1.4f);
+        valueAnimator4.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+
+                scale = (float)valueAnimator.getAnimatedValue();
+                invalidate();
+            }
+        });
+        valueAnimator4.setDuration(500);
+        valueAnimator4.setStartDelay(3500);
         valueAnimator2.setRepeatMode(ValueAnimator.REVERSE);
         valueAnimator2.setRepeatCount(ValueAnimator.INFINITE);
         valueAnimator2.start();

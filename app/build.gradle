@@ -75,4 +75,6 @@ dependencies {
     implementation 'io.reactivex:rxandroid:1.2.1'
     //implementation 'cc.cloudist.acplibrary:library:1.2.1'
     implementation 'com.sjl:Foredroid:1.0.2'
+
+    implementation 'uk.co.jakelee:vidsta:1.0.0'
 }

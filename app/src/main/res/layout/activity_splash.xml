@@ -24,8 +24,8 @@
 
     <com.gp2u.lite.view.CCView
         android:id="@+id/ccView"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="165dp"
+        android:layout_height="165dp"
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/cc_imageview" />
 

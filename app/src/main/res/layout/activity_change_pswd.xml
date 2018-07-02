@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.ChangePswdActivity">
+
+    <RelativeLayout
+        android:id="@+id/rel1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/appcolor">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/backwhite"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_toRightOf="@+id/icon"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/white"
+            android:text="Change Password"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rel2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rel1">
+
+        <RelativeLayout
+            android:id="@+id/rel3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp">
+<TextView
+    android:id="@+id/txt_chngetext"
+    android:layout_width="150dp"
+    android:layout_height="wrap_content"
+    android:text="Change Password"
+    android:textColor="@color/black"
+    android:textSize="24dp" />
+
+            <TextView
+                android:id="@+id/txt_chngebelow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/chngepswd"
+                android:layout_below="@+id/txt_chngetext"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+
+            <RelativeLayout
+                android:id="@+id/rel_old"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/white_trans_corner_round"
+                android:layout_marginTop="20dp"
+                android:layout_below="@+id/txt_chngebelow"
+                android:layout_marginBottom="5dp">
+
+                <EditText
+                    android:id="@+id/edt_oldpswd"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/img_email"
+                    android:layout_marginLeft="10dp"
+                    android:hint="@string/oldpswd"
+                    android:inputType="phone"
+                    android:background="@android:color/transparent"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel_new"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/white_trans_corner_round"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/rel_old"
+                android:layout_marginBottom="5dp">
+
+                <EditText
+                    android:id="@+id/edt_newpswd"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/img_email"
+                    android:layout_marginLeft="10dp"
+                    android:hint="@string/newpswd"
+                    android:inputType="phone"
+                    android:background="@android:color/transparent"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rel_cnfrm"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/white_trans_corner_round"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/rel_new"
+                android:layout_marginBottom="5dp">
+
+                <EditText
+                    android:id="@+id/edt_newcnfrm"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/img_email"
+                    android:layout_marginLeft="10dp"
+                    android:hint="@string/cnfrmpswd"
+                    android:inputType="phone"
+                    android:background="@android:color/transparent"/>
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/btn_change"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/signin_button_bkg"
+                android:layout_below="@+id/rel_cnfrm"
+                android:text="Change Password"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:layout_marginTop="50dp"/>
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

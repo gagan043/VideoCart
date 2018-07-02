@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.ForgetActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/back"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/txt_signin"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Forgot Password"
+            android:layout_below="@+id/img_back"
+            android:layout_marginTop="20dp"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/txt_instruction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/instruction"
+            android:layout_below="@+id/txt_signin"
+            android:layout_marginTop="20dp"
+            android:textSize="18sp"
+            android:textColor="@color/black" />
+
+        <RelativeLayout
+            android:id="@+id/rel_email"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/white_trans_corner_round"
+            android:layout_marginTop="50dp"
+            android:layout_below="@+id/txt_instruction"
+            android:layout_marginBottom="5dp">
+
+            <ImageView
+                android:id="@+id/img_email"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/emaillogo"/>
+            <EditText
+                android:id="@+id/edt_email"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/img_email"
+                android:layout_marginLeft="10dp"
+                android:hint="@string/email"
+                android:inputType="phone"
+                android:background="@android:color/transparent"/>
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_signin"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/signin_button_bkg"
+            android:layout_below="@+id/rel_email"
+            android:text="Send Request"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:layout_marginTop="50dp"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

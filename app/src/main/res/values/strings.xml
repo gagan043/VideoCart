@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">VideoCart</string>
+
+    <!--SignIn-->
+
+    <string name="signin">Sign in with social media to sync your details</string>
+    <string name="signinbelow">Or using your email address/phone</string>
+    <string name="emailphone">Phone or Email Address</string>
+    <string name="password">Password</string>
+
+    <!--SignUp-->
+    <string name="email">Email Address</string>
+    <string name="phone">Phone</string>
+    <string name="name">Name</string>
+
+    <!--Forgot Password-->
+    <string name="instruction">Please enter your email address to receive password reset instructions.</string>
+
+    <!--Change Password-->
+    <string name="chngepswd">Please enter your old password and create new password</string>
+    <string name="oldpswd">Old Password</string>
+    <string name="newpswd">New Password</string>
+    <string name="cnfrmpswd">Confirm New Password</string>
 </resources>

@@ -30,6 +30,7 @@
             android:layout_marginLeft="10dp"
             android:textColor="@color/white"
             android:text="Change Password"/>
+        
     </RelativeLayout>
 
     <RelativeLayout
@@ -45,13 +46,14 @@
             android:layout_centerInParent="true"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp">
-<TextView
-    android:id="@+id/txt_chngetext"
-    android:layout_width="150dp"
-    android:layout_height="wrap_content"
-    android:text="Change Password"
-    android:textColor="@color/black"
-    android:textSize="24dp" />
+
+        <TextView
+            android:id="@+id/txt_chngetext"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Change Password"
+            android:textColor="@color/black"
+            android:textSize="24dp" />
 
             <TextView
                 android:id="@+id/txt_chngebelow"
@@ -60,7 +62,7 @@
                 android:layout_marginTop="20dp"
                 android:text="@string/chngepswd"
                 android:layout_below="@+id/txt_chngetext"
-                android:textColor="@color/black"
+                android:textColor="@color/gray"
                 android:textSize="18dp" />
 
             <RelativeLayout

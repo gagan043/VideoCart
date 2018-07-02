@@ -30,4 +30,18 @@
 
     <string name="successent">Successfully Sent</string>
     <string name="successtext">Reset password instructions are successfully sent to entered email address </string>
+
+    <!--ThanksFeedbackBuyer-->
+    <string name="buyertext">We will contact you as soon as possible</string>
+
+    <!--BuyerSendFeedBack-->
+    <string name="feedtext">We would like to hear what do you think about us.</string>
+
+    <!--BuyerShare-->
+    <string name="invite">Invite People to join</string>
+    <string name="sharetext">Share &quot;<b>Videocart</b>&quot; app with our contacts and on social media.</string>
+
+    <!--ThanksOrder-->
+    <string name="orderplaced">your order successfully placed</string>
+
 </resources>

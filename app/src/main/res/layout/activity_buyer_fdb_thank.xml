@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.BuyerFeedbackActivity">
+    tools:context=".activity.BuyerFdbThankActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,19 +41,19 @@
             android:textColor="@color/gray"
             android:textSize="16sp"
             android:gravity="center"
-            android:text="@string/successtext" />
+            android:text="@string/buyertext" />
 
         <Button
             android:id="@+id/btn_keepsignin"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@drawable/signin_button_bkg"
+            android:background="@drawable/blue_cornerline_bkg"
             android:layout_below="@+id/txt_second"
-            android:text="Login"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
+            android:text="Close"
+            android:layout_marginRight="60dp"
+            android:layout_marginLeft="60dp"
             android:textAllCaps="false"
-            android:textColor="@color/white"
+            android:textColor="@color/blue"
             android:layout_marginTop="50dp"/>
 
     </RelativeLayout>

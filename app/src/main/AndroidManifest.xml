@@ -23,7 +23,11 @@
         <activity android:name=".activity.ChangePswdActivity" />
         <activity android:name=".activity.PswdThanksActivity" />
         <activity android:name=".activity.SuccessActivity" />
-        <activity android:name=".activity.BuyerFeedbackActivity"></activity>
+        <activity android:name=".activity.BuyerFdbThankActivity" />
+        <activity android:name=".activity.BuyerSendFeedbackActivity" />
+        <activity android:name=".activity.BuyerShareActivity" />
+        <activity android:name=".activity.BuyerThanksOrderActivity" />
+        <activity android:name=".activity.AddAddressActivity"></activity>
     </application>
 
 </manifest>

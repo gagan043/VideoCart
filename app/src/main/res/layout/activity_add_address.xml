@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.AddAddressActivity">
+
+    <RelativeLayout
+        android:id="@+id/rel1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/appcolor">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/backwhite"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_toRightOf="@+id/icon"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/white"
+            android:text="Add Address"/>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rel1">
+
+    <RelativeLayout
+        android:id="@+id/rel2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp">
+
+        <RelativeLayout
+            android:id="@+id/rel_city"
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="50dp">
+
+            <EditText
+                android:id="@+id/edt_city"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="City*"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rel_locality"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/rel_city"
+            android:layout_height="50dp">
+
+            <EditText
+                android:id="@+id/edt_locality"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Locality/Street*"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rel_building"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/rel_locality"
+            android:layout_height="50dp">
+
+            <EditText
+                android:id="@+id/edt_building"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Building Number"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rel_pinstate"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/rel_building"
+            android:layout_height="50dp">
+
+            <LinearLayout
+                android:id="@+id/lin_pinstate"
+                android:layout_width="match_parent"
+                android:weightSum="2"
+                android:orientation="horizontal"
+                android:layout_height="50dp">
+
+            <EditText
+                android:id="@+id/edt_pin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:hint="Pin Code*"/>
+
+            <EditText
+                android:id="@+id/edt_state"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:hint="State*"/>
+
+        </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rel_landmark"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/rel_pinstate"
+            android:layout_height="50dp">
+
+            <EditText
+                android:id="@+id/edt_landmark"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Landmark"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rel_name"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/rel_landmark"
+            android:layout_height="50dp">
+
+            <EditText
+                android:id="@+id/edt_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Name"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rel_phone"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/rel_name"
+            android:layout_height="50dp">
+
+            <EditText
+                android:id="@+id/edt_phone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Phone"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/txt_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rel_phone"
+            android:layout_marginTop="20dp"
+            android:text="Address Type"/>
+
+        <LinearLayout
+            android:id="@+id/lin_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_type"
+            android:orientation="vertical">
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:id="@+id/rb_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:text="Home"/>
+
+                <RadioButton
+                    android:id="@+id/rb_office"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:text="Work(Delivery time 10am-5pm)"/>
+            </RadioGroup>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/bt_save"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/signin_button_bkg"
+            android:text="SAVE"
+            android:textAllCaps="false"
+            android:layout_below="@+id/lin_type"/>
+
+    </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.PswdThanksActivity">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="30dp"
+    android:layout_marginLeft="30dp"
+    android:layout_centerInParent="true">
+
+    <ImageView
+        android:id="@+id/img_tick"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bluetick" />
+
+    <TextView
+        android:id="@+id/txt_first"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img_tick"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:text="@string/pswdchange" />
+
+    <TextView
+        android:id="@+id/txt_second"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_first"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/gray"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:text="@string/pswdtext" />
+
+    <Button
+        android:id="@+id/btn_keepsignin"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/signin_button_bkg"
+        android:layout_below="@+id/txt_second"
+        android:text="Keep me Signed in"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:layout_marginTop="50dp"/>
+
+    <TextView
+        android:id="@+id/txt_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_keepsignin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:text="Login" />
+
+</RelativeLayout>
+
+</RelativeLayout>

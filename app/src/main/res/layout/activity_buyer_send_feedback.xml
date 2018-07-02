@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".activity.BuyerSendFeedbackActivity">
+
+    <RelativeLayout
+        android:id="@+id/rel1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/appcolor">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/backwhite"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_toRightOf="@+id/icon"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/white"
+            android:text="Send Feedback"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rel2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_centerInParent="true">
+
+    <TextView
+        android:id="@+id/txt_feedbck"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/black"
+        android:text="@string/feedtext"/>
+
+        <EditText
+            android:id="@+id/edt_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="20dp"
+            android:hint="Write message here"
+            android:paddingLeft="20dp"
+            android:textSize="16sp"
+            android:gravity="left"
+            android:paddingTop="8dp"
+            android:background="@drawable/edtfeedbackbkg"
+            android:layout_below="@+id/txt_feedbck"/>
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/signin_button_bkg"
+            android:layout_below="@+id/edt_feedback"
+            android:text="Submit"
+            android:layout_marginRight="60dp"
+            android:layout_marginLeft="60dp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:layout_marginTop="50dp"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

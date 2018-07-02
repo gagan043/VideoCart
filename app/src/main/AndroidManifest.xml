@@ -22,7 +22,8 @@
         <activity android:name=".activity.ForgetActivity" />
         <activity android:name=".activity.ChangePswdActivity" />
         <activity android:name=".activity.PswdThanksActivity" />
-        <activity android:name=".activity.SuccessActivity"></activity>
+        <activity android:name=".activity.SuccessActivity" />
+        <activity android:name=".activity.BuyerFeedbackActivity"></activity>
     </application>
 
 </manifest>

@@ -21,4 +21,13 @@
     <string name="oldpswd">Old Password</string>
     <string name="newpswd">New Password</string>
     <string name="cnfrmpswd">Confirm New Password</string>
+
+    <!--PasswordThanks-->
+    <string name="pswdchange">Password Change Successful</string>
+    <string name="pswdtext">You have successfully change password.Use new password when logging in. </string>
+
+    <!--Success-->
+
+    <string name="successent">Successfully Sent</string>
+    <string name="successtext">Reset password instructions are successfully sent to entered email address </string>
 </resources>

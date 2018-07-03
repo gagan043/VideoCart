@@ -52,8 +52,9 @@
                 android:layout_below="@+id/txt_belowsign">
 
                 <RelativeLayout
-                    android:layout_width="150dp"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:layout_toLeftOf="@+id/blank_view"
                     android:layout_alignParentLeft="true"
                     android:layout_marginBottom="5dp"
                     android:background="@drawable/fb_bkg_round">
@@ -61,14 +62,19 @@
                     <ImageView
                         android:layout_width="15dp"
                         android:layout_height="25dp"
-                        android:background="@drawable/facebooklogo"
-                        android:layout_centerInParent="true" />
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/facebooklogo" />
 
                 </RelativeLayout>
-
+                <View
+                    android:id="@+id/blank_view"
+                    android:layout_width="20dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true"/>
                 <RelativeLayout
                     android:id="@+id/rel_google"
-                    android:layout_width="150dp"
+                    android:layout_width="match_parent"
+                    android:layout_toRightOf="@+id/blank_view"
                     android:layout_height="50dp"
                     android:layout_alignParentRight="true"
                     android:background="@drawable/google_bkg_round"

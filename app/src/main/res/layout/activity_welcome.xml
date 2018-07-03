@@ -32,6 +32,7 @@
         android:layout_height="50dp"
         android:text="Signin"
         android:textAllCaps="false"
+        android:textColor="#fff"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="30dp"
         android:background="@drawable/transparent_bkg_round"

@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+<<<<<<< HEAD
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait" />
@@ -20,13 +21,26 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SignUpActivity"
+=======
+        <activity android:name=".activity.SplashActivity"
+            android:screenOrientation="portrait"
+            />
+
+        <activity android:name=".activity.WelcomeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SignInActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SignUpActivity"
+>>>>>>> 74397910f59a2b31f47f6eeeca7af247314ced87
             android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
         <activity
             android:name=".activity.ForgetActivity"
             android:screenOrientation="portrait" />
@@ -58,6 +72,32 @@
             android:name=".activity.BuyerSettingActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".activity.BuyerProfileActivity"></activity>
+=======
+        <activity android:name=".activity.SellerSettingActivity"
+            android:screenOrientation="portrait"></activity>
+
+        <activity android:name=".activity.ForgetActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.ChangePswdActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.PswdThanksActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SuccessActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.BuyerFdbThankActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.BuyerSendFeedbackActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.BuyerShareActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.BuyerThanksOrderActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AddAddressActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.BuyerSettingActivity"
+            android:screenOrientation="portrait"></activity>
+
+>>>>>>> 74397910f59a2b31f47f6eeeca7af247314ced87
     </application>
 
 </manifest>

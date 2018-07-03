@@ -44,4 +44,7 @@
     <!--ThanksOrder-->
     <string name="orderplaced">your order successfully placed</string>
 
+    <!--PROFILE-->
+    <string name="privacy">PRIVACY &amp; SECURITY</string>
+
 </resources>

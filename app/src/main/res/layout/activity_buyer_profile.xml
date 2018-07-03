@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.BuyerProfileActivity">
+
+    <RelativeLayout
+        android:id="@+id/rel1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/appcolor">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/backwhite"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_toRightOf="@+id/icon"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/white"
+            android:text="Profile"/>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rel1">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp">
+
+    <RelativeLayout
+        android:id="@+id/rel_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/img_profile"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="40dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/bluetick" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_camera"
+        android:layout_width="30dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="-20dp"
+        android:src="@drawable/bluetick"
+        android:layout_toRightOf="@+id/img_profile"
+        android:layout_height="30dp">
+    </de.hdodenhof.circleimageview.CircleImageView>
+
+        <TextView
+            android:id="@+id/txt_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/img_profile"
+            android:layout_marginLeft="40dp"
+            android:text="Will Stanley"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/rel_profile"
+                android:layout_marginLeft="45dp"
+                android:layout_marginTop="-1dp"
+                android:background="@color/lhtgray"/>
+
+            <TextView
+                android:id="@+id/txt_bio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/view1"
+                android:text="BIO"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:layout_centerVertical="true"/>
+
+            <RelativeLayout
+                android:id="@+id/rel_name"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_below="@+id/txt_bio">
+
+                <ImageView
+                    android:id="@+id/img_order"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/myproducts"
+                    android:layout_centerVertical="true"/>
+
+                <TextView
+                    android:id="@+id/txt_nametxt"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/img_order"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:text="Name" />
+
+                <TextView
+                    android:id="@+id/txt_buyername"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_toRightOf="@+id/txt_nametxt"
+                    android:layout_centerVertical="true"
+                    android:textSize="14sp"
+                    android:gravity="left"
+                    android:textColor="@color/gray"
+                    android:text="will stanley" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rel_phone"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_below="@+id/rel_name">
+
+                <ImageView
+                    android:id="@+id/img_phone"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/myproducts"
+                    android:layout_centerVertical="true"/>
+
+                <TextView
+                    android:id="@+id/txt_phonetxt"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/img_phone"
+                    android:layout_marginLeft="15dp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="20dp"
+                    android:layout_centerVertical="true"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:text="Phone" />
+
+                <TextView
+                    android:id="@+id/txt_buyerphone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_toRightOf="@+id/txt_phonetxt"
+                    android:layout_centerVertical="true"
+                    android:textSize="14sp"
+                    android:gravity="left"
+                    android:textColor="@color/gray"
+                    android:text="+91-75648987690" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel_email"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_below="@+id/rel_phone">
+
+                <ImageView
+                    android:id="@+id/img_email"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/myproducts"
+                    android:layout_centerVertical="true"/>
+
+                <TextView
+                    android:id="@+id/txt_emailtxt"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/img_email"
+                    android:layout_marginLeft="15dp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="20dp"
+                    android:layout_centerVertical="true"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:text="Email" />
+
+                <TextView
+                    android:id="@+id/txt_buyeremail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_toRightOf="@+id/txt_emailtxt"
+                    android:layout_centerVertical="true"
+                    android:textSize="14sp"
+                    android:gravity="left"
+                    android:textColor="@color/gray"
+                    android:text="wstanley@yopmail.com" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/txt_privacy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_below="@+id/rel_email"
+                android:text="@string/privacy"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:layout_centerVertical="true"/>
+
+            <RelativeLayout
+                android:id="@+id/rel_privacy"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/txt_privacy">
+
+                <ImageView
+                    android:id="@+id/img_privacy"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/myproducts"
+                    android:layout_centerVertical="true"/>
+
+                <TextView
+                    android:id="@+id/txt_privacytxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/img_privacy"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:text="Privacy" />
+
+                <TextView
+                    android:id="@+id/txt_buyerprivacy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/img_privacy"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_below="@+id/txt_privacytxt"
+                    android:layout_centerVertical="true"
+                    android:textSize="18sp"
+                    android:gravity="left"
+                    android:textColor="@color/gray"
+                    android:text="Cancellation Policy" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel_delete"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="20dp"
+                android:layout_below="@+id/rel_privacy">
+
+                <ImageView
+                    android:id="@+id/img_delete"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/myproducts"
+                    android:layout_centerVertical="true"/>
+
+                <TextView
+                    android:id="@+id/txt_deletetxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/img_delete"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:text="Delete Account" />
+
+                <TextView
+                    android:id="@+id/txt_buyerdelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/img_delete"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_below="@+id/txt_deletetxt"
+                    android:layout_centerVertical="true"
+                    android:textSize="18sp"
+                    android:gravity="left"
+                    android:textColor="@color/gray"
+                    android:text="Deactivate account from this device" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/txt_other"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_below="@+id/rel_delete"
+                android:text="OTHERS"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:layout_centerVertical="true"/>
+
+            <RelativeLayout
+                android:id="@+id/rel_chngepsd"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_below="@+id/txt_other">
+
+                <ImageView
+                    android:id="@+id/img_chngepsd"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/logout"
+                    android:layout_centerVertical="true"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/img_chngepsd"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:text="Change Password" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel_logout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="20dp"
+                android:layout_below="@+id/rel_chngepsd">
+
+                <ImageView
+                    android:id="@+id/img_logout"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/logout"
+                    android:layout_centerVertical="true"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/img_logout"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:text="Logout" />
+
+                <TextView
+                    android:id="@+id/txt_logemail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:textSize="12sp"
+                    android:textColor="@color/lhtgray"
+                    android:text="abc@abc.com" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

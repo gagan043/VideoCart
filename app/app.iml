@@ -103,7 +103,11 @@
     <orderEntry type="library" name="Gradle: com.android.support:support-compat-27.1.1" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.lifecycle:viewmodel-1.1.0" level="project" />
 <<<<<<< HEAD
+<<<<<<< HEAD
     <orderEntry type="library" name="Gradle: com.github.bumptech.glide:glide-4.7.1" level="project" />
+=======
+    <orderEntry type="library" name="Gradle: de.hdodenhof:circleimageview-2.2.0" level="project" />
+>>>>>>> c9de98755f888aea793141eb732403a861081e9c
 =======
     <orderEntry type="library" name="Gradle: de.hdodenhof:circleimageview-2.2.0" level="project" />
 >>>>>>> c9de98755f888aea793141eb732403a861081e9c

@@ -38,7 +38,7 @@
             <TextView
                 android:id="@+id/txt_belowsign"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:text="@string/signin"
                 android:layout_below="@+id/txt_signin"
                 android:layout_marginTop="20dp"
@@ -46,45 +46,70 @@
 
             <RelativeLayout
                 android:id="@+id/rel_social"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_below="@+id/txt_belowsign">
 
                 <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_toLeftOf="@+id/blank_view"
-                    android:layout_alignParentLeft="true"
+                    android:id="@+id/rel_fbView"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:layout_marginBottom="5dp"
-                    android:background="@drawable/fb_bkg_round">
+                    android:background="@drawable/fb_circle"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/rel_twitterView"
+                    android:layout_marginRight="20dp"
+                    >
+                    <com.facebook.login.widget.LoginButton
+                        android:id="@+id/Fb_Login"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
 
-                    <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="25dp"
-                        android:layout_centerInParent="true"
-                        android:background="@drawable/facebooklogo" />
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:visibility="invisible"
+
+
+                        />
+
 
                 </RelativeLayout>
-                <View
-                    android:id="@+id/blank_view"
-                    android:layout_width="20dp"
-                    android:layout_height="50dp"
-                    android:layout_centerInParent="true"/>
                 <RelativeLayout
-                    android:id="@+id/rel_google"
-                    android:layout_width="match_parent"
-                    android:layout_toRightOf="@+id/blank_view"
-                    android:layout_height="50dp"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/google_bkg_round"
+                    android:id="@+id/rel_twitterView"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/twitter_circle"
                     android:layout_marginBottom="5dp">
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/googlelogo"
-                        android:layout_centerInParent="true" />
+
+                    <com.twitter.sdk.android.core.identity.TwitterLoginButton
+                        android:id="@+id/twitter_sign_in_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:visibility="invisible"/>
+
+
+
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rel_googleView"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_toRightOf="@+id/rel_twitterView"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/google_circle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="5dp">
+
+
+
+
+
 
                 </RelativeLayout>
 
@@ -99,66 +124,7 @@
                 android:layout_marginTop="20dp"
                 android:textSize="16sp" />
 
-            <RelativeLayout
-                android:id="@+id/rel_selbuy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/txt_belowsocial">
 
-                <RelativeLayout
-                    android:id="@+id/rel_sel"
-                    android:layout_width="100dp"
-                    android:layout_height="140dp"
-                    android:layout_marginRight="40dp"
-                    android:layout_marginBottom="5dp"
-                    >
-
-                    <ImageView
-                        android:id="@+id/img_seller"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:background="@drawable/buyeractive" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/img_seller"
-                    android:text="Seller"
-                    android:layout_marginTop="10dp"
-                    android:textSize="16sp"
-                    android:layout_centerHorizontal="true"
-                    android:textColor="@color/black" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/rel_buy"
-                    android:layout_width="100dp"
-                    android:layout_height="140dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="40dp"
-                    android:layout_toRightOf="@+id/rel_sel"
-                    >
-                    <ImageView
-                        android:id="@+id/img_buyer"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:background="@drawable/buyer" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/img_buyer"
-                        android:text="Buyer"
-                        android:layout_marginTop="10dp"
-                        android:textSize="16sp"
-                        android:layout_centerHorizontal="true"
-                        android:textColor="@color/black" />
-                </RelativeLayout>
-
-            </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/rel_name"
                 android:layout_width="match_parent"
@@ -166,7 +132,7 @@
                 android:layout_alignParentRight="true"
                 android:background="@drawable/white_trans_corner_round"
                 android:layout_marginTop="20dp"
-                android:layout_below="@+id/rel_selbuy"
+                android:layout_below="@+id/txt_belowsocial"
                 android:layout_marginBottom="5dp">
 
 
@@ -271,13 +237,72 @@
                     android:inputType="phone"
                     android:background="@android:color/transparent"/>
             </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rel_selbuy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/rel_phone">
 
+                <RelativeLayout
+                    android:id="@+id/rel_sel"
+                    android:layout_width="80dp"
+                    android:layout_height="120dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="5dp"
+                    >
+
+                    <ImageView
+                        android:id="@+id/img_seller"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="@drawable/buyeractive" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/img_seller"
+                        android:text="Seller"
+                        android:layout_marginTop="5dp"
+                        android:textSize="16sp"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/black" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rel_buy"
+                    android:layout_width="80dp"
+                    android:layout_height="120dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_toRightOf="@+id/rel_sel"
+                    >
+                    <ImageView
+                        android:id="@+id/img_buyer"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="@drawable/buyer" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/img_buyer"
+                        android:text="Buyer"
+                        android:layout_marginTop="10dp"
+                        android:textSize="16sp"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/black" />
+                </RelativeLayout>
+
+            </RelativeLayout>
             <Button
                 android:id="@+id/btn_signin"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/signin_button_bkg"
-                android:layout_below="@+id/rel_phone"
+                android:layout_below="@+id/rel_selbuy"
                 android:text="Signup"
                 android:textAllCaps="false"
                 android:textColor="@color/white"

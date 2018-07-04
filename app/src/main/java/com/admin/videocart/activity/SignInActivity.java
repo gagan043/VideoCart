@@ -36,55 +36,102 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterApiClient;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterAuthClient;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
+import com.twitter.sdk.android.core.models.User;
 
+import org.brickred.socialauth.Profile;
+import org.brickred.socialauth.android.DialogListener;
+import org.brickred.socialauth.android.SocialAuthAdapter;
+import org.brickred.socialauth.android.SocialAuthError;
+import org.brickred.socialauth.android.SocialAuthListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+//import retrofit2.Call;
+
+import io.fabric.sdk.android.Fabric;
 
 import static com.admin.videocart.R.layout.activity_sign_in;
 
 public class SignInActivity extends Activity implements OnClickListener {
     ImageView img_back;
-    RelativeLayout rel_fbView, rel_googleView, rel_create;
+    RelativeLayout rel_fbView, rel_twitterView, rel_create, rel_googleView;
     EditText ed_passwordView, ed_emailView;
     Button btn_signin;
     TextView txt_forgot;
     String email_mString = "", pass_mString = "";
     CustomProgressDialog mDialog;
     PreferenceUtilis preference;
+    Global global;
+    //----------FACEBOOK VARIABLE
     CallbackManager callbackManager;
     LoginButton Login_TV;
     String token;
-    String name_mString,image_mString,id_mString;
+    String name_mString, image_mString, id_mString;
+
+    //----------TWITER VARIABLE----------
+    SocialAuthAdapter adapter;
+    Profile profileMap;
+    TwitterLoginButton twitter_sign_in_button;
+    //-------------Google variable----------
+    SignInButton mGoogleSignInButton;
+    private static final int RC_SIGN_IN = 9001;
+    GoogleApiClient mGoogleApiClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
 
         setContentView(R.layout.activity_sign_in);
+
         callbackManager = CallbackManager.Factory.create();
+
+
+        // client = new TwitterAuthClient();
         init();
         setListener();
     }
 
     public void init() {
         Login_TV = (LoginButton) findViewById(R.id.Fb_Login);
-        Login_TV.setReadPermissions(Arrays.asList("public_profile, email,user_birthday"));
+        Login_TV.setReadPermissions(Arrays.asList("public_profile, email"));
         fbMethod();
-        mDialog=new CustomProgressDialog(this);
-        preference=new PreferenceUtilis(this);
+
+        global = (Global) getApplicationContext();
+        mDialog = new CustomProgressDialog(this);
+        preference = new PreferenceUtilis(this);
+        twitter_sign_in_button = (TwitterLoginButton) findViewById(R.id.twitter_sign_in_button);
+
+        rel_googleView = (RelativeLayout) findViewById(R.id.rel_googleView);
         img_back = (ImageView) findViewById(R.id.img_back);
         rel_fbView = (RelativeLayout) findViewById(R.id.rel_fbView);
-        rel_googleView = (RelativeLayout) findViewById(R.id.rel_googleView);
+        rel_twitterView = (RelativeLayout) findViewById(R.id.rel_twitterView);
         rel_create = (RelativeLayout) findViewById(R.id.rel_create);
         ed_passwordView = (EditText) findViewById(R.id.ed_passwordView);
         ed_emailView = (EditText) findViewById(R.id.ed_emailView);
         btn_signin = (Button) findViewById(R.id.btn_signin);
         txt_forgot = (TextView) findViewById(R.id.txt_forgot);
-
+        callTwitterLogin();
 
     }
 
@@ -94,7 +141,24 @@ public class SignInActivity extends Activity implements OnClickListener {
         btn_signin.setOnClickListener(this);
         txt_forgot.setOnClickListener(this);
         rel_fbView.setOnClickListener(this);
+        rel_twitterView.setOnClickListener(this);
+        rel_googleView.setOnClickListener(this);
+    }
 
+    private void signInWithGoogle() {
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.disconnect();
+        }
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+        final Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     @Override
@@ -109,7 +173,7 @@ public class SignInActivity extends Activity implements OnClickListener {
             case R.id.btn_signin:
                 email_mString = ed_emailView.getText().toString();
                 pass_mString = ed_passwordView.getText().toString();
-                if(CommonUtils.getConnectivityStatus(this)) {
+                if (CommonUtils.getConnectivityStatus(this)) {
                     if (email_mString.length() == 0) {
                         ed_emailView.setError("Please enter phone or email");
                     } else if (pass_mString.length() == 0) {
@@ -131,7 +195,7 @@ public class SignInActivity extends Activity implements OnClickListener {
 
 
                     }
-                }else{
+                } else {
                     CommonUtils.openInternetDialog(this);
                 }
                 break;
@@ -146,8 +210,44 @@ public class SignInActivity extends Activity implements OnClickListener {
 
                 }
                 break;
+            case R.id.rel_twitterView:
+                if (CommonUtils.getConnectivityStatus(SignInActivity.this)) {
+
+                    twitter_sign_in_button.performClick();
+
+
+                } else {
+                    CommonUtils.openInternetDialog(SignInActivity.this);
+
+                }
+                break;
+            case R.id.rel_googleView:
+                if (CommonUtils.getConnectivityStatus(SignInActivity.this)) {
+signInWithGoogle();
+
+                   // mGoogleSignInButton.performClick();
+
+                } else {
+                    CommonUtils.openInternetDialog(SignInActivity.this);
+
+                }
+                break;
         }
 
+    }
+
+    public void callTwitterLogin() {
+        twitter_sign_in_button.setCallback(new Callback<TwitterSession>() {
+            @Override
+            public void success(final Result<TwitterSession> result) {
+                // handleSignInResult(...);
+            }
+
+            @Override
+            public void failure(TwitterException e) {
+                // handleSignInResult(...);
+            }
+        });
     }
 
     public void openActivity(Class c) {
@@ -158,36 +258,31 @@ public class SignInActivity extends Activity implements OnClickListener {
     }
 
     //-------------------------Login api method------------------------
-    public void login(final JSONObject json1)
-    {
-        String URL= UrlConstants.LOGINURL;
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,json1, new Response.Listener<JSONObject>() {
+    public void login(final JSONObject json1) {
+        String URL = UrlConstants.LOGINURL;
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL, json1, new Response.Listener<JSONObject>() {
 
             @Override
-            public void onResponse(JSONObject s)
-            {
+            public void onResponse(JSONObject s) {
                 Log.e("send response", String.valueOf(s));
                 try {
                     String status = s.getString("status");
-                    String message=s.getString("message");
-                    if (status.equalsIgnoreCase("1"))
-                    {
+                    String message = s.getString("message");
+                    if (status.equalsIgnoreCase("1")) {
 
-                        JSONObject jsonobj=s.getJSONObject("data");
-                        String id=jsonobj.getString("id");
+                        JSONObject jsonobj = s.getJSONObject("data");
+                        String id = jsonobj.getString("id");
 
-                       preference.setUserId(id);
-                       openActivity(SignUpActivity.class);
+                        preference.setUserId(id);
+                        openActivity(SignUpActivity.class);
 
 
                     }
 
                     mDialog.dismissDialog();
-                    Toast.makeText(SignInActivity.this,message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignInActivity.this, message, Toast.LENGTH_SHORT).show();
 
-                }
-                catch (JSONException e)
-                {
+                } catch (JSONException e) {
 
                     e.printStackTrace();
                 }
@@ -198,7 +293,7 @@ public class SignInActivity extends Activity implements OnClickListener {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         mDialog.dismissDialog();
-                        Log.e("Error: ",volleyError.toString()+json1 );
+                        Log.e("Error: ", volleyError.toString() + json1);
                     }
 
 
@@ -223,38 +318,20 @@ public class SignInActivity extends Activity implements OnClickListener {
             public void onSuccess(LoginResult loginResult) {
                 // App code
                 token = loginResult.getAccessToken().getToken();
+                Log.e("token", token);
                 GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object,
                                             GraphResponse response) {
                         // Application code
-                        Log.e("print", object.toString());
-
-                        try {
-
-                            name_mString = object.getString("name");
-                            id_mString = object.getString("id");
-
-
-
-                            if (object.has("email")) {
-                                email_mString = object.getString("email");
-
-                            } else {
-                                email_mString = "";
-                            }
-
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        Log.e("respone", response.toString());
+                        getFacebookData(object);
 
 
                     }
                 });
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "picture.type(large),id,email,name,gender");
+                parameters.putString("fields", "picture.type(large),id,name,gender");
                 request.setParameters(parameters);
                 request.executeAsync();
 
@@ -276,6 +353,57 @@ public class SignInActivity extends Activity implements OnClickListener {
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+        if (TwitterAuthConfig.DEFAULT_AUTH_REQUEST_CODE == requestCode) {
+            twitter_sign_in_button.onActivityResult(requestCode, resultCode, data);
+        }
+        // Pass the activity result to the twitterAuthClient.
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+
+            if (result.isSuccess()) {
+                final GoogleApiClient client = mGoogleApiClient;
+                Log.e("data",""+ result.getSignInAccount().getPhotoUrl());
+                //handleSignInResult(...)
+            } else {
+                //handleSignInResult(...);
+            }
+        } else {
+            // Handle other values for requestCode
+        }
+    }
+
+
+    //-----------------------social data method---------------
+    private void getFacebookData(JSONObject object) {
+
+
+        try {
+            String id = object.getString("id");
+            URL profile_pic;
+            try {
+                profile_pic = new URL("https://graph.facebook.com/" + id + "/picture?type=large");
+                Log.i("profile_pic", profile_pic + "");
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+
+            }
+            Log.e("print", object.toString());
+            name_mString = object.getString("name");
+            id_mString = object.getString("id");
+
+
+            if (object.has("email")) {
+                email_mString = object.getString("email");
+
+            } else {
+                email_mString = "";
+            }
+
+
+        } catch (Exception e) {
+            Log.e("error", "BUNDLE Exception : " + e.toString());
+        }
 
 
     }

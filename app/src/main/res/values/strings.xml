@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">VideoCart</string>
     <string name="facebook_app_id">237032733692225</string>
+
+    <string name="com.twitter.sdk.android.CONSUMER_KEY">ffiF9mKlUf9Jc5z8BFOKAM9Wf</string>
+    <string name="com.twitter.sdk.android.CONSUMER_SECRET">kwep57tb6VAU1NbV47OA49z3s11bfymNzPGp1hXRt3vMXLs90F</string>
     <!--SignIn-->
 
     <string name="signin">Sign in with social media to sync your details</string>

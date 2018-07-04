@@ -39,19 +39,23 @@ PreferenceUtilis preference;
 
         String locationPermission = Manifest.permission.ACCESS_FINE_LOCATION;
         String coarselocationPermission = Manifest.permission.ACCESS_COARSE_LOCATION;
-       /* String cameraPermission = Manifest.permission.CAMERA;
+        String networkPermission = Manifest.permission.ACCESS_NETWORK_STATE;
         String wstorage = Manifest.permission.WRITE_EXTERNAL_STORAGE;
         String rstorage = Manifest.permission.READ_EXTERNAL_STORAGE;
-        String networkPermission = Manifest.permission.ACCESS_NETWORK_STATE;
+
+       /* String cameraPermission = Manifest.permission.CAMERA;
+
         String readContactPermission = Manifest.permission.READ_CONTACTS;*/
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             int hasFinePermission = SplashActivity.this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
             int hasCoarsePermission = SplashActivity.this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-           /* int hascameraPermission = SplashActivity.this.checkSelfPermission(Manifest.permission.CAMERA);
+            int hasaccessnetworkState = SplashActivity.this.checkSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE);
             int haswstorage = SplashActivity.this.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             int hasrstorage = SplashActivity.this.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
-            int hasaccessnetworkState = SplashActivity.this.checkSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE);
+
+           /* int hascameraPermission = SplashActivity.this.checkSelfPermission(Manifest.permission.CAMERA);
+
             int hasReadContact = SplashActivity.this.checkSelfPermission(Manifest.permission.READ_CONTACTS);
 */
 
@@ -62,8 +66,8 @@ PreferenceUtilis preference;
             if (hasCoarsePermission != PackageManager.PERMISSION_GRANTED) {
                 permissions.add(coarselocationPermission);
             }
-           /* if (hascameraPermission != PackageManager.PERMISSION_GRANTED) {
-                permissions.add(cameraPermission);
+            if (hasaccessnetworkState != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(networkPermission);
             }
             if (haswstorage != PackageManager.PERMISSION_GRANTED) {
                 permissions.add(wstorage);
@@ -71,9 +75,11 @@ PreferenceUtilis preference;
             if (hasrstorage != PackageManager.PERMISSION_GRANTED) {
                 permissions.add(rstorage);
             }
-            if (hasaccessnetworkState != PackageManager.PERMISSION_GRANTED) {
-                permissions.add(networkPermission);
+           /* if (hascameraPermission != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(cameraPermission);
             }
+
+
             if (hasReadContact != PackageManager.PERMISSION_GRANTED) {
                 permissions.add(readContactPermission);
             }*/
@@ -104,10 +110,12 @@ PreferenceUtilis preference;
                 // Initial
                 perms.put(Manifest.permission.ACCESS_FINE_LOCATION, PackageManager.PERMISSION_GRANTED);
                 perms.put(Manifest.permission.ACCESS_COARSE_LOCATION, PackageManager.PERMISSION_GRANTED);
-               /* perms.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.ACCESS_NETWORK_STATE, PackageManager.PERMISSION_GRANTED);
                 perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
                 perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
-                perms.put(Manifest.permission.ACCESS_NETWORK_STATE, PackageManager.PERMISSION_GRANTED);
+
+               /* perms.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
+
                 perms.put(Manifest.permission.READ_CONTACTS, PackageManager.PERMISSION_GRANTED);*/
 
                 // Fill with results
@@ -116,10 +124,12 @@ PreferenceUtilis preference;
 
                 if (perms.get(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                         && perms.get(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                        /*&& perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+                        && perms.get(Manifest.permission.ACCESS_NETWORK_STATE) == PackageManager.PERMISSION_GRANTED
                         && perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                         && perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                        && perms.get(Manifest.permission.ACCESS_NETWORK_STATE) == PackageManager.PERMISSION_GRANTED
+
+                        /*&& perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+
                         && perms.get(Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED*/) {
                     // All Permissions Granted
 
@@ -140,7 +150,7 @@ PreferenceUtilis preference;
     }
 
     public void splashThread() {
-       // hashkey();
+        //hashkey();
         if(CommonUtils.getConnectivityStatus(SplashActivity.this)) {
 
             //if (preference.getUserId().equalsIgnoreCase("")) {
@@ -166,7 +176,7 @@ PreferenceUtilis preference;
     }
     public void hashkey() {
         try {
-            PackageInfo info = getPackageManager().getPackageInfo("envago.envago", PackageManager.GET_SIGNATURES);
+            PackageInfo info = getPackageManager().getPackageInfo("com.admin.videocart", PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());

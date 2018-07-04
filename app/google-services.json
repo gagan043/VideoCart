@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "833168111659",
+    "firebase_url": "https://fir-4486a.firebaseio.com",
+    "project_id": "fir-4486a",
+    "storage_bucket": "fir-4486a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:833168111659:android:df69d25ec26c2662",
+        "android_client_info": {
+          "package_name": "com.admin.videocart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "833168111659-f6dqj1is0edov369rid30umrlrhirh3a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.admin.videocart",
+            "certificate_hash": "18468f38f33abb1ee4244b86d57c439fcebc1df1"
+          }
+        },
+        {
+          "client_id": "833168111659-41c7tgt3raf17gdoljhlm3tu8gqnfnep.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDucZ2gQD6MhKZEPG_H2zJ4FS82u4XXN5I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "833168111659-41c7tgt3raf17gdoljhlm3tu8gqnfnep.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -8,7 +8,12 @@
         <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
         <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
         <uses-permission android:name="android.permission.CAMERA" />
+
+        <permission
+            android:name="com.admin.videocart.permission.C2D_MESSAGE"
+            android:protectionLevel="signature" />
         <application
+            android:name=".activity.Global"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
@@ -26,7 +31,9 @@
                     android:screenOrientation="portrait"/>
                 <activity android:name=".activity.SignInActivity"
                     android:screenOrientation="portrait"
-                    android:windowSoftInputMode="adjustPan"/>
+                    android:windowSoftInputMode="adjustPan">
+
+                </activity>
                 <activity android:name=".activity.SignUpActivity"
                     android:screenOrientation="portrait"
                     android:windowSoftInputMode="adjustPan"/>
@@ -53,10 +60,18 @@
                     android:screenOrientation="portrait"/>
                 <activity android:name=".activity.BuyerSettingActivity"
                     android:screenOrientation="portrait"></activity>
-                <activity android:name="com.facebook.FacebookActivity"/>
+                <activity
+                    android:name="com.facebook.FacebookActivity"
+                    android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+                    android:label="@string/app_name" />
 
                 <meta-data
                     android:name="com.facebook.sdk.ApplicationId"
                     android:value="@string/facebook_app_id" />
-        </application>
+
+
+            <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="554ef2077694defe3f304217687a150a944de5f2" />
+    </application>
 </manifest>

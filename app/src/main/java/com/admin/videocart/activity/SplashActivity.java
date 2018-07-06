@@ -154,7 +154,7 @@ public class SplashActivity extends Activity
         //hashkey();
         if(CommonUtils.getConnectivityStatus(SplashActivity.this)) {
 
-            //if (preference.getUserId().equalsIgnoreCase("")) {
+            if (preference.getUserId().equalsIgnoreCase("")) {
                 Handler splashhandler = new Handler();
                 splashhandler.postDelayed(new Runnable() {
                     @Override
@@ -167,9 +167,21 @@ public class SplashActivity extends Activity
 
                     }
                 }, 2000);
-            /*} else {
+            } else {
+                Handler splashhandler = new Handler();
+                splashhandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
 
-            }*/
+                        Intent i = new Intent(SplashActivity.this, BuyerTabActivity.class);
+                        startActivity(i);
+                        finish();
+
+
+                    }
+                }, 2000);
+
+            }
         }else{
             CommonUtils.openInternetDialog(SplashActivity.this);
         }

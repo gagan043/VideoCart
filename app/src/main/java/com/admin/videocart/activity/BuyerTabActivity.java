@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.TabLayout;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,20 +34,22 @@ public class BuyerTabActivity extends TabActivity implements TabLayout.OnTabSele
         //  i = getIntent();
         tabHost = getTabHost();
         setTabs();
-
+tabHost.setCurrentTab(3);
         for (int j = 0; j < tabHost.getTabWidget().getChildCount(); j++)
         {
             ViewGroup vg = (ViewGroup) tabHost.getTabWidget().getChildAt(j);
 
             ImageView img = (ImageView) vg.getChildAt(0);
             TextView txt=(TextView)vg.getChildAt(1);
-            if(j==0)
+            if(j==3)
             {
                 txt.setTextColor(getResources().getColor(R.color.appcolor));
+
             }
             else
             {
                 txt.setTextColor(getResources().getColor(R.color.gray));
+
             }
         }
 
@@ -64,10 +67,12 @@ public class BuyerTabActivity extends TabActivity implements TabLayout.OnTabSele
                     if(index==i)
                     {
                         txt.setTextColor(getResources().getColor(R.color.appcolor));
+
                     }
                     else
                     {
                         txt.setTextColor(getResources().getColor(R.color.gray));
+
                     }
                 }
             }
@@ -100,10 +105,10 @@ public class BuyerTabActivity extends TabActivity implements TabLayout.OnTabSele
 
     private void setTabs()
     {
-        addTab(R.drawable.myproducts, BuyerProfileActivity.class,"HOME");
-        addTab(R.drawable.changepwd, BuyerShopActivity.class,"SHOP");
-        addTab(R.drawable.legal, BuyerOrderActivity.class,"CART");
-        addTab(R.drawable.rate, BuyerSettingActivity.class,"SETTINGS");
+        addTab(R.drawable.tab_home, BuyerHomeActivity.class,"HOME");
+        addTab(R.drawable.tab_shop, BuyerShopActivity.class,"SHOP");
+        addTab(R.drawable.tab_cart, BuyerOrderActivity.class,"CART");
+        addTab(R.drawable.tab_setting, BuyerSettingActivity.class,"SETTINGS");
     }
 
     private void addTab(int drawableId, Class<?> c,String s) {

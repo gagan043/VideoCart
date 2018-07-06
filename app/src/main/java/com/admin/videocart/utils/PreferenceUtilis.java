@@ -32,4 +32,26 @@ public class PreferenceUtilis {
 
         return sp.getString(ConstantClass.NAME,"");
     }
+    public  void setEmail(String email){
+        ed.putString(ConstantClass.EMAIL,email);
+        ed.commit();
+    }
+    public  String getEmail(){
+
+        return sp.getString(ConstantClass.EMAIL,"");
+    }
+    public  void setLoginType(String type){
+        ed.putString(ConstantClass.SOCIALTYPE,type);
+        ed.commit();
+    }
+    public  String getLoginType(){
+
+        return sp.getString(ConstantClass.SOCIALTYPE,"");
+    }
+
+
+    public void clearCache(){
+        ed.clear();
+        ed.commit();
+    }
 }

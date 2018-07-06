@@ -246,6 +246,9 @@ public class SignInActivity extends Activity implements OnClickListener {
 
                     mDialog.setUpDialog();
                     Sociallogin(js);
+                    preference.setEmail("");
+                    preference.setName(result.data.getUserName());
+                    preference.setLoginType("twitter");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -267,6 +270,14 @@ public class SignInActivity extends Activity implements OnClickListener {
 
 
     }
+    public void closeAllOpenNewActivity(Class c) {
+        Intent i = new Intent(this, c);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        startActivity(i);
+
+
+    }
 
     //-------------------------Login api method------------------------
     public void login(final JSONObject json1) {
@@ -283,12 +294,12 @@ public class SignInActivity extends Activity implements OnClickListener {
 
                         JSONObject jsonobj = s.getJSONObject("data");
                         String id = jsonobj.getString("id");
-                        String name = jsonobj.getString("name");
 
-                        preference.setUserId(id);
-                        preference.setName(name);
+                        preference.setName(jsonobj.getString(ConstantClass.NAME));
+                        preference.setEmail(jsonobj.getString(ConstantClass.EMAIL));
 
-                        openActivity(SignUpActivity.class);
+                        preference.setLoginType("");
+                        closeAllOpenNewActivity(BuyerTabActivity.class);
 
 
                     }
@@ -389,6 +400,9 @@ public class SignInActivity extends Activity implements OnClickListener {
 
                     mDialog.setUpDialog();
                     Sociallogin(js);
+                    preference.setEmail(result.getSignInAccount().getEmail());
+                    preference.setName(result.getSignInAccount().getDisplayName());
+                    preference.setLoginType("gmail");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -439,6 +453,9 @@ public class SignInActivity extends Activity implements OnClickListener {
 
                 mDialog.setUpDialog();
                 Sociallogin(js);
+                preference.setEmail(email_mString);
+                preference.setName(name_mString);
+                preference.setLoginType("facebook");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -469,7 +486,7 @@ public class SignInActivity extends Activity implements OnClickListener {
                         String id = jsonobj.getString("id");
 
                         preference.setUserId(id);
-                        openActivity(SignUpActivity.class);
+                        closeAllOpenNewActivity(BuyerTabActivity.class);
 
 
                     }

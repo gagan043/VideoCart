@@ -58,15 +58,11 @@
                     android:layout_marginBottom="5dp"
                     android:background="@drawable/fb_circle"
                     android:layout_centerVertical="true"
-<<<<<<< HEAD
-                    android:layout_toLeftOf="@+id/rel_twitterView"
+
+                    android:layout_toLeftOf="@+id/rel_googleView"
                     android:layout_marginRight="20dp">
 
-=======
-                    android:layout_toLeftOf="@+id/rel_googleView"
-                    android:layout_marginRight="20dp"
-                    >
->>>>>>> d97c8260ccd57246151eb1ee50a2e6c1381c644a
+
                     <com.facebook.login.widget.LoginButton
                         android:id="@+id/Fb_Login"
                         android:layout_width="match_parent"

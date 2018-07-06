@@ -75,16 +75,17 @@
                     android:layout_toLeftOf="@+id/txt_myaccount"
                     android:text="wstenley@yopmail.com"
                     android:textColor="@color/gray"
-                    android:textSize="14dp" />
+                    android:textSize="12dp" />
 
                 <TextView
                     android:id="@+id/txt_myaccount"
-                    android:layout_width="100dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="20dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="25dp"
                     android:gravity="center"
+                    android:padding="5dp"
                     android:layout_marginRight="20dp"
                     android:background="@drawable/orange_txt_bkg"
                     android:text="My account"

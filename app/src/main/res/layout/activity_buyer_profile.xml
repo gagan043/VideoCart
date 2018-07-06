@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/img_profile"
             android:layout_marginLeft="40dp"
-            android:text="Will Stanley"
+            android:text=""
             android:textStyle="bold"
             android:textSize="20sp"
             android:textColor="@color/black"

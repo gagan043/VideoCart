@@ -75,10 +75,10 @@ public class SignUpActivity extends Activity implements View.OnClickListener
     LoginButton Login_TV;
     String token;
 
-
     //----------TWITER VARIABLE----------
 
     TwitterLoginButton twitter_sign_in_button;
+
     //-------------Google variable----------
     SignInButton mGoogleSignInButton;
     private static final int RC_SIGN_IN = 9001;
@@ -93,13 +93,13 @@ public class SignUpActivity extends Activity implements View.OnClickListener
 
         callbackManager = CallbackManager.Factory.create();
 
-
         // client = new TwitterAuthClient();
         init();
         setListener();
     }
 
-    public void init() {
+    public void init()
+    {
         Login_TV = (LoginButton) findViewById(R.id.Fb_Login);
         Login_TV.setReadPermissions(Arrays.asList("public_profile, email"));
         fbMethod();
@@ -279,7 +279,6 @@ public class SignUpActivity extends Activity implements View.OnClickListener
         
 
     }
-
 
 
     //---------------------------facebook method------------------------------

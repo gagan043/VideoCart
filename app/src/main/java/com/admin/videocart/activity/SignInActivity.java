@@ -290,7 +290,6 @@ public class SignInActivity extends Activity implements OnClickListener {
 
                         openActivity(SignUpActivity.class);
 
-
                     }
 
                     mDialog.dismissDialog();

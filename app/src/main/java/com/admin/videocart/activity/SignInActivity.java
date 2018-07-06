@@ -50,7 +50,6 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
-import com.twitter.sdk.android.core.models.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -81,7 +80,7 @@ public class SignInActivity extends Activity implements OnClickListener {
     CallbackManager callbackManager;
     LoginButton Login_TV;
     String token;
-    String name_mString, image_mString, id_mString;
+    String name_mString = "", image_mString = "", id_mString = "";
 
     //----------TWITER VARIABLE----------
 
@@ -217,9 +216,9 @@ public class SignInActivity extends Activity implements OnClickListener {
                 break;
             case R.id.rel_googleView:
                 if (CommonUtils.getConnectivityStatus(SignInActivity.this)) {
-signInWithGoogle();
+                    signInWithGoogle();
 
-                   // mGoogleSignInButton.performClick();
+                    // mGoogleSignInButton.performClick();
 
                 } else {
                     CommonUtils.openInternetDialog(SignInActivity.this);
@@ -235,11 +234,29 @@ signInWithGoogle();
             @Override
             public void success(final Result<TwitterSession> result) {
                 // handleSignInResult(...);
+
+                JSONObject js = new JSONObject();
+                try {
+                    js.put(ConstantClass.EMAIL, "");
+                    js.put(ConstantClass.NAME, result.data.getUserName());
+                    js.put(ConstantClass.SOCIALTYPE, "twitter");
+                    js.put(ConstantClass.IMAGE, image_mString);
+                    js.put(ConstantClass.DATEOFBIRTH, "");
+                    js.put(ConstantClass.TOKEN, result.data.getAuthToken());
+
+                    mDialog.setUpDialog();
+                    Sociallogin(js);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void failure(TwitterException e) {
                 // handleSignInResult(...);
+                final Uri marketUri = Uri.parse("market://details?id=com.twitter.android");
+                startActivity(new Intent(Intent.ACTION_VIEW, marketUri));
+                //Toast.makeText(SignInActivity.this,"Please install first twitter app",Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -247,7 +264,7 @@ signInWithGoogle();
     public void openActivity(Class c) {
         Intent i = new Intent(this, c);
         startActivity(i);
-        finish();
+
 
     }
 
@@ -328,7 +345,7 @@ signInWithGoogle();
                     }
                 });
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "picture.type(large),id,name,gender");
+                parameters.putString("fields", "picture.type(large),id,name,gender,email");
                 request.setParameters(parameters);
                 request.executeAsync();
 
@@ -359,7 +376,22 @@ signInWithGoogle();
 
             if (result.isSuccess()) {
                 final GoogleApiClient client = mGoogleApiClient;
-                Log.e("data",""+ result.getSignInAccount().getPhotoUrl());
+                Log.e("data", "" + result.getSignInAccount().getPhotoUrl());
+
+                JSONObject js = new JSONObject();
+                try {
+                    js.put(ConstantClass.EMAIL, result.getSignInAccount().getEmail());
+                    js.put(ConstantClass.NAME, result.getSignInAccount().getDisplayName());
+                    js.put(ConstantClass.SOCIALTYPE, "google");
+                    js.put(ConstantClass.IMAGE, result.getSignInAccount().getPhotoUrl());
+                    js.put(ConstantClass.DATEOFBIRTH, "");
+                    js.put(ConstantClass.TOKEN, result.getSignInAccount().getId());
+
+                    mDialog.setUpDialog();
+                    Sociallogin(js);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 //handleSignInResult(...)
             } else {
                 //handleSignInResult(...);
@@ -396,6 +428,20 @@ signInWithGoogle();
             } else {
                 email_mString = "";
             }
+            JSONObject js = new JSONObject();
+            try {
+                js.put(ConstantClass.EMAIL, email_mString);
+                js.put(ConstantClass.NAME, name_mString);
+                js.put(ConstantClass.SOCIALTYPE, "facebook");
+                js.put(ConstantClass.IMAGE, image_mString);
+                js.put(ConstantClass.DATEOFBIRTH, "");
+                js.put(ConstantClass.TOKEN, token);
+
+                mDialog.setUpDialog();
+                Sociallogin(js);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
 
         } catch (Exception e) {
@@ -405,5 +451,59 @@ signInWithGoogle();
 
     }
 
+
+    //-------------------------Social Login api method------------------------
+    public void Sociallogin(final JSONObject json1) {
+        String URL = UrlConstants.SOCIALLOGIN;
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL, json1, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject s) {
+                Log.e("send response", String.valueOf(s));
+                try {
+                    String status = s.getString("status");
+                    String message = s.getString("message");
+                    if (status.equalsIgnoreCase("1")) {
+
+                        JSONObject jsonobj = s.getJSONObject("data");
+                        String id = jsonobj.getString("id");
+
+                        preference.setUserId(id);
+                        openActivity(SignUpActivity.class);
+
+
+                    }
+
+                    mDialog.dismissDialog();
+                    Toast.makeText(SignInActivity.this, message, Toast.LENGTH_SHORT).show();
+
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+                }
+            }
+        },
+                new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        mDialog.dismissDialog();
+                        Log.e("Error: ", volleyError.toString() + json1);
+                    }
+
+
+                }) {
+
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+        };
+        request.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        RequestQueue rQueue = Volley.newRequestQueue(SignInActivity.this);
+        rQueue.add(request);
+    }
 
 }

@@ -6,7 +6,7 @@
     <string name="com.twitter.sdk.android.CONSUMER_SECRET">kwep57tb6VAU1NbV47OA49z3s11bfymNzPGp1hXRt3vMXLs90F</string>
     <!--SignIn-->
 
-    <string name="signin">Sign in with social media to sync your details</string>
+    <string name="signin">Signin with social media to sync your details</string>
     <string name="signinbelow">Or using your email address/phone</string>
     <string name="emailphone">Phone or Email Address</string>
     <string name="password">Password</string>

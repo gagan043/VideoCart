@@ -53,14 +53,20 @@
 
                 <RelativeLayout
                     android:id="@+id/rel_fbView"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:layout_marginBottom="5dp"
                     android:background="@drawable/fb_circle"
                     android:layout_centerVertical="true"
+<<<<<<< HEAD
                     android:layout_toLeftOf="@+id/rel_twitterView"
                     android:layout_marginRight="20dp">
 
+=======
+                    android:layout_toLeftOf="@+id/rel_googleView"
+                    android:layout_marginRight="20dp"
+                    >
+>>>>>>> d97c8260ccd57246151eb1ee50a2e6c1381c644a
                     <com.facebook.login.widget.LoginButton
                         android:id="@+id/Fb_Login"
                         android:layout_width="match_parent"
@@ -71,12 +77,30 @@
 
 
                 </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rel_googleView"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_centerInParent="true"
+
+                    android:background="@drawable/google_circle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="5dp">
+
+
+
+
+
+
+                </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/rel_twitterView"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@+id/rel_googleView"
 
-                    android:layout_centerInParent="true"
                     android:background="@drawable/twitter_circle"
                     android:layout_marginBottom="5dp">
 
@@ -92,23 +116,6 @@
 
 
                 </RelativeLayout>
-                <RelativeLayout
-                    android:id="@+id/rel_googleView"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_toRightOf="@+id/rel_twitterView"
-                    android:layout_marginLeft="20dp"
-                    android:background="@drawable/google_circle"
-                    android:layout_centerVertical="true"
-                    android:layout_marginBottom="5dp">
-
-
-
-
-
-
-                </RelativeLayout>
-
             </RelativeLayout>
 
             <TextView
@@ -139,12 +146,14 @@
                     android:layout_marginLeft="20dp"
                     android:background="@drawable/name"/>
                 <EditText
+                    android:id="@+id/ed_nameView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_toRightOf="@+id/img_name"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:padding="5dp"
                     android:hint="@string/name"
-                    android:inputType="phone"
+                    android:inputType="text"
                     android:background="@android:color/transparent"/>
             </RelativeLayout>
 
@@ -167,10 +176,12 @@
                         android:layout_marginLeft="20dp"
                         android:background="@drawable/emaillogo"/>
                     <EditText
+                        android:id="@+id/ed_emailView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_toRightOf="@+id/img_email"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:padding="5dp"
                         android:hint="@string/email"
                         android:inputType="textEmailAddress"
                         android:background="@android:color/transparent"/>
@@ -197,10 +208,13 @@
                         android:background="@drawable/pswrdlogo"/>
 
                     <EditText
+                        android:id="@+id/ed_passwordView"
+
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_toRightOf="@+id/img_pswrd"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:padding="5dp"
                         android:hint="@string/password"
                         android:inputType="textPassword"
                         android:background="@android:color/transparent"/>
@@ -224,10 +238,12 @@
                     android:layout_marginLeft="20dp"
                     android:background="@drawable/phone"/>
                 <EditText
+                    android:id="@+id/ed_phoneView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_toRightOf="@+id/img_phone"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:padding="5dp"
                     android:hint="@string/phone"
                     android:inputType="phone"
                     android:background="@android:color/transparent"/>
@@ -252,7 +268,7 @@
                         android:id="@+id/img_seller"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:background="@drawable/buyeractive" />
+                        android:src="@drawable/buyeractive" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -278,14 +294,14 @@
                         android:id="@+id/img_buyer"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:background="@drawable/buyer" />
+                        android:src="@drawable/buyer" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/img_buyer"
                         android:text="Buyer"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:textSize="16sp"
                         android:layout_centerHorizontal="true"
                         android:textColor="@color/black" />
@@ -293,12 +309,12 @@
 
             </RelativeLayout>
             <Button
-                android:id="@+id/btn_signin"
+                android:id="@+id/btn_signup"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/signin_button_bkg"
                 android:layout_below="@+id/rel_selbuy"
-                android:text="Signup"
+                android:text="Register"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:layout_marginTop="20dp"/>
@@ -308,7 +324,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@+id/btn_signin"
+                android:layout_below="@+id/btn_signup"
                 android:layout_marginTop="20dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="5dp">

@@ -52,11 +52,6 @@ import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 import com.twitter.sdk.android.core.models.User;
 
-import org.brickred.socialauth.Profile;
-import org.brickred.socialauth.android.DialogListener;
-import org.brickred.socialauth.android.SocialAuthAdapter;
-import org.brickred.socialauth.android.SocialAuthError;
-import org.brickred.socialauth.android.SocialAuthListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -89,8 +84,7 @@ public class SignInActivity extends Activity implements OnClickListener {
     String name_mString, image_mString, id_mString;
 
     //----------TWITER VARIABLE----------
-    SocialAuthAdapter adapter;
-    Profile profileMap;
+
     TwitterLoginButton twitter_sign_in_button;
     //-------------Google variable----------
     SignInButton mGoogleSignInButton;
@@ -272,8 +266,11 @@ signInWithGoogle();
 
                         JSONObject jsonobj = s.getJSONObject("data");
                         String id = jsonobj.getString("id");
+                        String name = jsonobj.getString("name");
 
                         preference.setUserId(id);
+                        preference.setName(name);
+
                         openActivity(SignUpActivity.class);
 
 

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rel2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/thanks"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/txt_invite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/image"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:text="Congrats!"/>
+
+        <TextView
+            android:id="@+id/txt_sharetext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_invite"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/black"
+            android:text="@string/orderplaced"/>
+
+        <Button
+            android:id="@+id/btn_share"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/signin_button_bkg"
+            android:layout_below="@+id/txt_sharetext"
+            android:text="Done"
+            android:layout_marginRight="60dp"
+            android:layout_marginLeft="60dp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:layout_marginTop="50dp"/>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

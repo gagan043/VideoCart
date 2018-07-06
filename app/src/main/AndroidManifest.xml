@@ -1,77 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.admin.videocart">
-        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-        <uses-permission android:name="android.permission.INTERNET"/>
-        <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-        <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-        <uses-permission android:name="android.permission.CAMERA" />
 
-        <permission
-            android:name="com.admin.videocart.permission.C2D_MESSAGE"
-            android:protectionLevel="signature" />
-        <application
-            android:name=".activity.Global"
-            android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_round"
-            android:supportsRtl="true"
-            android:theme="@style/AppTheme">
-                <activity android:name=".activity.SplashActivity"
-                    android:screenOrientation="portrait" >
-                        <intent-filter>
-                                <action android:name="android.intent.action.MAIN" />
-                                <category android:name="android.intent.category.LAUNCHER" />
-                        </intent-filter>
-                </activity>
-                <activity android:name=".activity.WelcomeActivity"
-                    android:screenOrientation="portrait"/>
-                <activity android:name=".activity.SignInActivity"
-                    android:screenOrientation="portrait"
-                    android:windowSoftInputMode="adjustPan">
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
-                </activity>
-                <activity android:name=".activity.SignUpActivity"
-                    android:screenOrientation="portrait"
-                    android:windowSoftInputMode="adjustPan"/>
-                <activity android:name=".activity.SellerSettingActivity"
-                    android:screenOrientation="portrait"></activity>
-                <activity android:name=".activity.ForgetActivity"
-                    android:screenOrientation="portrait"
-                    android:windowSoftInputMode="adjustPan"/>
-                <activity android:name=".activity.ChangePswdActivity"
-                    android:screenOrientation="portrait"/>
-                <activity android:name=".activity.PswdThanksActivity"
-                    android:screenOrientation="portrait"/>
-                <activity android:name=".activity.SuccessActivity"
-                    android:screenOrientation="portrait"/>
-                <activity android:name=".activity.BuyerFdbThankActivity"
-                    android:screenOrientation="portrait"/>
-                <activity android:name=".activity.BuyerSendFeedbackActivity"
-                    android:screenOrientation="portrait"/>
-                <activity android:name=".activity.BuyerShareActivity"
-                    android:screenOrientation="portrait"/>
-                <activity android:name=".activity.BuyerThanksOrderActivity"
-                    android:screenOrientation="portrait"/>
-                <activity android:name=".activity.AddAddressActivity"
-                    android:screenOrientation="portrait"/>
-                <activity android:name=".activity.BuyerSettingActivity"
-                    android:screenOrientation="portrait"></activity>
-                <activity
-                    android:name="com.facebook.FacebookActivity"
-                    android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-                    android:label="@string/app_name" />
+    <permission
+        android:name="com.admin.videocart.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
 
-                <meta-data
-                    android:name="com.facebook.sdk.ApplicationId"
-                    android:value="@string/facebook_app_id" />
+    <application
+        android:name=".activity.Global"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".activity.SplashActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.WelcomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SignInActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.SignUpActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.SellerSettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ForgetActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.ChangePswdActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.PswdThanksActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SuccessActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.AddAddressActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".activity.BuyerSettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
 
-            <meta-data
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data
             android:name="io.fabric.ApiKey"
             android:value="554ef2077694defe3f304217687a150a944de5f2" />
+
+        <activity
+            android:name=".activity.BuyerTabActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".activity.BuyerHomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.BuyerOrderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.BuyerSendFeedbackActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.BuyerProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.BuyerWishlistActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.BuyerShopActivity"></activity>
     </application>
+
 </manifest>

@@ -23,8 +23,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SplashActivity extends Activity {
-PreferenceUtilis preference;
+public class SplashActivity extends Activity
+{
+    PreferenceUtilis preference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -35,7 +37,6 @@ PreferenceUtilis preference;
     }
 
     public void allPermission() {
-
 
         String locationPermission = Manifest.permission.ACCESS_FINE_LOCATION;
         String coarselocationPermission = Manifest.permission.ACCESS_COARSE_LOCATION;

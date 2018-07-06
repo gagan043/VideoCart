@@ -23,4 +23,13 @@ public class PreferenceUtilis {
 
         return sp.getString(ConstantClass.USERID,"");
     }
+
+    public  void setName(String name){
+        ed.putString(ConstantClass.NAME,name);
+        ed.commit();
+    }
+    public  String getName(){
+
+        return sp.getString(ConstantClass.NAME,"");
+    }
 }

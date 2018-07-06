@@ -42,15 +42,15 @@
         android:layout_marginRight="20dp"
         android:layout_centerInParent="true">
 
-    <TextView
-        android:id="@+id/txt_feedbck"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:textSize="16sp"
-        android:layout_marginLeft="10dp"
-        android:textColor="@color/black"
-        android:text="@string/feedtext"/>
+        <TextView
+            android:id="@+id/txt_feedbck"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/black"
+            android:text="@string/feedtext"/>
 
         <EditText
             android:id="@+id/edt_feedback"
@@ -79,5 +79,6 @@
             android:layout_marginTop="50dp"/>
 
     </RelativeLayout>
+
 
 </RelativeLayout>

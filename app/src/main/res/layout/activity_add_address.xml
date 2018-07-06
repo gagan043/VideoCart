@@ -178,10 +178,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txt_type"
+            android:layout_marginTop="10dp"
             android:orientation="vertical">
 
             <RadioGroup
                 android:layout_width="wrap_content"
+                android:layout_marginTop="10dp"
                 android:layout_height="wrap_content">
                 <RadioButton
                     android:id="@+id/rb_home"
@@ -194,6 +196,7 @@
                     android:id="@+id/rb_office"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:textColor="@color/black"
                     android:text="Work(Delivery time 10am-5pm)"/>
             </RadioGroup>
@@ -201,10 +204,13 @@
 
         <Button
             android:id="@+id/bt_save"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="50dp"
             android:background="@drawable/signin_button_bkg"
             android:text="SAVE"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white"
+            android:layout_centerHorizontal="true"
             android:textAllCaps="false"
             android:layout_below="@+id/lin_type"/>
 

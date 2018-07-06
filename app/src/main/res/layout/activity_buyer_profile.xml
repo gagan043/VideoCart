@@ -57,14 +57,14 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="40dp"
         android:layout_centerVertical="true"
-        android:src="@drawable/bluetick" />
+        android:src="@drawable/usericon" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_camera"
         android:layout_width="30dp"
         android:layout_marginTop="60dp"
         android:layout_marginLeft="-20dp"
-        android:src="@drawable/bluetick"
+        android:src="@drawable/ed"
         android:layout_toRightOf="@+id/img_profile"
         android:layout_height="30dp">
     </de.hdodenhof.circleimageview.CircleImageView>
@@ -116,7 +116,7 @@
                     android:id="@+id/img_order"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/myproducts"
+                    android:background="@drawable/user"
                     android:layout_centerVertical="true"/>
 
                 <TextView
@@ -142,7 +142,7 @@
                     android:layout_centerVertical="true"
                     android:textSize="14sp"
                     android:gravity="left"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/lhtgray"
                     android:text="will stanley" />
 
             </RelativeLayout>
@@ -157,7 +157,7 @@
                     android:id="@+id/img_phone"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/myproducts"
+                    android:background="@drawable/profilephne"
                     android:layout_centerVertical="true"/>
 
                 <TextView
@@ -183,7 +183,7 @@
                     android:layout_centerVertical="true"
                     android:textSize="14sp"
                     android:gravity="left"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/lhtgray"
                     android:text="+91-75648987690" />
 
             </RelativeLayout>
@@ -199,7 +199,7 @@
                     android:id="@+id/img_email"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/myproducts"
+                    android:background="@drawable/email"
                     android:layout_centerVertical="true"/>
 
                 <TextView
@@ -225,7 +225,7 @@
                     android:layout_centerVertical="true"
                     android:textSize="14sp"
                     android:gravity="left"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/lhtgray"
                     android:text="wstanley@yopmail.com" />
 
             </RelativeLayout>
@@ -254,7 +254,7 @@
                     android:id="@+id/img_privacy"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/myproducts"
+                    android:background="@drawable/privacy"
                     android:layout_centerVertical="true"/>
 
                 <TextView
@@ -280,7 +280,7 @@
                     android:layout_centerVertical="true"
                     android:textSize="18sp"
                     android:gravity="left"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/lhtgray"
                     android:text="Cancellation Policy" />
 
             </RelativeLayout>
@@ -296,7 +296,7 @@
                     android:id="@+id/img_delete"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/myproducts"
+                    android:background="@drawable/profilelogout"
                     android:layout_centerVertical="true"/>
 
                 <TextView
@@ -322,7 +322,7 @@
                     android:layout_centerVertical="true"
                     android:textSize="18sp"
                     android:gravity="left"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/lhtgray"
                     android:text="Deactivate account from this device" />
 
             </RelativeLayout>
@@ -351,7 +351,7 @@
                     android:id="@+id/img_chngepsd"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/logout"
+                    android:background="@drawable/profilepswd"
                     android:layout_centerVertical="true"/>
 
                 <TextView
@@ -380,7 +380,7 @@
                     android:id="@+id/img_logout"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/logout"
+                    android:background="@drawable/profilelogout"
                     android:layout_centerVertical="true"/>
 
                 <TextView

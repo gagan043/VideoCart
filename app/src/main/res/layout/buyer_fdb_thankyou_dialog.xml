@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/img_tick"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bluetick" />
+
+        <TextView
+            android:id="@+id/txt_first"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/img_tick"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:text="Thank you" />
+
+        <TextView
+            android:id="@+id/txt_second"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_first"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/gray"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:text="@string/buyertext" />
+
+        <Button
+            android:id="@+id/btn_close"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/blue_cornerline_bkg"
+            android:layout_below="@+id/txt_second"
+            android:text="Close"
+            android:layout_marginRight="60dp"
+            android:layout_marginLeft="60dp"
+            android:textAllCaps="false"
+            android:textColor="@color/blue"
+            android:layout_marginTop="50dp"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

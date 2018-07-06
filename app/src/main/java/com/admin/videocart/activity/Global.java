@@ -10,18 +10,10 @@ import com.twitter.sdk.android.core.TwitterCore;
 
 
 import io.fabric.sdk.android.Fabric;
-import org.brickred.socialauth.android.SocialAuthAdapter;
+
 
 public class Global extends Application {
-    public SocialAuthAdapter getSocialAuthAdpater() {
-        return socialAuthAdpater;
-    }
 
-    public void setSocialAuthAdpater(SocialAuthAdapter socialAuthAdpater) {
-        this.socialAuthAdpater = socialAuthAdpater;
-    }
-
-    SocialAuthAdapter socialAuthAdpater;
     @Override
     public void onCreate() {
         super.onCreate();

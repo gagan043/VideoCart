@@ -5,10 +5,10 @@ package com.admin.videocart.GlobalConstant;
  */
 
 public class UrlConstants {
-    public static String BASEURL="http://worksdelight.com/america_news_reporting/index.php/";
+    public static String BASEURL="http://worksdelight.com/kickoff/index.php/api/";
     public static String LOGINURL=BASEURL+"users/login";
-
-
+    public static String SIGNUPURl=BASEURL+"users/signup";
+    public static String SOCIALLOGIN=BASEURL+"users/social_login";
 
 
 }

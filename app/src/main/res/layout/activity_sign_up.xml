@@ -264,7 +264,7 @@
                         android:id="@+id/img_seller"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:src="@drawable/buyeractive" />
+                        android:src="@drawable/selleractive" />
 
                     <TextView
                         android:layout_width="wrap_content"

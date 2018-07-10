@@ -141,7 +141,7 @@ public class SplashActivity extends Activity
                 } else {
                     // Permission Denied
                     Toast.makeText(SplashActivity.this, "Some Permission is Denied", Toast.LENGTH_SHORT);
-
+                    splashThread();
                 }
             }
             break;

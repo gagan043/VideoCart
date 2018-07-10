@@ -20,7 +20,7 @@ import com.admin.videocart.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BuyerTabActivity extends TabActivity implements TabLayout.OnTabSelectedListener{
+public class BuyerTabActivity extends TabActivity implements TabLayout.OnTabSelectedListener {
 
     TabHost tabHost;
 
@@ -34,20 +34,16 @@ public class BuyerTabActivity extends TabActivity implements TabLayout.OnTabSele
         //  i = getIntent();
         tabHost = getTabHost();
         setTabs();
-tabHost.setCurrentTab(3);
-        for (int j = 0; j < tabHost.getTabWidget().getChildCount(); j++)
-        {
+        tabHost.setCurrentTab(3);
+        for (int j = 0; j < tabHost.getTabWidget().getChildCount(); j++) {
             ViewGroup vg = (ViewGroup) tabHost.getTabWidget().getChildAt(j);
 
             ImageView img = (ImageView) vg.getChildAt(0);
-            TextView txt=(TextView)vg.getChildAt(1);
-            if(j==3)
-            {
+            TextView txt = (TextView) vg.getChildAt(1);
+            if (j == 3) {
                 txt.setTextColor(getResources().getColor(R.color.appcolor));
 
-            }
-            else
-            {
+            } else {
                 txt.setTextColor(getResources().getColor(R.color.gray));
 
             }
@@ -63,14 +59,11 @@ tabHost.setCurrentTab(3);
                     ViewGroup vg = (ViewGroup) tabHost.getTabWidget().getChildAt(i);
                     //vg.setBackgroundColor(Color.TRANSPARENT);
                     ImageView img = (ImageView) vg.getChildAt(0);
-                    TextView txt=(TextView)vg.getChildAt(1);
-                    if(index==i)
-                    {
+                    TextView txt = (TextView) vg.getChildAt(1);
+                    if (index == i) {
                         txt.setTextColor(getResources().getColor(R.color.appcolor));
 
-                    }
-                    else
-                    {
+                    } else {
                         txt.setTextColor(getResources().getColor(R.color.gray));
 
                     }
@@ -86,32 +79,28 @@ tabHost.setCurrentTab(3);
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         //super.onBackPressed();
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
     }
 
     @Override
-    protected void onPause()
-    {
+    protected void onPause() {
         super.onPause();
     }
 
-    private void setTabs()
-    {
-        addTab(R.drawable.tab_home, BuyerHomeActivity.class,"HOME");
-        addTab(R.drawable.tab_shop, BuyerShopActivity.class,"SHOP");
-        addTab(R.drawable.tab_cart, BuyerOrderActivity.class,"CART");
-        addTab(R.drawable.tab_setting, BuyerSettingActivity.class,"SETTINGS");
+    private void setTabs() {
+        addTab(R.drawable.tab_home, BuyerHomeActivity.class, "HOME");
+        addTab(R.drawable.tab_shop, BuyerShopActivity.class, "SHOP");
+        addTab(R.drawable.tab_cart, BuyerOrderActivity.class, "CART");
+        addTab(R.drawable.tab_setting, BuyerSettingActivity.class, "SETTINGS");
     }
 
-    private void addTab(int drawableId, Class<?> c,String s) {
+    private void addTab(int drawableId, Class<?> c, String s) {
 
 
         Intent intent = new Intent(this, c);
@@ -132,14 +121,12 @@ tabHost.setCurrentTab(3);
         tabHost.addTab(spec);
     }
 
-    public void setTabValue()
-    {
+    public void setTabValue() {
 
     }
 
     @Override
-    public void onTabSelected(TabLayout.Tab tab)
-    {
+    public void onTabSelected(TabLayout.Tab tab) {
         // int i=tab.getPosition();
 
     }

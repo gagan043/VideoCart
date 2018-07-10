@@ -147,12 +147,12 @@ public class SignUpActivity extends Activity implements View.OnClickListener
                 finish();
                 break;
             case R.id.rel_sel:
-                img_seller.setImageResource(R.drawable.buyeractive);
+                img_seller.setImageResource(R.drawable.selleractive);
                 img_buyer.setImageResource(R.drawable.buyer);
 
                 break;
             case R.id.rel_buy:
-                img_seller.setImageResource(R.drawable.buyer);
+                img_seller.setImageResource(R.drawable.seller);
                 img_buyer.setImageResource(R.drawable.buyeractive);
 
                 break;
@@ -185,8 +185,6 @@ public class SignUpActivity extends Activity implements View.OnClickListener
                     else {
                         mDialog.setUpDialog();
                         sendImageWithName();
-
-
                     }
                 } else {
                     CommonUtils.openInternetDialog(this);

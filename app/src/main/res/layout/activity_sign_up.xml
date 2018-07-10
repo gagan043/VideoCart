@@ -59,8 +59,8 @@
                     android:background="@drawable/fb_circle"
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/rel_googleView"
-                    android:layout_marginRight="20dp"
-                    >
+                    android:layout_marginRight="20dp">
+
 
                     <com.facebook.login.widget.LoginButton
                         android:id="@+id/Fb_Login"

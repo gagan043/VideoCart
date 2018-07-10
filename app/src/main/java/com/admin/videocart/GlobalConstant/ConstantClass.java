@@ -10,6 +10,7 @@ public class ConstantClass {
     public static String IMAGE="image";
     public static String SOCIALTYPE="social_type";
     public static String TOKEN="token";
+    public static String USERTYPE="type";
 
 
 }

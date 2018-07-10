@@ -149,10 +149,12 @@ public class SignUpActivity extends Activity implements View.OnClickListener
             case R.id.rel_sel:
                 img_seller.setImageResource(R.drawable.buyeractive);
                 img_buyer.setImageResource(R.drawable.buyer);
+
                 break;
             case R.id.rel_buy:
                 img_seller.setImageResource(R.drawable.buyer);
                 img_buyer.setImageResource(R.drawable.buyeractive);
+
                 break;
             case R.id.img_back:
                 finish();
@@ -259,6 +261,9 @@ public class SignUpActivity extends Activity implements View.OnClickListener
 
                     mDialog.setUpDialog();
                     Sociallogin(js);
+                    preference.setEmail("");
+                    preference.setName(result.data.getUserName());
+                    preference.setLoginType("twitter");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -275,6 +280,8 @@ public class SignUpActivity extends Activity implements View.OnClickListener
 
     public void openActivity(Class c) {
         Intent i = new Intent(this, c);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
         startActivity(i);
         
 
@@ -345,6 +352,9 @@ public class SignUpActivity extends Activity implements View.OnClickListener
 
                     mDialog.setUpDialog();
                     Sociallogin(js);
+                    preference.setEmail(result.getSignInAccount().getEmail());
+                    preference.setName(result.getSignInAccount().getDisplayName());
+                    preference.setLoginType("gmail");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -395,6 +405,9 @@ public class SignUpActivity extends Activity implements View.OnClickListener
 
                 mDialog.setUpDialog();
                 Sociallogin(js);
+                preference.setEmail(email_mString);
+                preference.setName(name_mString);
+                preference.setLoginType("facebook");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -421,9 +434,10 @@ public class SignUpActivity extends Activity implements View.OnClickListener
 
                                 JSONObject jsonobj = s.getJSONObject("data");
                                 String id = jsonobj.getString("id");
-
-                                preference.setUserId(id);
-                                openActivity(SignUpActivity.class);
+                                preference.setName(jsonobj.getString(ConstantClass.NAME));
+                                preference.setEmail(jsonobj.getString(ConstantClass.EMAIL));
+                                preference.setLoginType("");
+                                openActivity(BuyerTabActivity.class);
 
 
                             }
@@ -484,7 +498,7 @@ public class SignUpActivity extends Activity implements View.OnClickListener
                         String id = jsonobj.getString("id");
 
                         preference.setUserId(id);
-                        openActivity(SignUpActivity.class);
+                        openActivity(BuyerTabActivity.class);
 
 
                     }
